@@ -4,4 +4,7 @@
 ul, li {
     list-style-type: none;
 }
-
+a{
+    cursor: pointer;
+    text-decoration: none;
+}

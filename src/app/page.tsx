@@ -90,7 +90,9 @@ const productList= await getProductList()
               {productList.content.map(product=>(
               <div className={styles.product}>
                 <div className={styles.product_img}>
+                <Link href={product.link}>
                   <img src={product.imgSrc} className={styles.image}/>
+                  </Link>
                   <SourceImage source={product.sourceType}></SourceImage>
                 </div>
                 <div className={styles.title_price_div}>
@@ -103,6 +105,7 @@ const productList= await getProductList()
                   <span className={styles.address}>{product.address}</span>
                   <span className={styles.uploadDate}>3주전</span>
                 </div>
+              
               </div>
             ))}
         </div>
