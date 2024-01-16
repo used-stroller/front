@@ -1,12 +1,15 @@
 import styles from '../styles/page.module.css'
-import Link from 'next/link'
+
 import { getProductList } from '@/utils/getProductList';
 import SourceImage from './components/SourceImage';
 import FormattedPrice from './components/FormattedPrice';
+import ProductList from './components/InfinityScroll';
+import Link from 'next/link';
 
 export default async function Home() {
 
-const productList= await getProductList()
+
+const productList= await getProductList(0)
 
   return (
   <>
@@ -88,27 +91,28 @@ const productList= await getProductList()
         </div>
         <div className={styles.product_list_container}>
               {productList.content.map(product=>(
-              <div className={styles.product}>
-                <div className={styles.product_img}>
-                <Link href={product.link}>
-                  <img src={product.imgSrc} className={styles.image}/>
-                  </Link>
-                  <SourceImage source={product.sourceType}></SourceImage>
-                </div>
-                <div className={styles.title_price_div}>
-                  <span className={styles.title}>{product.title}</span>
-                  <FormattedPrice value={product.price}></FormattedPrice>
-                </div>
-                <div className={styles.separator}></div>
-                <div className={styles.address_date_div}>
-                  <span className={styles.icon_map}><img src="/images/icon_map.png"/></span>
-                  <span className={styles.address}>{product.address}</span>
-                  <span className={styles.uploadDate}>3주전</span>
-                </div>
-              
-              </div>
-            ))}
+          <div className={styles.product}>
+          <div className={styles.product_img}>
+          <Link href={product.link}>
+            <img src={product.imgSrc} className={styles.image}/>
+            </Link>
+            <SourceImage source={product.sourceType}></SourceImage>
+          </div>
+          <div className={styles.title_price_div}>
+            <span className={styles.title}>{product.title}</span>
+            <FormattedPrice value={product.price}></FormattedPrice>
+          </div>
+          <div className={styles.separator}></div>
+          <div className={styles.address_date_div}>
+            <span className={styles.icon_map}><img src="/images/icon_map.png"/></span>
+            <span className={styles.address}>{product.address}</span>
+            <span className={styles.uploadDate}>3주전</span>
+          </div>
         </div>
+             ))}
+            <ProductList></ProductList>
+        </div>
+       
       </div>
     </div>
   </>

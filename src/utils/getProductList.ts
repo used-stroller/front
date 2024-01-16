@@ -35,9 +35,8 @@ export interface Sort {
   unsorted: boolean
 }
 
-export const getProductList = async () : Promise<Response>=> {
-    const res = await fetch(`http://localhost:8090/product/list`)
-
+export const getProductList = async (page:number) : Promise<Response>=> {
+    const res = await fetch(`http://localhost:8090/product/list?page=${page}`,{credentials: 'include'})
     if(!res.ok){
         if(!res.ok) throw new Error('상품정보를 가져올 수 없습니다.')
     }
