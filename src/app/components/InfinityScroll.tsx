@@ -6,7 +6,7 @@ import Link from 'next/link'
 import SourceImage from './SourceImage';
 import FormattedPrice from './FormattedPrice';
 
-const ProductList = () => {
+const ProductList = (): HTMLElement => {
 
   const [products, setProducts] = useState([])
   const [hasMore, setHasMore] = useState(true)
@@ -41,7 +41,6 @@ const ProductList = () => {
      //fetch the next batch of products 
     const response = await getProductList(page)
     console.log(response)
-    // const response = await fetch(`http://dummyjson.com/products?limit=10&skip=${page*10}`)
     if(response.content.length ==0){
       setHasMore(false)
     }

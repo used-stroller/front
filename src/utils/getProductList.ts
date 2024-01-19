@@ -1,3 +1,5 @@
+import { FilterReq } from '@/app/components/SearchBarFilter'
+
 export interface Response {
   content: Content[]
   number: number
