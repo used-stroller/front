@@ -2,37 +2,22 @@ import styles from '../styles/page.module.css';
 import { getProductList } from '@/utils/productUtils';
 import Link from 'next/link';
 import Image from 'next/image';
-import SimpleFilters from './components/SimpleFilters';
 import Product from './components/Product';
-import Filters from './components/Filters';
 import type { Filter } from './types';
+import ProductList from './components/InfinityScroll';
+import SearchBarFilter from './components/SearchBarFilter';
 
 export default async function Home(): Promise<JSX.Element> {
   const filter: Filter = {
     page: 0,
-    size: 50,
+    size: 30,
   };
   const productList = await getProductList({ filter });
   const year = new Date().getFullYear();
 
   return (
     <div className='main'>
-      <div className={styles.header_wrapper}>
-        <div className={styles.logo}></div>
-        <div className={styles.search_bar}>
-          <input type='text' placeholder='검색어를 입력하세요' />
-          <Image
-            src='/images/search_button.svg'
-            className={styles.search_button}
-            alt='search button'
-            width={20}
-            height={20}
-          />
-        </div>
-      </div>
-
-      <Filters />
-      <SimpleFilters />
+      <SearchBarFilter />
 
       <div className={styles.contents}>
         <div className={styles.search_result_wrapper}>
@@ -55,6 +40,7 @@ export default async function Home(): Promise<JSX.Element> {
           {productList.content.map((product) => (
             <Product content={product} key={product.id} />
           ))}
+          <ProductList />
         </div>
       </div>
 

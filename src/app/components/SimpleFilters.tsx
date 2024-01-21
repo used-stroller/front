@@ -48,10 +48,11 @@ const SimpleFilters = () => {
         <li className={styles.filter_title}>
           <select>
             <option value=''>사이트별</option>
+            <option value=''>네이버</option>
             <option value=''>당근</option>
-            <option value=''>중고나라</option>
             <option value=''>번개장터</option>
             <option value=''>세컨웨어</option>
+            <option value=''>중고나라</option>
           </select>
         </li>
       </ul>

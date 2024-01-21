@@ -92,7 +92,7 @@ const Filters = (): JSX.Element => {
           <li className={styles.filter}>네이버</li>
           <li className={styles.filter}>당근</li>
           <li className={styles.filter}>번개장터</li>
-          <li className={styles.filter}>헬로마켓</li>
+          <li className={styles.filter}>세컨웨어</li>
           <li className={styles.filter}>중고나라</li>
         </ul>
       </div>

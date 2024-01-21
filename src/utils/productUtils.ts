@@ -1,8 +1,9 @@
+import { FilterReq } from '@/app/components/SearchBarFilter'
 import type { Response } from '../app/types/index'
 
 export const getProductList = async ({ filter }): Promise<Response> => {
   let requestUrl = 'http://localhost:8090/product/list'
-  filter && console.log('filter', filter)
+  filter && console.log('filter: ', filter)
   filter && Object.keys(filter).forEach((key, index) => {
     if (index === 0) {
       requestUrl += '?'
@@ -12,7 +13,7 @@ export const getProductList = async ({ filter }): Promise<Response> => {
     requestUrl += `${key}=${filter[key]}`
   })
   console.log('requestUrl', requestUrl)
-  const res = await fetch(requestUrl)
+  const res = await fetch(requestUrl, {credentials: 'include'})
 
   if (!res.ok) {
     if (!res.ok) throw new Error('상품정보를 가져올 수 없습니다.')
