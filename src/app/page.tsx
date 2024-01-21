@@ -1,116 +1,73 @@
-import styles from '../styles/page.module.css'
-import Link from 'next/link'
-import { getProductList } from '@/utils/getProductList';
-import SourceImage from './components/SourceImage';
-import FormattedPrice from './components/FormattedPrice';
+import styles from '../styles/page.module.css';
+import { getProductList } from '@/utils/productUtils';
+import Link from 'next/link';
+import Image from 'next/image';
+import SimpleFilters from './components/SimpleFilters';
+import Product from './components/Product';
+import Filters from './components/Filters';
+import type { Filter } from './types';
 
-export default async function Home() {
-
-const productList= await getProductList()
+export default async function Home(): Promise<JSX.Element> {
+  const filter: Filter = {
+    page: 0,
+    size: 50,
+  };
+  const productList = await getProductList({ filter });
+  const year = new Date().getFullYear();
 
   return (
-  <>
-  <div className='main'>
-       <div className={styles.logo_box}>
-        <img className={styles.logo_image} src="/images/logo.png"/>
-      </div>
-      <div className={styles.search_bar}>
-        <input placeholder='스토케'/>
-        <img src="/images/search_button.png" className={styles.search_button}/>
-      </div>
-      <div className={styles.filter_container}>
-        <ul>
-          <li className={styles.filter_title}>
-            <select className={styles.filter_detail}>
-              <option value="브랜드">브랜드</option>
-              <option value="yoyo">RYAN</option>
-              <option value="yoyo">오이스터</option>
-              <option value="yoyo">부가부</option>
-              <option value="yoyo">타보</option>
-              <option value="yoyo">스토케</option>
-              <option value="yoyo">에그</option>
-              <option value="yoyo">와이업</option>
-              <option value="yoyo">잉글레시나</option>
-              <option value="yoyo">씨투엠뉴</option>
-              <option value="yoyo">실버크로스</option>
-              <option value="yoyo">오르빗베이비</option>
-              <option value="yoyo">SEEC</option>
-              <option value="yoyo">다이치</option>
-              <option value="yoyo">싸이벡스</option>
-              <option value="yoyo">뉴나</option>
-              <option value="yoyo">엔픽스</option>
-            </select>
-          </li>
-          <li className={styles.filter_title}>
-            <select className={styles.filter_detail}>
-              <option value="dd">가격</option>
-              <option value="dd">0~10만원</option>
-              <option value="dd">10만원~30만원</option>
-              <option value="dd">30만원~50만원</option>
-              <option value="dd">50만원이상</option>
-            </select>
-          </li>
-          <li className={styles.filter_title}>
-            <select>
-              <option value="">동네</option>
-            </select>
-          </li>
-          <li className={styles.filter_title}>
-            <select>
-              <option value="">기간</option>
-            </select>
-          </li>
-          <li className={styles.filter_title}>
-            <select>
-              <option value="">사이트별</option>
-              <option value="">당근</option>
-              <option value="">중고나라</option>
-              <option value="">번개장터</option>
-              <option value="">세컨웨어</option>
-            </select>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div>
-          <span className={styles.keyword}>스토케</span>
-          <span>검색결과</span>
-          <span className={styles.result_qty}>123</span>
-          <span>개</span>
+    <div className='main'>
+      <div className={styles.header_wrapper}>
+        <div className={styles.logo}></div>
+        <div className={styles.search_bar}>
+          <input type='text' placeholder='검색어를 입력하세요' />
+          <Image
+            src='/images/search_button.svg'
+            className={styles.search_button}
+            alt='search button'
+            width={20}
+            height={20}
+          />
         </div>
-        <div className={styles.second_filter}>
-          <button>최신순</button>
-          <button>저가순</button>
-          <button>고가순</button>
+      </div>
+
+      <Filters />
+      <SimpleFilters />
+
+      <div className={styles.contents}>
+        <div className={styles.search_result_wrapper}>
+          <div className={styles.search_result}>
+            <span className={styles.keyword}>스토케</span>
+            검색결과 <span className={styles.result_qty}>12345</span> 개
+          </div>
+          <div className={styles.second_filter}>
+            <button className={styles.second_filter_active}>최신순</button>
+            <button>저가순</button>
+            <button>고가순</button>
+          </div>
         </div>
         <div className={styles.ad_banner}>
-          <img src="/images/ad_example.png"></img>
+          <Link href={''} className={styles.ad_banner_link}>
+            <Image src='/images/ad_example.jpg' alt='ads' fill priority />
+          </Link>
         </div>
         <div className={styles.product_list_container}>
-              {productList.content.map(product=>(
-              <div className={styles.product}>
-                <div className={styles.product_img}>
-                <Link href={product.link}>
-                  <img src={product.imgSrc} className={styles.image}/>
-                  </Link>
-                  <SourceImage source={product.sourceType}></SourceImage>
-                </div>
-                <div className={styles.title_price_div}>
-                  <span className={styles.title}>{product.title}</span>
-                  <FormattedPrice value={product.price}></FormattedPrice>
-                </div>
-                <div className={styles.separator}></div>
-                <div className={styles.address_date_div}>
-                  <span className={styles.icon_map}><img src="/images/icon_map.png"/></span>
-                  <span className={styles.address}>{product.address}</span>
-                  <span className={styles.uploadDate}>3주전</span>
-                </div>
-              
-              </div>
-            ))}
+          {productList.content.map((product) => (
+            <Product content={product} key={product.id} />
+          ))}
+        </div>
+      </div>
+
+      <div className={styles.footer}>
+        <i className={styles.separator} />
+        <div className={styles.footer_wrapper}>
+          <p className={styles.address}>
+            제휴 및 기타 문의
+            <a href='mailto:hoonyhoeny@gmail.com'>hoonyhoeny@gmail.com</a>
+          </p>
+          <p>Copyright © {year} 중모차</p>
         </div>
       </div>
     </div>
-  </>
-  )
+  );
 }

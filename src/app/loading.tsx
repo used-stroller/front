@@ -1,3 +1,3 @@
-export default function Loading() {
-    return <>로딩 중</>
+export default function Loading(): JSX.Element {
+  return <>로딩 중</>;
 }

@@ -1,4 +1,4 @@
-export interface Response {
+interface Response {
   content: Content[]
   number: number
   size: number
@@ -11,7 +11,7 @@ export interface Response {
   empty: boolean
 }
 
-export interface Content {
+interface Content {
   id: number
   sourceType: string
   pid: string
@@ -22,24 +22,27 @@ export interface Content {
   createdAt: string
   updatedAt: string
   releaseYear: number
-  etc: any
+  etc: string
   uploadDate: string
   address: string
-  region: any
-  content: any
+  region: string
+  content: string
 }
 
-export interface Sort {
+interface Sort {
   sorted: boolean
   empty: boolean
   unsorted: boolean
 }
 
-export const getProductList = async () : Promise<Response>=> {
-    const res = await fetch(`http://localhost:8090/product/list`)
+interface Filter {
+  page: number
+  size: number
+}
 
-    if(!res.ok){
-        if(!res.ok) throw new Error('상품정보를 가져올 수 없습니다.')
-    }
-    return res.json()
-  }
+export type {
+  Response,
+  Content,
+  Sort,
+  Filter
+};
