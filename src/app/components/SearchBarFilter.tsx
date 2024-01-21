@@ -1,43 +1,25 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from '@/styles/page.module.css';
 import { getProductList } from '@/utils/productUtils';
 import Image from 'next/image';
 import Filters from './Filters';
 import SimpleFilters from './SimpleFilters';
-
-interface Props {
-  filterReq: FilterReq;
-}
-
-export interface FilterReq {
-  keyword: string;
-  sourceType: sourceType;
-  minPrice: number;
-  maxPrice: number;
-  town: string;
-  period: number;
-  model: string[];
-  brand: string[];
-}
-export enum sourceType {
-  NAVER = 'NAVER',
-  CARROT = 'CARROT',
-  HELLO = 'HELLO',
-  BUNJANG = 'BUNJANG',
-  JUNGGO = 'JUNGGO',
-}
+import type { FilterReq, Response } from '../types';
 
 const SearchBarFilter = (): JSX.Element => {
-  const [searchInput, setSearchInput] = useState({});
+  const [keyword, setKeyword] = useState('');
   const [page, setPage] = useState(0);
-  const searchItems = (searchValue: FilterReq) => {
-    setSearchInput(searchValue);
-    console.log(searchInput);
+  const searchItems = (searchValue: string): void => {
+    setKeyword(searchValue);
+    console.log(keyword);
   };
 
-  async function getProductData(page: number): Promise<Response> {
-    const productList = await getProductList(0);
+  async function getProductData(): Promise<Response> {
+    const filter: FilterReq = {
+      keyword,
+    };
+    const productList = await getProductList(filter);
     console.log(productList);
     return productList;
   }

@@ -1,3 +1,28 @@
+interface Props {
+  filterReq: FilterReq
+}
+
+interface FilterReq {
+  keyword?: string
+  sourceType?: sourceType
+  minPrice?: number
+  maxPrice?: number
+  town?: string
+  period?: number
+  model?: string[]
+  brand?: string[]
+  page?: number
+  size?: number
+}
+
+enum sourceType {
+  NAVER = 'NAVER',
+  CARROT = 'CARROT',
+  HELLO = 'HELLO',
+  BUNJANG = 'BUNJANG',
+  JUNGGO = 'JUNGGO',
+}
+
 interface Response {
   content: Content[]
   number: number
@@ -35,14 +60,11 @@ interface Sort {
   unsorted: boolean
 }
 
-interface Filter {
-  page: number
-  size: number
-}
-
 export type {
+  Props,
+  FilterReq,
+  sourceType,
   Response,
   Content,
-  Sort,
-  Filter
-};
+  Sort
+}

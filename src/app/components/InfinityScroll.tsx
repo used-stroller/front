@@ -2,15 +2,16 @@
 import { getProductList } from '@/utils/productUtils';
 import React, { useState, useEffect, useRef } from 'react';
 import Product from './Product';
+import type { FilterReq } from '../types';
 
-const ProductList = (): JSX.Element => {
+const ProductList = (filter: FilterReq): JSX.Element => {
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   const elementRef = useRef(null);
 
-  //callback 함수 정의
+  // callback 함수 정의
   function onIntersection(entries) {
     const firstEntry = entries[0];
     if (firstEntry.isIntersecting && hasMore) {
@@ -18,7 +19,7 @@ const ProductList = (): JSX.Element => {
     }
   }
 
-  //product상태가 업데이트 될때 실행
+  // product상태가 업데이트 될때 실행
   useEffect(() => {
     const observer = new IntersectionObserver(onIntersection);
     if (observer && elementRef.current) {
@@ -30,15 +31,14 @@ const ProductList = (): JSX.Element => {
         observer.disconnect();
       }
     };
-  }, [products]); //products가 업데이트 될때마다 hook
+  }, [products]); // products가 업데이트 될때마다 hook
 
   async function fetchMoreItems() {
-    //fetch the next batch of products
-    const filter = {
-      page: page,
-      size: 20,
+    // fetch the next batch of products
+    const filter: FilterReq = {
+      page,
     };
-    const response = await getProductList({ filter });
+    const response = await getProductList(filter);
     console.log(response);
 
     if (response.content.length === 0) {

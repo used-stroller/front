@@ -10,7 +10,7 @@ export default function Product({ content }): JSX.Element {
   return (
     <div className={styles.product}>
       <div className={styles.product_img}>
-        <Link href={content.link} className={styles.product_link}>
+        <Link href={content.link} className={styles.product_link} target={'_blank'}>
           <Image
             src={getImageUrl(content.imgSrc)}
             alt={content.title}

@@ -1,26 +1,28 @@
-import { FilterReq } from '@/app/components/SearchBarFilter'
-import type { Response } from '../app/types/index'
+import type { FilterReq, Response } from '../app/types/index'
+import axios from 'axios'
 
-export const getProductList = async ({ filter }): Promise<Response> => {
-  let requestUrl = 'http://localhost:8090/product/list'
-  filter && console.log('filter: ', filter)
-  filter && Object.keys(filter).forEach((key, index) => {
-    if (index === 0) {
-      requestUrl += '?'
-    } else {
-      requestUrl += '&'
-    }
-    requestUrl += `${key}=${filter[key]}`
-  })
+export const getProductList = async (filter: FilterReq): Promise<Response> => {
+  const requestUrl = 'http://localhost:8090/product/list' + createQueryParams(filter)
   console.log('requestUrl', requestUrl)
-  const res = await fetch(requestUrl, {credentials: 'include'})
+  const res = axios.get(requestUrl, { withCredentials: true })
 
-  if (!res.ok) {
-    if (!res.ok) throw new Error('상품정보를 가져올 수 없습니다.')
-  }
-  return await res.json()
+  return await res.then((res) => {
+    // console.log('res.data: ', res.data)
+    return res.data
+  }).catch((error) => {
+    console.log('error: ', error)
+    throw new Error('상품정보를 가져올 수 없습니다.')
+  })
 }
 
-export function getImageUrl(imgSrc: string): string {
-  return imgSrc.startsWith('http') ? imgSrc : '/images/default_thumbnail.svg';
+export function getImageUrl (imgSrc: string): string {
+  return imgSrc.startsWith('http') ? imgSrc : '/images/default_thumbnail.svg'
+}
+
+export function createQueryParams (filter: FilterReq): string {
+  const params = new URLSearchParams()
+  Object.keys(filter).forEach((key) => {
+    params.append(key, filter[key])
+  })
+  return `?${params.toString()}`
 }

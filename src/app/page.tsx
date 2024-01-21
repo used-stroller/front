@@ -3,17 +3,17 @@ import { getProductList } from '@/utils/productUtils';
 import Link from 'next/link';
 import Image from 'next/image';
 import Product from './components/Product';
-import type { Filter } from './types';
+import type { FilterReq } from './types';
 import ProductList from './components/InfinityScroll';
 import SearchBarFilter from './components/SearchBarFilter';
+import Footer from './components/Footer';
 
 export default async function Home(): Promise<JSX.Element> {
-  const filter: Filter = {
+  const filter: FilterReq = {
     page: 0,
-    size: 30,
+    size: 20,
   };
-  const productList = await getProductList({ filter });
-  const year = new Date().getFullYear();
+  const productList = await getProductList(filter);
 
   return (
     <div className='main'>
@@ -44,16 +44,7 @@ export default async function Home(): Promise<JSX.Element> {
         </div>
       </div>
 
-      <div className={styles.footer}>
-        <i className={styles.separator} />
-        <div className={styles.footer_wrapper}>
-          <p className={styles.address}>
-            제휴 및 기타 문의
-            <a href='mailto:hoonyhoeny@gmail.com'>hoonyhoeny@gmail.com</a>
-          </p>
-          <p>Copyright © {year} 중모차</p>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }
