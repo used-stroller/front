@@ -1,55 +1,25 @@
 'use client'
-import React, {useState, useEffect,useRef} from 'react';
+import React, {useState, useEffect,useRef, useContext} from 'react';
 import styles from '@/styles/page.module.css'
-import { getProductList } from '@/utils/getProductList';
+import FilterContext from '../context/contextApi';
 
-interface Props {
-  filterReq: FilterReq
-}
-
-export interface FilterReq {
-  keyword: string
-  sourceType: sourceType
-  minPrice: number
-  maxPrice: number
-  town: string
-  period: number
-  model: string[]
-  brand: string[]
-}
-export enum sourceType {
-  NAVER = 'NAVER',
-  CARROT = 'CARROT',
-  HELLO = 'HELLO',
-  BUNJANG = 'BUNJANG',
-  JUNGGO = 'JUNGGO'
-}
-
-const SearchBarFilter = (): HTMLElement => {
+const SearchBarFilter = () => {
 
 const [ searchInput, setSearchInput] = useState({});
 const [ page,setPage] = useState(0)
-const searchItems = (searchValue:FilterReq) => {
-    setSearchInput(searchValue)
-  console.log(searchInput)
-}
-
-  async function getProductData(page:number): Promise<Response> {
-    const productList = await getProductList(0)
-    console.log(productList)
-    return productList
-}
 
   return (
-        <>
-        <div className={styles.search_bar}>
+        <FilterContext.Consumer>
+          {state => (
+            <>
+            <div className={styles.search_bar}>
         <input 
-          placeholder='스토케'
-          onChange={(e) => searchItems(e.target.value)}
+          placeholder='입력하세요'
+          onChange={(e) => state.setFilter({keyword:e.target.value})}
           />
         <img src="/images/search_button.png" 
              className={styles.search_button}
-             onClick={getProductData}
+            //  onClick={getProductData}
              />
       </div>
       <div className={styles.filter_container}>
@@ -105,7 +75,9 @@ const searchItems = (searchValue:FilterReq) => {
           </li>
         </ul>
       </div>
-        </>
+      </>
+          )}
+      </FilterContext.Consumer>
   )
 }
 export default SearchBarFilter;

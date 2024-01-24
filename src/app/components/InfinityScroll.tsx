@@ -1,19 +1,21 @@
 'use client'
 import { getProductList } from '@/utils/getProductList';
-import React, {useState, useEffect,useRef} from 'react';
+import React, {useState, useEffect,useRef, useContext} from 'react';
 import styles from '@/styles/page.module.css'
 import Link from 'next/link'
 import SourceImage from './SourceImage';
 import FormattedPrice from './FormattedPrice';
+import FilterContext from '../context/contextApi';
 
-const ProductList = (): HTMLElement => {
+const InfinityScroll = () => {
 
   const [products, setProducts] = useState([])
   const [hasMore, setHasMore] = useState(true)
   const [page,setPage] = useState(1)
-
   const elementRef = useRef(null)
-
+  const filter = useContext(FilterContext)
+  console.log("인피티니필터")
+  console.log(filter)
 
   //callback 함수 정의 
   function onIntersection(entries){
@@ -38,8 +40,11 @@ const ProductList = (): HTMLElement => {
   },[products]) //products가 업데이트 될때마다 hook
   
   async function fetchMoreItems(){
+    
      //fetch the next batch of products 
-    const response = await getProductList(page)
+    const response = await getProductList(page, filter.filter)
+    console.log("infinit filter")
+    console.log(filter)
     console.log(response)
     if(response.content.length ==0){
       setHasMore(false)
@@ -80,4 +85,4 @@ const ProductList = (): HTMLElement => {
   )
 }
 
-export default ProductList;
+export default InfinityScroll;

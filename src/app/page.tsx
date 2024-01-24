@@ -1,19 +1,22 @@
+'use client'
 import styles from '../styles/page.module.css'
-
 import { getProductList } from '@/utils/getProductList';
 import SourceImage from './components/SourceImage';
 import FormattedPrice from './components/FormattedPrice';
-import ProductList from './components/InfinityScroll';
 import Link from 'next/link';
 import SearchBarFilter from './components/SearchBarFilter';
+import FilterContext from './context/contextApi';
+import { useState } from 'react';
+import InfinityScroll from './components/InfinityScroll';
 
 export default async function Home() {
 
+const [filter,setFilter] = useState({keyword:''})
+const productList= await getProductList(0,filter)
 
-const productList= await getProductList(0)
-
-  return (
+  return(
   <>
+  <FilterContext.Provider value={{filter: filter,setFilter: setFilter}}>
   <div className='main'>
        <div className={styles.logo_box}>
         <img className={styles.logo_image} src="/images/logo.png"/>
@@ -36,7 +39,7 @@ const productList= await getProductList(0)
         </div>
         <div className={styles.product_list_container}>
               {productList.content.map(product=>(
-          <div className={styles.product}>
+          <div key={product.id} className={styles.product}>
           <div className={styles.product_img}>
           <Link href={product.link}>
             <img src={product.imgSrc} className={styles.image}/>
@@ -55,11 +58,12 @@ const productList= await getProductList(0)
           </div>
         </div>
              ))}
-            <ProductList></ProductList>
+            {/* <InfinityScroll></InfinityScroll> */}
         </div>
        
       </div>
     </div>
+    </FilterContext.Provider>
   </>
   )
 }
