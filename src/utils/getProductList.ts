@@ -55,21 +55,18 @@ export enum sourceType {
   JUNGGO,
 }
 
-export default interface FilterReq {
-  keyword: string
-}
-
-export const getProductList = async (page: number, keyword: FilterReq) : Promise<Response>=> {
-    const res = await fetch(`http://localhost:8090/product/list?page=${page}`,{
-      method: 'POST',
-      headers: {
+export const getProductList = async (page: number, keyword: FilterReq): Promise<Response> => {
+  // console.log(page, keyword)
+  const res = await fetch(`http://localhost:8090/product/list?page=${page}&keywork=${keyword.keyword}`, {
+    method: 'GET',
+    headers: {
       'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(keyword)
-      },{credentials: 'include'})
-    if(!res.ok){
-        if(!res.ok) throw new Error('상품정보를 가져올 수 없습니다.')
     }
-    console.log("productList 함수 호출됨")
-    return res.json()
+    // body: JSON.stringify(keyword)
+  }, { credentials: 'include' })
+  if (!res.ok) {
+    if (!res.ok) throw new Error('상품정보를 가져올 수 없습니다.')
   }
+  console.log('productList 함수 호출됨')
+  return await res.json()
+}
