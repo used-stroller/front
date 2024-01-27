@@ -1,8 +1,10 @@
-import React from 'react';
-import styles from '@/styles/page.module.css';
-import Image from 'next/image';
+import React from 'react'
+import styles from '@/styles/page.module.css'
+import Image from 'next/image'
 
-const Filters = (): JSX.Element => {
+const WebFilters = ({ filter, handleFilter }): JSX.Element => {
+  console.log('WebFilters: ', filter)
+
   return (
     <div className={styles.filters_container}>
       <div className={styles.filters_wrapper}>
@@ -97,7 +99,7 @@ const Filters = (): JSX.Element => {
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Filters;
+export default WebFilters

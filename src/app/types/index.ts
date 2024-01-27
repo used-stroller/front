@@ -1,10 +1,6 @@
-interface Props {
-  filterReq: FilterReq
-}
-
 interface FilterReq {
   keyword?: string
-  sourceType?: sourceType
+  sourceType?: sourceType[]
   minPrice?: number
   maxPrice?: number
   town?: string
@@ -23,7 +19,7 @@ enum sourceType {
   JUNGGO = 'JUNGGO',
 }
 
-interface Response {
+interface ProductRes {
   content: Content[]
   number: number
   size: number
@@ -61,10 +57,9 @@ interface Sort {
 }
 
 export type {
-  Props,
   FilterReq,
   sourceType,
-  Response,
+  ProductRes,
   Content,
   Sort
 }

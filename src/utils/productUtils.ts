@@ -1,13 +1,13 @@
-import type { FilterReq, Response } from '../app/types/index'
+import type { FilterReq, ProductRes } from '@/app/types'
 import axios from 'axios'
 
-export const getProductList = async (filter: FilterReq): Promise<Response> => {
+export const getProductList = async (filter: FilterReq): Promise<axios.AxiosResponse<ProductRes> | void> => {
   const requestUrl = 'http://localhost:8090/product/list' + createQueryParams(filter)
   console.log('requestUrl', requestUrl)
   const res = axios.get(requestUrl, { withCredentials: true })
 
   return await res.then((res) => {
-    // console.log('res.data: ', res.data)
+    console.log('res.data: ', res.data)
     return res.data
   }).catch((error) => {
     console.log('error: ', error)

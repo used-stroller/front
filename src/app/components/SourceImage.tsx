@@ -1,11 +1,7 @@
-import styles from '@/styles/page.module.css';
-import Image from 'next/image';
+import styles from '@/styles/page.module.css'
+import Image from 'next/image'
 
-type Props = {
-  source: string;
-};
-
-export default function SourceImage({ source }: Props): JSX.Element {
+export default function SourceImage ({ source }): JSX.Element {
   switch (source) {
     case 'BUNJANG':
       return (
@@ -16,7 +12,7 @@ export default function SourceImage({ source }: Props): JSX.Element {
           width={15}
           height={15}
         />
-      );
+      )
     case 'CARROT':
       return (
         <Image
@@ -26,7 +22,7 @@ export default function SourceImage({ source }: Props): JSX.Element {
           width={11.54}
           height={19.73}
         />
-      );
+      )
     case 'JUNGGO':
       return (
         <Image
@@ -36,7 +32,7 @@ export default function SourceImage({ source }: Props): JSX.Element {
           width={16}
           height={16}
         />
-      );
+      )
     case 'HELLO':
       return (
         <Image
@@ -46,7 +42,7 @@ export default function SourceImage({ source }: Props): JSX.Element {
           width={16}
           height={16}
         />
-      );
+      )
     case 'NAVER':
       return (
         <Image
@@ -56,8 +52,8 @@ export default function SourceImage({ source }: Props): JSX.Element {
           width={13}
           height={13}
         />
-      );
+      )
     default:
-      return <i />;
+      return <i />
   }
 }

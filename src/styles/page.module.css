@@ -183,7 +183,7 @@
   font-size: 13px;
 }
 
-.second_filter>button.second_filter_active,
+.second_filter>button.active,
 .second_filter>button:active {
   background-color: #4D5AAF;
   color: #FFFFFF
@@ -204,18 +204,17 @@
   height: 100%;
 }
 
-.product_list_container {
+.product_container {
   display: flex;
   justify-content: center;
-  gap: 20px;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
 .product {
-  flex: 1 1 0;
-  min-width: 220px;
-  max-width: 250px;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
+  flex: 0 0 auto;
+  width: 220px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   border-radius: 5px;
   margin-bottom: 10px;
   background-color: #FFFFFF;
@@ -225,11 +224,7 @@
 .product_link {
   display: block;
   width: 100%;
-  height: 100%;
-  min-width: 200px;
-  max-width: 230px;
-  min-height: 200px;
-  max-height: 230px;
+  padding-bottom: 100%;
   position: relative;
   background-color: #fef6f8;
 }
@@ -354,11 +349,9 @@
 }
 
 
-@media screen and (max-width: 600px) {
+@media (max-width: 600px) {
   .product {
-    width: 50%;
-    min-width: 40%;
-    max-width: 50%;
+    width: calc(50% - 20px);
   }
 
   .header_wrapper {
@@ -380,6 +373,22 @@
     height: 42px;
   }
 
+  .search_result_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .second_filter {
+    display: flex;
+    gap: 10px;
+  }
+
+  .second_filter>button {
+    margin: 0;
+  }
+
   .filters_container {
     display: none;
   }
@@ -393,28 +402,44 @@
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    overflow: auto;
     white-space: nowrap;
     margin-bottom: 30px;
     font-size: 0.85em;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
   }
 
-  .filter_container ::-webkit-scrollbar {
-    display: none;
+  .m_filters_container>ul::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
   }
 
   .filter_title {
-    min-width: 80px;
-  }
-
-  .filter_title>select {
     text-align: center;
-    width: 100%;
+    min-width: 80px;
+    line-height: 33px;
     height: 33px;
     background-color: #FFFFFF;
     border: 1px solid #4D5AAF;
     border-radius: 5px;
     font-weight: bold;
+  }
+
+  .filter_title>select {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    text-indent: 5px;
+  }
+
+  .filter_title>input {
+    width: 0;
+    height: 0;
+    visibility: hidden;
   }
 
 }
