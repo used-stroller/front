@@ -8,12 +8,12 @@ import { useFilter } from '@/app/context/FilterContext'
 import React from 'react'
 
 const SearchBarFilter = (): JSX.Element => {
-  const { filter, handleFilter } = useFilter()
+  const { filter, handleFilter, initFilter } = useFilter()
 
   return (
     <>
     <div className={styles.header_wrapper}>
-      <div className={styles.logo}></div>
+      <div className={styles.logo} onClick={initFilter}></div>
       <div className={styles.search_bar}>
         <input
           name='keyword'

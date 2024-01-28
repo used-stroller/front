@@ -36,7 +36,23 @@ const useFilter = () => {
     }
   }
 
-  return { filter, handleFilter }
+  const initFilter = () => {
+    setFilter((prevFilter) => ({
+      ...prevFilter,
+      keyword: '',
+      sourceType: '',
+      minPrice: '',
+      maxPrice: '',
+      town: '',
+      period: '',
+      model: '',
+      brand: '',
+      sort: '',
+      page: 0
+    }))
+  }
+
+  return { filter, handleFilter, initFilter }
 }
 
 export { FilterProvider, useFilter }
