@@ -4,18 +4,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import SourceImage from './SourceImage'
 import FormattedPrice from './FormattedPrice'
-import { getImageUrl } from '@/utils/productUtils'
+import ProductImage from '@/app/components/ProductImage'
 
 export default function Product ({ content }): JSX.Element {
   return (
     <div className={styles.product}>
       <div className={styles.product_img}>
         <Link href={content.link} className={styles.product_link} target={'_blank'}>
-          <Image
-            src={getImageUrl(content.imgSrc)}
-            alt={content.title}
-            fill
-          />
+          <ProductImage content={content} />
         </Link>
         <div className={styles.source_wrapper}>
           <div className={styles.source_logo}>
@@ -38,7 +34,7 @@ export default function Product ({ content }): JSX.Element {
           />
           <span className={styles.region}>{content.region}</span>
         </div>
-        <span className={styles.uploadDate}>{content.uploadDate}</span>
+        <span>{content.uploadDate}</span>
       </div>
     </div>
   )

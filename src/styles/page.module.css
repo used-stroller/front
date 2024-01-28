@@ -310,6 +310,8 @@
 .address_wrapper {
   display: flex;
   align-items: center;
+  flex: 1 0 0;
+  overflow: hidden;
 }
 
 .icon_map {

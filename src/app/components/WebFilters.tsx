@@ -3,7 +3,7 @@ import styles from '@/styles/page.module.css'
 import Image from 'next/image'
 
 const WebFilters = ({ filter, handleFilter }): JSX.Element => {
-  console.log('WebFilters: ', filter)
+  // console.log('WebFilters: ', filter)
 
   return (
     <div className={styles.filters_container}>

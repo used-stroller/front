@@ -1,18 +1,15 @@
 'use client'
 
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Product from './Product'
-import FilterContext from '../context/FilterContext'
-import { getProductList } from '@/utils/getProductList'
+import { getProductList } from '@/utils/productUtils'
+import Image from 'next/image'
+import { useFilter } from '@/app/context/FilterContext'
 
-const InfinityScroll = (): JSX.Element => {
+const InfinityScroll = ({ setResultCount }): JSX.Element => {
+  const { filter, handleFilter } = useFilter()
   const [products, setProducts] = useState([])
   const [hasMore, setHasMore] = useState(true)
-  const [page, setPage] = useState(1)
-  const filter = useContext(FilterContext)
-  console.log('인피니티필터')
-  console.log(filter)
-
   const elementRef = useRef(null)
 
   // callback 함수 정의
@@ -37,27 +34,56 @@ const InfinityScroll = (): JSX.Element => {
     }
   }, [products]) // products가 업데이트 될때마다 hook
 
+  useEffect(() => {
+    setProducts([])
+    setHasMore(true)
+    handleFilter({
+      target: {
+        name: 'page',
+        value: 0
+      }
+    })
+  }, [filter.keyword,
+    filter.sourceType,
+    filter.minPrice,
+    filter.maxPrice,
+    filter.town,
+    filter.period,
+    filter.model,
+    filter.brand,
+    filter.sort])
+
   async function fetchMoreItems () {
     // fetch the next batch of products
-    const response = await getProductList(page, filter.filter)
+    const response = await getProductList(filter)
+    setResultCount(response.totalElements)
     console.log(response)
 
     if (response.content.length === 0) {
       setHasMore(false)
     } else {
       setProducts((prevProducts) => [...prevProducts, ...response.content])
-      setPage((prevPage) => prevPage + 1)
+      handleFilter({
+        target: {
+          name: 'page',
+          value: filter.page + 1
+        }
+      })
     }
   }
   return (
     <>
-      {products &&
-        products.map((product) => (
+      {products?.map((product) => (
           <Product content={product} key={product.id} />
-        ))}
+      ))}
       {hasMore && (
         <div ref={elementRef} style={{ textAlign: 'center' }}>
-          불러오는 중..
+          <Image
+            src='/images/loading.svg'
+            alt='loading'
+            width={50}
+            height={50}
+          />
         </div>
       )}
     </>

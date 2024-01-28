@@ -5,10 +5,10 @@ import Image from 'next/image'
 import WebFilters from './WebFilters'
 import MobileFilters from './MobileFilters'
 import { useFilter } from '@/app/context/FilterContext'
+import React from 'react'
 
-const SearchBarFilter = ({ }): JSX.Element => {
+const SearchBarFilter = (): JSX.Element => {
   const { filter, handleFilter } = useFilter()
-  console.log('SearchBarFilter: ', filter)
 
   return (
     <>

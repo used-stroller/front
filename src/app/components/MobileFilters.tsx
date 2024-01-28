@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from '@/styles/page.module.css'
 
-const MobileFilters = ({ filter, handleFilter }) => {
-  console.log('MobileFilters: ', filter)
+const MobileFilters = ({ filter, handleFilter }): JSX.Element => {
+  // console.log('MobileFilters: ', filter)
 
   return (
     <div className={styles.m_filters_container}>
