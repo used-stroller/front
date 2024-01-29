@@ -18,6 +18,7 @@ const useFilter = () => {
   const [filter, setFilter] = React.useContext(FilterContext)
 
   const handleFilter = (ev) => {
+    console.log('handleFilter: ', ev.target)
     const { name, value } = ev.target
     if (name === 'minPrice') {
       if (value === '0') {
@@ -36,6 +37,10 @@ const useFilter = () => {
     }
   }
 
+  const minMaxPrice = (minPrice: number, maxPrice: number) => {
+    setFilter((prevFilter) => ({ ...prevFilter, minPrice, maxPrice }))
+  }
+
   const initFilter = () => {
     setFilter((prevFilter) => ({
       ...prevFilter,
@@ -52,7 +57,7 @@ const useFilter = () => {
     }))
   }
 
-  return { filter, handleFilter, initFilter }
+  return { filter, handleFilter, initFilter, minMaxPrice }
 }
 
 export { FilterProvider, useFilter }

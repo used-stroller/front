@@ -8,7 +8,7 @@ import { useFilter } from '@/app/context/FilterContext'
 import React from 'react'
 
 const SearchBarFilter = (): JSX.Element => {
-  const { filter, handleFilter, initFilter } = useFilter()
+  const { filter, handleFilter, initFilter, minMaxPrice } = useFilter()
 
   return (
     <>
@@ -33,8 +33,8 @@ const SearchBarFilter = (): JSX.Element => {
       </div>
     </div>
 
-    <WebFilters filter={filter} handleFilter={handleFilter} />
-    <MobileFilters filter={filter} handleFilter={handleFilter}/>
+    <WebFilters filter={filter} handleFilter={handleFilter} minMaxPrice={minMaxPrice} />
+    <MobileFilters filter={filter} handleFilter={handleFilter} minMaxPrice={minMaxPrice} />
     </>
   )
 }

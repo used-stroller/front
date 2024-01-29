@@ -2,7 +2,7 @@ import type { FilterReq, ProductRes } from '@/app/types'
 import axios from 'axios'
 
 export const getProductList = async (filter: FilterReq): Promise<axios.AxiosResponse<ProductRes> | void> => {
-  const requestUrl = 'http://localhost:8090/product/list' + createQueryParams(filter)
+  const requestUrl = 'http://localhost:8080/product/list' + createQueryParams(filter)
   console.log('filter: ', filter, '\nrequestUrl: ', requestUrl)
   const res = axios.get(requestUrl, { withCredentials: true })
 
