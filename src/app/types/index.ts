@@ -3,7 +3,7 @@ interface FilterReq {
   sourceType?: sourceType[]
   minPrice?: number
   maxPrice?: number
-  town?: string
+  region?: string
   period?: number
   model?: string[]
   brand?: string[]

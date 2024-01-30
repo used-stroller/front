@@ -8,21 +8,38 @@ import { useFilter } from '@/app/context/FilterContext'
 import React from 'react'
 
 const SearchBarFilter = (): JSX.Element => {
-  const { filter, handleFilter, initFilter, minMaxPrice } = useFilter()
+  const { filter, handleFilter, minMaxPrice } = useFilter()
+  const [keyword, setKeyword] = React.useState('')
+  const handleKeyword = (ev) => {
+    setKeyword(ev.target.value)
+  }
+  const handleSearch = () => {
+    handleFilter({
+      target: {
+        name: 'keyword',
+        value: keyword
+      }
+    })
+  }
 
   return (
     <>
     <div className={styles.header_wrapper}>
-      <div className={styles.logo} onClick={initFilter}></div>
+      <div className={styles.logo} onClick={() => { window.location.reload() }}></div>
       <div className={styles.search_bar}>
         <input
           name='keyword'
           type='text'
-          value={(filter.keyword) ? filter.keyword : ''}
+          value={keyword || ''}
           placeholder='검색어를 입력하세요'
-          onChange={handleFilter}
+          onChange={handleKeyword}
+          onKeyDown={(ev) => {
+            if (ev.key === 'Enter') {
+              handleSearch()
+            }
+          }}
         />
-        <label htmlFor='keyword' className={styles.search_button}>
+        <label htmlFor='keyword' className={styles.search_button} onClick={handleSearch}>
           <Image
             src='/images/search_button.svg'
             alt='search button'

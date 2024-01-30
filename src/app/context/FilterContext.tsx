@@ -20,44 +20,14 @@ const useFilter = () => {
   const handleFilter = (ev) => {
     console.log('handleFilter: ', ev.target)
     const { name, value } = ev.target
-    if (name === 'minPrice') {
-      if (value === '0') {
-        setFilter((prevFilter) => ({ ...prevFilter, minPrice: 0, maxPrice: 100000 }))
-      } else if (value === '10') {
-        setFilter((prevFilter) => ({ ...prevFilter, minPrice: 100000, maxPrice: 300000 }))
-      } else if (value === '30') {
-        setFilter((prevFilter) => ({ ...prevFilter, minPrice: 300000, maxPrice: 500000 }))
-      } else if (value === '50') {
-        setFilter((prevFilter) => ({ ...prevFilter, minPrice: 500000, maxPrice: '' }))
-      } else {
-        setFilter((prevFilter) => ({ ...prevFilter, minPrice: '', maxPrice: '' }))
-      }
-    } else {
-      setFilter((prevFilter) => ({ ...prevFilter, [name]: value }))
-    }
+    setFilter((prevFilter) => ({ ...prevFilter, [name]: value }))
   }
 
   const minMaxPrice = (minPrice: number, maxPrice: number) => {
     setFilter((prevFilter) => ({ ...prevFilter, minPrice, maxPrice }))
   }
 
-  const initFilter = () => {
-    setFilter((prevFilter) => ({
-      ...prevFilter,
-      keyword: '',
-      sourceType: '',
-      minPrice: '',
-      maxPrice: '',
-      town: '',
-      period: '',
-      model: '',
-      brand: '',
-      sort: '',
-      page: 0
-    }))
-  }
-
-  return { filter, handleFilter, initFilter, minMaxPrice }
+  return { filter, handleFilter, minMaxPrice }
 }
 
 export { FilterProvider, useFilter }
