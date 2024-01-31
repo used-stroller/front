@@ -52,6 +52,7 @@ const WebFilters = ({ filter, handleFilter, minMaxPrice }): JSX.Element => {
   const [activePrice, setActivePrice] = React.useState('ALL')
   const [minPrice, setMinPrice] = React.useState(0)
   const [maxPrice, setMaxPrice] = React.useState(0)
+  const [activeRegion, setActiveRegion] = React.useState('')
   const [activePeriod, setActivePeriod] = React.useState('ALL')
   const [activeSourceType, setActiveSourceType] = React.useState('ALL')
 
@@ -96,6 +97,20 @@ const WebFilters = ({ filter, handleFilter, minMaxPrice }): JSX.Element => {
       target: {
         name: 'sourceType',
         value: sourceType.value === 'ALL' ? '' : sourceType.value
+      }
+    })
+  }
+
+  const handleRegion = (ev): void => {
+    setActiveRegion(ev.target.value)
+  }
+
+  const searchRegion = (): void => {
+    console.log('searchRegion: ', activeRegion)
+    handleFilter({
+      target: {
+        name: 'region',
+        value: activeRegion
       }
     })
   }
@@ -177,8 +192,15 @@ const WebFilters = ({ filter, handleFilter, minMaxPrice }): JSX.Element => {
       <div className={styles.filters_wrapper}>
         <h3>동네</h3>
         <div className={styles.search_region}>
-          <input type='text' name='region' id='region' placeholder='주소검색' />
-          <label htmlFor='region' className={styles.filter_inner_button}>
+          <input type='text' name='region' id='region' placeholder='동네검색' value={activeRegion}
+                 onChange={handleRegion}
+                 onKeyDown={(ev) => {
+                   if (ev.key === 'Enter') {
+                     searchRegion()
+                   }
+                 }}
+          />
+          <label htmlFor='region' className={styles.filter_inner_button} onClick={searchRegion}>
             <Image
               src='/images/filter_inner_search_button.svg'
               alt='filter search button'
