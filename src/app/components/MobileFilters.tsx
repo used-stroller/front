@@ -1,13 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from '@/styles/page.module.css'
 import { brandList, priceList } from '@/app/components/WebFilters'
+import ModalTown from './ModalTown'
 
-const MobileFilters = ({ filter, handleFilter, minMaxPrice }): JSX.Element => {
+const MobileFilters = ({ filter, handleFilter, minMaxPrice, inputTown}): JSX.Element => {
   const [activePrice, setActivePrice] = React.useState('ALL')
   const handlePrice = (ev) => {
     console.log('========', ev)
     const { minPrice, maxPrice } = activePrice
     minMaxPrice(minPrice, maxPrice)
+  }
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [town, setTown] = useState('')
+  const openModal = () => { setIsModalOpen(true) }
+  const closeModal = () => { 
+    setIsModalOpen(false) 
+    setTown(filter.town)
   }
 
   return (
@@ -28,7 +37,9 @@ const MobileFilters = ({ filter, handleFilter, minMaxPrice }): JSX.Element => {
           </select>
         </li>
         <li className={styles.filter_title} id={'town'}>
-          <label htmlFor='town'>동네</label>
+          <label htmlFor='town' onClick={openModal}>동네</label>
+          <input type="text" value={town}/>
+          <ModalTown isOpen={isModalOpen} closeModal={closeModal}/>
           <input name={'town'} type={'text'} value={filter.town} onChange={handleFilter}/>
         </li>
         <li className={styles.filter_title}>
