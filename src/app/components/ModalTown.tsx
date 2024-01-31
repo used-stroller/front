@@ -1,11 +1,9 @@
 'use client'
 import styles from '@/styles/page.module.css'
-import { useState } from 'react';
 import Modal from 'react-modal';
-import Image from 'next/image'
 
 
-  const ModalTown = ({isOpen,closeModal}): JSX.Element => {
+  const ModalTown = ({isOpen,closeModal,handleFilter}): JSX.Element => {
 
   const customStyles = {
     overlay: {
@@ -36,21 +34,14 @@ import Image from 'next/image'
         <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
           <div className={styles.search_bar}>
           <input
-            name='keyword'
+            name='town'
             type='text'
-            // value={(filter.keyword) ? filter.keyword : ''}
             placeholder='검색할 지역을 입력하세요'
+            onChange={handleFilter}
           />
-          <label htmlFor='keyword' className={styles.search_button}>
-            <Image
-              src='/images/search_button.svg'
-              alt='search button'
-              width={20}
-              height={20}
-            />
-          </label>
       </div>
             <button onClick={closeModal}>확인</button>
+            <button >초기화</button>
         </Modal>
     )
   }

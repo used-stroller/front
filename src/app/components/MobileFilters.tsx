@@ -14,9 +14,7 @@ const MobileFilters = ({ filter, handleFilter, minMaxPrice}): JSX.Element => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [town, setTown] = useState('')
   const openModal = () => { setIsModalOpen(true) }
-  const closeModal = () => { 
-    setIsModalOpen(false) 
-  }
+  const closeModal = () => { setIsModalOpen(false) }
 
   return (
     <div className={styles.m_filters_container}>
@@ -36,9 +34,9 @@ const MobileFilters = ({ filter, handleFilter, minMaxPrice}): JSX.Element => {
           </select>
         </li>
         <li className={styles.filter_title} id={'town'}>
-          <label htmlFor='town'>동네</label>
-          <input name={'town'} type={'text'} value={filter.town} onChange={handleFilter} />
-          <ModalTown isOpen={isModalOpen} closeModal={closeModal}/>
+          <label htmlFor='town'onClick={openModal}>동네</label>
+          <input name={'town'} type={'text'} onChange={handleFilter} />
+          <ModalTown isOpen={isModalOpen} closeModal={closeModal} handleFilter={handleFilter} />
         </li>
         <li className={styles.filter_title}>
           <select name={'period'} value={filter.period} onChange={handleFilter}>
