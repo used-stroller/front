@@ -48,20 +48,29 @@ export const sourceTypeList = [
 ]
 
 const WebFilters = ({ filter, handleFilter, minMaxPrice }): JSX.Element => {
-  const [activeBrand, setActiveBrand] = React.useState('ALL')
+  const [activeBrand, setActiveBrand] = React.useState(['ALL'])
   const [activePrice, setActivePrice] = React.useState('ALL')
   const [minPrice, setMinPrice] = React.useState(0)
   const [maxPrice, setMaxPrice] = React.useState(0)
   const [activeRegion, setActiveRegion] = React.useState('')
   const [activePeriod, setActivePeriod] = React.useState('ALL')
-  const [activeSourceType, setActiveSourceType] = React.useState('ALL')
+  const [activeSourceType, setActiveSourceType] = React.useState(['ALL'])
 
   const handleBrand = (value: React.SetStateAction<string>): void => {
-    setActiveBrand(value)
+    let prevArr = activeBrand
+    if (value === 'ALL') {
+      prevArr = ['ALL']
+    } else if (activeBrand.includes(value)) { // activeBrand에 value가 있으면 제거
+      prevArr = activeBrand.filter((brand) => brand !== value && brand !== 'ALL')
+    } else { // activeBrand에 value가 없으면 추가
+      prevArr = activeBrand.filter((brand) => brand !== 'ALL')
+      prevArr.push(value)
+    }
+    setActiveBrand(prevArr)
     handleFilter({
       target: {
         name: 'brand',
-        value: value === 'ALL' ? '' : value
+        value: value === 'ALL' ? '' : prevArr
       }
     })
   }
@@ -91,12 +100,21 @@ const WebFilters = ({ filter, handleFilter, minMaxPrice }): JSX.Element => {
     })
   }
 
-  const handleSourceType = (sourceType): void => {
-    setActiveSourceType(sourceType.key)
+  const handleSourceType = (source): void => {
+    let prevArr = activeSourceType
+    if (source.key === 'ALL') {
+      prevArr = ['ALL']
+    } else if (activeSourceType.includes(source.value)) { // activeSourceType에 value가 있으면 제거
+      prevArr = activeSourceType.filter((sourceType) => sourceType !== source.value && sourceType !== 'ALL')
+    } else { // activeSourceType에 value가 없으면 추가
+      prevArr = activeSourceType.filter((sourceType) => sourceType !== 'ALL')
+      prevArr.push(source.value)
+    }
+    setActiveSourceType(prevArr)
     handleFilter({
       target: {
         name: 'sourceType',
-        value: sourceType.value === 'ALL' ? '' : sourceType.value
+        value: source.key === 'ALL' ? '' : prevArr
       }
     })
   }
@@ -123,7 +141,7 @@ const WebFilters = ({ filter, handleFilter, minMaxPrice }): JSX.Element => {
             return (
               <li
                 className={`${styles.filter} ${
-                  activeBrand === brand ? styles.active : ''
+                  activeBrand.includes(brand) ? styles.active : ''
                 }`}
                 key={brand}
                 onClick={() => { handleBrand(brand) }}
@@ -237,7 +255,7 @@ const WebFilters = ({ filter, handleFilter, minMaxPrice }): JSX.Element => {
             return (
               <li
                 className={`${styles.filter} ${
-                  activeSourceType === sourceType.key ? styles.active : ''
+                  activeSourceType.includes(sourceType.value) ? styles.active : ''
                 }`}
                 key={sourceType.key}
                 onClick={() => { handleSourceType(sourceType) }}
