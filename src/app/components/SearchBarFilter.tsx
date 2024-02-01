@@ -8,7 +8,7 @@ import { useFilter } from '@/app/context/FilterContext'
 import React from 'react'
 
 const SearchBarFilter = (): JSX.Element => {
-  const { filter, handleFilter, minMaxPrice } = useFilter()
+  const { filter, handleFilter, minMaxPrice, reset } = useFilter()
   const [keyword, setKeyword] = React.useState('')
   const handleKeyword = (ev) => {
     setKeyword(ev.target.value)
@@ -51,7 +51,7 @@ const SearchBarFilter = (): JSX.Element => {
     </div>
 
     <WebFilters filter={filter} handleFilter={handleFilter} minMaxPrice={minMaxPrice} />
-    <MobileFilters filter={filter} handleFilter={handleFilter} minMaxPrice={minMaxPrice} />
+    <MobileFilters filter={filter} handleFilter={handleFilter} minMaxPrice={minMaxPrice} reset={reset}/>
     </>
   )
 }

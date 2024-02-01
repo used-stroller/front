@@ -5,7 +5,7 @@ import { type FilterReq } from '@/app/types'
 const FilterContext = React.createContext([{}, () => {}])
 
 const FilterProvider: React.FC = ({ children }) => {
-  const [filter, setFilter] = React.useState<FilterReq>({ page: 0 })
+  const [filter, setFilter] = React.useState<FilterReq>({ page: 0 ,region: ''})
 
   return (
     <FilterContext.Provider value={[filter, setFilter]}>
@@ -27,7 +27,11 @@ const useFilter = () => {
     setFilter((prevFilter) => ({ ...prevFilter, minPrice, maxPrice }))
   }
 
-  return { filter, handleFilter, minMaxPrice }
+  const reset = (name: string) => {
+    setFilter((prevFilter) => ({ ...prevFilter, [name]: '' }))
+  }
+
+  return { filter, handleFilter, minMaxPrice,reset }
 }
 
 export { FilterProvider, useFilter }

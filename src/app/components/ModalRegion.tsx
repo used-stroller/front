@@ -1,9 +1,14 @@
 'use client'
 import styles from '@/styles/page.module.css'
 import Modal from 'react-modal';
+import { useFilter } from '../context/FilterContext';
 
 
-  const ModalTown = ({isOpen,closeModal,handleFilter}): JSX.Element => {
+  const ModalRegion = ({isOpen,closeModal,handleFilter ,reset}): JSX.Element => {
+  const resetRegion = () => {
+    reset('region')
+  }
+  const { filter} = useFilter()
 
   const customStyles = {
     overlay: {
@@ -31,19 +36,20 @@ import Modal from 'react-modal';
       },
 }
   return (
-        <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
+        <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}  ariaHideApp={false}>
           <div className={styles.search_bar}>
           <input
-            name='town'
+            name='region'
             type='text'
             placeholder='검색할 지역을 입력하세요'
             onChange={handleFilter}
+            value={filter.region}
           />
       </div>
             <button onClick={closeModal}>확인</button>
-            <button >초기화</button>
+            <button onClick={resetRegion}>초기화</button>
         </Modal>
     )
   }
   
-  export default ModalTown
+  export default ModalRegion
