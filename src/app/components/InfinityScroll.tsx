@@ -47,7 +47,7 @@ const InfinityScroll = ({ setResultCount }): JSX.Element => {
     filter.sourceType,
     filter.minPrice,
     filter.maxPrice,
-    filter.region,
+    // filter.region,
     filter.period,
     filter.model,
     filter.brand,
