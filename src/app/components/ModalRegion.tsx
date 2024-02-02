@@ -2,13 +2,25 @@
 import styles from '@/styles/page.module.css'
 import Modal from 'react-modal';
 import { useFilter } from '../context/FilterContext';
+import { useState } from 'react';
 
-
-  const ModalRegion = ({isOpen,closeModal,handleFilter ,reset}): JSX.Element => {
-  const resetRegion = () => {
-    reset('region')
+const ModalRegion = ({isOpen,closeModal,handleFilter ,reset}): JSX.Element => {
+  const resetRegion = (): void => {
+    reset('region'),
+    setValue('')
   }
-  const { filter} = useFilter()
+  const [value,setValue] = useState('')
+  const saveValue = event => {
+    setValue(event.target.value)
+  }
+  function searchRegion (): void{
+    handleFilter({
+      target: {
+        name: 'region',
+        value: value
+      }
+    })
+  }
 
   const customStyles = {
     overlay: {
@@ -42,11 +54,13 @@ import { useFilter } from '../context/FilterContext';
             name='region'
             type='text'
             placeholder='검색할 지역을 입력하세요'
-            onChange={handleFilter}
-            value={filter.region}
+            onChange={saveValue}
+            
           />
       </div>
-            <button onClick={closeModal}>확인</button>
+            <button onClick={()=> {
+              searchRegion();
+              closeModal(true)}}>확인</button>
             <button onClick={resetRegion}>초기화</button>
         </Modal>
     )
