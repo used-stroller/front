@@ -1,18 +1,28 @@
 import type { FilterReq, ProductRes } from '@/app/types'
 import axios from 'axios'
 
-export const getProductList = async (filter: FilterReq): Promise<axios.AxiosResponse<ProductRes> | void> => {
-  const requestUrl = 'http://localhost:8080/product/list' + createQueryParams(filter)
-  console.log('filter: ', filter, '\nrequestUrl: ', requestUrl)
-  const res = axios.get(requestUrl, { withCredentials: true })
+const axiosClient = axios.create({
+  baseURL: 'http://127.0.0.1:8080/product',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': true
+  }
+})
+axiosClient.interceptors.response.use(
+  function (response) {
+    return response.status === 200 && response.data
+  },
+  async function (error) {
+    return await Promise.reject(error)
+  }
+)
 
-  return await res.then((res) => {
-    // console.log('res.data: ', res.data)
-    return res.data
-  }).catch((error) => {
-    console.error('API error: ', error)
-    throw new Error('상품정보를 가져올 수 없습니다.')
-  })
+export const getProductList = async (filter: FilterReq): Promise<axios.AxiosResponse<ProductRes> | void> => {
+  console.log('filter: ', filter)
+  const queryParams = createQueryParams(filter)
+  return await axiosClient.get(`/list${queryParams}`)
 }
 
 export const getImageUrl = (imgSrc: string): string => {

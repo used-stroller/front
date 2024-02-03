@@ -54,11 +54,8 @@ const InfinityScroll = ({ setResultCount }): JSX.Element => {
     filter.sort])
 
   async function fetchMoreItems () {
-    // fetch the next batch of products
     const response = await getProductList(filter)
     setResultCount(response.totalElements)
-    console.log(response)
-
     if (response.content.length === 0) {
       setHasMore(false)
     } else {
@@ -71,6 +68,7 @@ const InfinityScroll = ({ setResultCount }): JSX.Element => {
       })
     }
   }
+
   return (
     <>
       {products?.map((product) => (

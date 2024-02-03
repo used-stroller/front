@@ -1,19 +1,17 @@
-import React, {   useState } from 'react'
+import React, { useState } from 'react'
 import styles from '@/styles/page.module.css'
 import { brandList, periodList, priceList, sourceTypeList } from '@/app/components/WebFilters'
 import ModalRegion from './ModalRegion'
 
-const MobileFilters = ({ filter, handleFilter, minMaxPrice, reset}): JSX.Element => {
+const MobileFilters = ({ filter, handleFilter, minMaxPrice, reset }): JSX.Element => {
   const [activePrice, setActivePrice] = React.useState('ALL')
   const handlePrice = (ev) => {
     setActivePrice(ev.target.value)
     const { minPrice, maxPrice } = priceList.find((price) => price.key === ev.target.value)
     minMaxPrice(minPrice, maxPrice)
   }
-  console.log(filter)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [region, setRegion] = useState('')
   const openModal = () => { setIsModalOpen(true) }
   const closeModal = () => { setIsModalOpen(false) }
 
@@ -35,7 +33,7 @@ const MobileFilters = ({ filter, handleFilter, minMaxPrice, reset}): JSX.Element
           </select>
         </li>
         <li className={styles.filter_title} id={'region'}>
-          <label htmlFor='region'onClick={openModal}>{filter.region ==='' ? '동네':filter.region}</label>
+          <label htmlFor='region' className={styles.filter_title_region} onClick={openModal}>{filter.region === '' ? '동네' : filter.region}</label>
           <input name={'region'} type={'text'} onChange={handleFilter} />
           <ModalRegion isOpen={isModalOpen} closeModal={closeModal} handleFilter={handleFilter} reset={reset} />
         </li>

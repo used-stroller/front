@@ -9,7 +9,7 @@
 .logo {
   width: 139px;
   height: 55px;
-  background-image: url('/images/logo_block.svg');
+  background-image: url('/images/logo_block.png');
   background-repeat: no-repeat;
 }
 
@@ -33,7 +33,7 @@
   outline: none;
   background-color: transparent;
   color: #4D5AAF;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
 }
 
@@ -195,6 +195,29 @@
   margin-bottom: 20px;
   border-radius: 5px;
   overflow: hidden;
+}
+
+.ad_empty {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 1.2rem;
+  border: 1px dashed #4D5AAF;
+  border-radius: 5px;
+  background-color: rgba(77, 90, 175, 0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ad_empty>p {
+  color: #4D5AAF;
+  font-size: 0.8rem;
+}
+
+.ad_empty>p>a {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-left: 0.5rem;
 }
 
 .ad_banner_link {
@@ -364,7 +387,7 @@
   .logo {
     width: 100%;
     height: 30px;
-    background-image: url('/images/logo_line.svg');
+    background-image: url('/images/logo_line.png');
     background-repeat: no-repeat;
     background-position: center;
     margin-bottom: 20px;
@@ -407,7 +430,8 @@
     white-space: nowrap;
     margin-bottom: 30px;
     font-size: 0.85em;
-    overflow-x: auto;
+    overflow-x: scroll;
+    overflow-y: hidden;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* Internet Explorer 10+ */
   }
@@ -420,8 +444,8 @@
   .filter_title {
     text-align: center;
     min-width: 80px;
-    line-height: 33px;
-    height: 33px;
+    line-height: 35px;
+    height: 36px;
     background-color: #FFFFFF;
     border: 1px solid #4D5AAF;
     border-radius: 5px;
@@ -435,13 +459,39 @@
     background-color: transparent;
     border: none;
     outline: none;
-    text-indent: 5px;
+    text-indent: 0.6rem;
+  }
+
+  .filter_title_region {
+    display: block;
+    width: 100%;
+    text-indent: 0.6rem;
+    text-align: left;
   }
 
   .filter_title>input {
     width: 0;
     height: 0;
     visibility: hidden;
+  }
+
+  .popup_btn {
+    display: inline-block;
+    width: 49%;
+    height: 40px;
+    background-color: #4D5AAF;
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+
+  .popup_btn:first-of-type {
+    margin-right: 2%;
+    background-color: #FFFFFF;
+    color: #4D5AAF;
+    border: 1px solid #4D5AAF;
   }
 
 }
