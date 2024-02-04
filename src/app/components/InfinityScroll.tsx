@@ -71,8 +71,8 @@ const InfinityScroll = ({ setResultCount }): JSX.Element => {
 
   return (
     <>
-      {products?.map((product) => (
-          <Product content={product} key={product.id} />
+      {products?.map((product, index) => (
+          <Product content={product} key={index}/>
       ))}
       {hasMore && (
         <div ref={elementRef} style={{ textAlign: 'center' }}>
