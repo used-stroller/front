@@ -1,16 +1,25 @@
-import React from 'react'
-import styles from '@/styles/page.module.css'
-import Image from 'next/image'
-import Link from 'next/link'
-import SourceImage from './SourceImage'
-import FormattedPrice from './FormattedPrice'
-import ProductImage from '@/app/components/ProductImage'
+import React, { type ReactElement } from "react";
+import styles from "@/styles/page.module.css";
+import Image from "next/image";
+import Link from "next/link";
+import SourceImage from "./SourceImage";
+import FormattedPrice from "./FormattedPrice";
+import ProductImage from "@/components/ProductImage";
+import { type Content } from "@/types";
 
-export default function Product ({ content }): JSX.Element {
+export default function Product({
+  content,
+}: {
+  content: Content;
+}): ReactElement {
   return (
     <div className={styles.product}>
       <div className={styles.product_img}>
-        <Link href={content.link} className={styles.product_link} target={'_blank'}>
+        <Link
+          href={content.link}
+          className={styles.product_link}
+          target={"_blank"}
+        >
           <ProductImage content={content} />
         </Link>
         <div className={styles.source_wrapper}>
@@ -27,8 +36,8 @@ export default function Product ({ content }): JSX.Element {
       <div className={styles.address_date_wrapper}>
         <div className={styles.address_wrapper}>
           <Image
-            src='/images/icon_map.svg'
-            alt='icon_map'
+            src="/images/icon_map.svg"
+            alt="icon_map"
             width={7}
             height={10}
           />
@@ -37,5 +46,5 @@ export default function Product ({ content }): JSX.Element {
         <span>{content.uploadDate}</span>
       </div>
     </div>
-  )
+  );
 }

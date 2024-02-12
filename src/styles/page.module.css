@@ -200,8 +200,7 @@
 .ad_empty {
   width: 100%;
   margin-bottom: 20px;
-  padding: 1.2rem;
-  border: 1px dashed #4D5AAF;
+  padding: 0.4rem;
   border-radius: 5px;
   background-color: rgba(77, 90, 175, 0.08);
   display: flex;
@@ -369,8 +368,41 @@
 }
 
 .address>a {
-  margin: 0px 10px;
+  margin: 0 10px;
   font-weight: 600;
+}
+
+.not_found {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+}
+
+.not_found>.logo {
+  margin-bottom: 0;
+}
+
+.not_found>h1 {
+  font-size: 7rem;
+  line-height: 7rem;
+  font-weight: 600;
+  color: #a6acd7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.not_found>h1>span {
+  font-size: 1.3rem;
+  line-height: 1.6rem;
+}
+
+.not_found_link {
+  color: #4D5AAF;
 }
 
 
