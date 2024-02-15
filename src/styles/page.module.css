@@ -103,8 +103,7 @@
   cursor: pointer;
 }
 
-.filter.active,
-.filter:hover {
+.filter.active {
   background-color: #4D5AAF;
   color: #FFFFFF;
   transition: all 0.2s ease-in-out;
@@ -526,4 +525,19 @@
     border: 1px solid #4D5AAF;
   }
 
+  .site_list_container {
+    text-align: center;
+  }
+  .site_list_container.show {
+    border: 1px solid #4D5AAF;
+    border-radius: 5px;
+    column-count: 2;
+    margin-bottom: 20px;
+    
+  }
+  .site_list_container > span {
+    display: inline-block;
+    width: 50%;
+    margin:5px;
+  }
 }

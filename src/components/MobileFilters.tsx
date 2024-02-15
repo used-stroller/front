@@ -39,6 +39,38 @@ const MobileFilters = ({
   const closeModal = useCallback((): void => {
     setIsModalOpen(false);
   }, [isModalOpen]);
+  const [activeSourceType, setActiveSourceType] = useState(["ALL"])
+  const [isSiteOpen, setIsSiteOpen] = useState(false);
+  const showSites = useCallback((): void => {
+    setIsSiteOpen(true)
+  }, [isSiteOpen])
+
+  const handleSourceType = useCallback(
+    (source: StringValue): void => {
+      let prevArr = activeSourceType;
+      console.log(prevArr)
+      if (source.key === "ALL") {
+        prevArr = ["ALL"];
+      } else if (activeSourceType.includes(source.value)) {
+        // activeSourceType에 value가 있으면 제거
+        prevArr = activeSourceType.filter(
+          (sourceType) => sourceType !== source.value && sourceType !== "ALL",
+        );
+      } else {
+        // activeSourceType에 value가 없으면 추가
+        prevArr = activeSourceType.filter((sourceType) => sourceType !== "ALL");
+        prevArr.push(source.value);
+      }
+      setActiveSourceType(prevArr);
+      handleFilter({
+        target: {
+          name: "sourceType",
+          value: source.key === "ALL" ? "" : prevArr,
+        },
+      });
+    },
+    [activeSourceType],
+  );
 
   return (
     <div className={styles.m_filters_container}>
@@ -82,20 +114,31 @@ const MobileFilters = ({
             ))}
           </select>
         </li>
-        <li className={styles.filter_title}>
-          <select
-            name={"sourceType"}
-            value={filter.sourceType}
-            onChange={handleFilter}
-          >
-            {SOURCE_TYPE_LIST.map((sourceType) => (
-              <option key={sourceType.key} value={sourceType.value}>
-                {sourceType.key === "ALL" ? "사이트별" : sourceType.key}
-              </option>
-            ))}
-          </select>
+        <li className={styles.filter_title} onClick={() => setIsSiteOpen(!isSiteOpen)}>사이트별
         </li>
       </ul>
+      <li className={`${styles.site_list_container} ${isSiteOpen ? styles.show : ""}`}>
+      {isSiteOpen && SOURCE_TYPE_LIST.map((sourceType) => {
+          return (
+            <span
+              className={`${styles.filter} ${
+                activeSourceType.includes(sourceType.value) ? styles.active : ""
+              }`}
+              key={sourceType.key}
+              onClick={() => {
+                handleSourceType(sourceType);
+              }}
+              onKeyDown={(ev) => {
+                if (ev.key === "Enter") {
+                  handleSourceType(sourceType);
+                }
+              }}
+            >
+              {sourceType.key}
+            </span>
+          );
+        })}
+      </li>
     </div>
   );
 };
