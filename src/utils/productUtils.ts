@@ -14,7 +14,6 @@ const axiosClient = axios.create({
 export const getProductList = async (
   filter: FilterReq,
 ): Promise<ProductRes> => {
-  console.log("filter: ", filter);
   const queryParams = createQueryParams(filter);
   return await axiosClient.get(`/list${queryParams}`).then((r) => r.data);
 };

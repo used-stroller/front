@@ -1,7 +1,11 @@
 import React, { type ReactElement, useCallback, useState } from "react";
 import styles from "@/styles/page.module.css";
 import ModalRegion from "./ModalRegion";
-import { type FilterContextType, type MinMaxPrice } from "@/types";
+import {
+  type FilterContextType,
+  type MinMaxPrice,
+  type StringValue,
+} from "@/types";
 import {
   BRAND_LIST,
   PERIOD_LIST,
@@ -39,16 +43,15 @@ const MobileFilters = ({
   const closeModal = useCallback((): void => {
     setIsModalOpen(false);
   }, [isModalOpen]);
-  const [activeSourceType, setActiveSourceType] = useState(["ALL"])
+  const [activeSourceType, setActiveSourceType] = useState(["ALL"]);
   const [isSiteOpen, setIsSiteOpen] = useState(false);
   const showSites = useCallback((): void => {
-    setIsSiteOpen(true)
-  }, [isSiteOpen])
+    setIsSiteOpen(true);
+  }, [isSiteOpen]);
 
   const handleSourceType = useCallback(
     (source: StringValue): void => {
       let prevArr = activeSourceType;
-      console.log(prevArr)
       if (source.key === "ALL") {
         prevArr = ["ALL"];
       } else if (activeSourceType.includes(source.value)) {
@@ -73,7 +76,9 @@ const MobileFilters = ({
   );
 
   return (
-    <div className={styles.m_filters_container}>
+    <div
+      className={`${styles.m_filters_container} ${isSiteOpen && styles.show}`}
+    >
       <ul>
         <li className={styles.filter_title}>
           <select name={"brand"} value={filter.brand} onChange={handleFilter}>
@@ -114,31 +119,40 @@ const MobileFilters = ({
             ))}
           </select>
         </li>
-        <li className={styles.filter_title} onClick={() => setIsSiteOpen(!isSiteOpen)}>사이트별
+        <li
+          className={styles.filter_title}
+          onClick={() => {
+            setIsSiteOpen(!isSiteOpen);
+          }}
+        >
+          사이트별
         </li>
       </ul>
-      <li className={`${styles.site_list_container} ${isSiteOpen ? styles.show : ""}`}>
-      {isSiteOpen && SOURCE_TYPE_LIST.map((sourceType) => {
-          return (
-            <span
-              className={`${styles.filter} ${
-                activeSourceType.includes(sourceType.value) ? styles.active : ""
-              }`}
-              key={sourceType.key}
-              onClick={() => {
-                handleSourceType(sourceType);
-              }}
-              onKeyDown={(ev) => {
-                if (ev.key === "Enter") {
+      <div className={`${isSiteOpen && styles.site_list_container}`}>
+        {isSiteOpen &&
+          SOURCE_TYPE_LIST.map((sourceType) => {
+            return (
+              <button
+                className={`${styles.filter} ${
+                  activeSourceType.includes(sourceType.value)
+                    ? styles.active
+                    : ""
+                }`}
+                key={sourceType.key}
+                onClick={() => {
                   handleSourceType(sourceType);
-                }
-              }}
-            >
-              {sourceType.key}
-            </span>
-          );
-        })}
-      </li>
+                }}
+                onKeyDown={(ev) => {
+                  if (ev.key === "Enter") {
+                    handleSourceType(sourceType);
+                  }
+                }}
+              >
+                {sourceType.key}
+              </button>
+            );
+          })}
+      </div>
     </div>
   );
 };

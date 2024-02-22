@@ -7,7 +7,7 @@
 }
 
 .logo {
-  width: 139px;
+  width: 142px;
   height: 55px;
   background-image: url('/images/logo_block.png');
   background-repeat: no-repeat;
@@ -467,6 +467,10 @@
     -ms-overflow-style: none; /* Internet Explorer 10+ */
   }
 
+  .m_filters_container.show>ul {
+    margin-bottom: 5px;
+  }
+
   .m_filters_container>ul::-webkit-scrollbar { /* WebKit */
     width: 0;
     height: 0;
@@ -526,18 +530,14 @@
   }
 
   .site_list_container {
-    text-align: center;
-  }
-  .site_list_container.show {
+    visibility: visible;
     border: 1px solid #4D5AAF;
     border-radius: 5px;
-    column-count: 2;
+    padding: 5px;
     margin-bottom: 20px;
-    
-  }
-  .site_list_container > span {
-    display: inline-block;
-    width: 50%;
-    margin:5px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
   }
 }
