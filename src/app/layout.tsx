@@ -4,7 +4,7 @@ import React, { type ReactElement } from "react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("http://localhost:3000"),
+  metadataBase: new URL("https://www.jungmocha.co.kr"),
   alternates: {
     canonical: "/",
     languages: {
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: "중모차",
     description: "똑똑한 엄빠의 중모차",
     type: "website",
-    url: "https://www.jungmocha.com",
+    url: "https://www.jungmocha.co.kr",
     images: [{ url: "/images/logo_block.png" }],
   },
 };
