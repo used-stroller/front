@@ -45,9 +45,6 @@ const MobileFilters = ({
   }, [isModalOpen]);
   const [activeSourceType, setActiveSourceType] = useState(["ALL"]);
   const [isSiteOpen, setIsSiteOpen] = useState(false);
-  const showSites = useCallback((): void => {
-    setIsSiteOpen(true);
-  }, [isSiteOpen]);
 
   const handleSourceType = useCallback(
     (source: StringValue): void => {
@@ -119,13 +116,14 @@ const MobileFilters = ({
             ))}
           </select>
         </li>
-        <li
-          className={styles.filter_title}
-          onClick={() => {
-            setIsSiteOpen(!isSiteOpen);
-          }}
-        >
-          사이트별
+        <li className={styles.filter_title}>
+          <button
+            onClick={() => {
+              setIsSiteOpen(!isSiteOpen);
+            }}
+          >
+            사이트별
+          </button>
         </li>
       </ul>
       <div className={`${isSiteOpen && styles.site_list_container}`}>
