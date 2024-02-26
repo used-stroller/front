@@ -2,7 +2,7 @@ import axios from "axios";
 import type { FilterReq, ProductRes } from "@/types";
 
 const axiosClient = axios.create({
-  baseURL: "http://127.0.0.1:8080/product",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
