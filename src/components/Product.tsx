@@ -36,7 +36,7 @@ export default function Product({
       <div className={styles.address_date_wrapper}>
         <div className={styles.address_wrapper}>
           <Image
-            src="/images/icon_map.svg"
+            src="./images/icon_map.svg"
             alt="icon_map"
             width={7}
             height={10}

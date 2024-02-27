@@ -11,7 +11,7 @@ export default function SourceImage({
     case "BUNJANG":
       return (
         <Image
-          src="/images/bunge_market_logo.svg"
+          src="./images/bunge_market_logo.svg"
           alt="bunge_market_logo"
           className={styles.sourceImg}
           width={15}
@@ -21,7 +21,7 @@ export default function SourceImage({
     case "CARROT":
       return (
         <Image
-          src="/images/carrot_market_logo.svg"
+          src="./images/carrot_market_logo.svg"
           alt="carrot_market_logo"
           className={styles.sourceImg}
           width={11.54}
@@ -31,7 +31,7 @@ export default function SourceImage({
     case "JUNGGO":
       return (
         <Image
-          src="/images/junggo_market_logo.svg"
+          src="./images/junggo_market_logo.svg"
           alt="junggo_market_logo"
           className={styles.sourceImg}
           width={16}
@@ -41,7 +41,7 @@ export default function SourceImage({
     case "HELLO":
       return (
         <Image
-          src="/images/hello_market_logo.svg"
+          src="./images/hello_market_logo.svg"
           alt="hello_market_logo"
           className={styles.sourceImg}
           width={16}
@@ -51,7 +51,7 @@ export default function SourceImage({
     case "NAVER":
       return (
         <Image
-          src="/images/naver_shopping_logo.svg"
+          src="./images/naver_shopping_logo.svg"
           alt="naver_shopping_logo"
           className={styles.sourceImg}
           width={13}

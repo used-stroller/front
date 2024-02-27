@@ -220,7 +220,7 @@ const WebFilters = ({
             }}
           >
             <Image
-              src="/images/filter_inner_search_button.svg"
+              src="./images/filter_inner_search_button.svg"
               alt="filter search button"
               width={13}
               height={13}
@@ -245,7 +245,7 @@ const WebFilters = ({
           />
           <button className={styles.filter_inner_button} onClick={searchRegion}>
             <Image
-              src="/images/filter_inner_search_button.svg"
+              src="./images/filter_inner_search_button.svg"
               alt="filter search button"
               width={13}
               height={13}

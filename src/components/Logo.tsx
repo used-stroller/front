@@ -1,0 +1,55 @@
+import styles from "@/styles/page.module.css";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+
+export default function Logo(): JSX.Element {
+  const [logo, setLogo] = useState<JSX.Element>();
+
+  const changeLogo = (): void => {
+    setLogo(
+      window.matchMedia("(max-width: 600px)").matches ? (
+        <Image
+          src="./images/logo_line.png"
+          alt="중모차 로고"
+          width={193}
+          height={29}
+          priority={true}
+        />
+      ) : (
+        <Image
+          src="./images/logo_block.png"
+          alt="중모차 로고"
+          width={142}
+          height={55}
+          priority={true}
+        />
+      ),
+    );
+  };
+
+  useEffect(() => {
+    changeLogo();
+    window.addEventListener("resize", changeLogo);
+    return () => {
+      window.removeEventListener("resize", changeLogo);
+    };
+  }, []);
+
+  return (
+    <div
+      className={styles.logo}
+      onClick={() => {
+        window.location.reload();
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Enter") {
+          window.location.reload();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+    >
+      {logo}
+    </div>
+  );
+}

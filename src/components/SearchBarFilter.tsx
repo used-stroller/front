@@ -6,6 +6,7 @@ import WebFilters from "./WebFilters";
 import MobileFilters from "./MobileFilters";
 import { useFilter } from "@/context/FilterContext";
 import React, { type ChangeEvent, type ReactElement } from "react";
+import Logo from "@/components/Logo";
 
 const SearchBarFilter = (): ReactElement => {
   const { filter, handleFilter, minMaxPrice, reset } = useFilter();
@@ -27,19 +28,7 @@ const SearchBarFilter = (): ReactElement => {
   return (
     <>
       <div className={styles.header_wrapper}>
-        <div
-          className={styles.logo}
-          onClick={() => {
-            window.location.reload();
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              window.location.reload();
-            }
-          }}
-          role="button"
-          tabIndex={0}
-        ></div>
+        <Logo />
         <div className={styles.search_bar}>
           <input
             name="keyword"
@@ -55,7 +44,7 @@ const SearchBarFilter = (): ReactElement => {
           />
           <button className={styles.search_button} onClick={handleSearch}>
             <Image
-              src="/images/search_button.svg"
+              src="./images/search_button.svg"
               alt="search button"
               width={20}
               height={20}
