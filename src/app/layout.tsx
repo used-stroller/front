@@ -3,10 +3,8 @@ import "@/styles/globals.css";
 import React, { type ReactElement } from "react";
 import type { Metadata } from "next";
 
-const url = process.env.NEXT_PUBLIC_GH_URL ?? "";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(url),
+  metadataBase: new URL("https://jungmocha.co.kr"),
   alternates: {
     canonical: "/",
     languages: {
@@ -24,8 +22,8 @@ export const metadata: Metadata = {
     title: "중모차",
     description: "똑똑한 엄빠의 중모차",
     type: "website",
-    url: "https://www.jungmocha.co.kr",
-    images: [{ url: `${url}/images/logo_block.png` }],
+    url: "https://jungmocha.co.kr",
+    images: [{ url: `https://jungmocha.co.kr/images/logo_block.png` }],
   },
 };
 

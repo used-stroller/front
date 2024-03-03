@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const dev = process.env.NODE_ENV !== "production";
-const url = dev ? "" : process.env.NEXT_PUBLIC_GH_URL;
-const path = dev ? "" : process.env.NEXT_PUBLIC_GH_PATH;
+const url = dev ? "" : process.env.NEXT_PUBLIC_API_URL;
 const cspHeader = `
   upgrade-insecure-requests;
 `
@@ -46,9 +45,9 @@ const securityHeaders = [
 
 const nextConfig = {
   reactStrictMode: false,
-  basePath: path,
-  output: dev ? "standalone" : "export",
-  assetPrefix: url,
+  basePath: "",
+  // output: dev ? "standalone" : "export",
+  // assetPrefix: url,
   images: {
     unoptimized: true, // 이미지를 정상적으로 불러올 수 있도록 함
     dangerouslyAllowSVG: true,
