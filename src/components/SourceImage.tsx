@@ -38,7 +38,7 @@ export default function SourceImage({
           height={16}
         />
       );
-    case "HELLO":
+    case "SECOND":
       return (
         <Image
           src="./images/hello_market_logo.svg"

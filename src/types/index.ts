@@ -34,7 +34,7 @@ interface FilterContextType {
 enum sourceType {
   NAVER = "NAVER",
   CARROT = "CARROT",
-  HELLO = "HELLO",
+  SECOND = "SECOND",
   BUNJANG = "BUNJANG",
   JUNGGO = "JUNGGO",
 }
