@@ -41,6 +41,6 @@ export const SOURCE_TYPE_LIST: StringValue[] = [
   { key: "네이버", value: "NAVER" },
   { key: "당근", value: "CARROT" },
   { key: "번개장터", value: "BUNJANG" },
-  { key: "세컨웨어", value: "HELLO" },
+  { key: "세컨웨어", value: "SECOND" },
   { key: "중고나라", value: "JUNGGO" },
 ];
