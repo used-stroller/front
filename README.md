@@ -10,7 +10,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 * 최저가 검색, 브랜드별 검색, 사이트별 검색 기능 등 제공
 * 반응형 웹 서비스(웹, 모바일)
 
-<img src="https://lh3.googleusercontent.com/u/0/drive-viewer/AKGpihZoucB45dbG767GyoCCCnpBBRrZL-8M99YxPeYP8SgbyI0V5R1Y_OJ3VdxulZLeOKa5FuP7O6zNZ1UlZqfKPVfUM5hltg=w1920-h919" width:"100"/>
+<img src="https://lh3.googleusercontent.com/u/0/drive-viewer/AKGpihZoucB45dbG767GyoCCCnpBBRrZL-8M99YxPeYP8SgbyI0V5R1Y_OJ3VdxulZLeOKa5FuP7O6zNZ1UlZqfKPVfUM5hltg=w1920-h919" width="100"/>
 
 ### Dependencies
 
