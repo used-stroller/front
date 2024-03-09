@@ -12,6 +12,7 @@ import {
   PRICE_LIST,
   SOURCE_TYPE_LIST,
 } from "@/types/constants";
+import Image from "next/image";
 
 const MobileFilters = ({
   filter,
@@ -20,6 +21,16 @@ const MobileFilters = ({
   reset,
 }: FilterContextType): ReactElement => {
   const [activePrice, setActivePrice] = useState("ALL");
+  const [activeSourceType, setActiveSourceType] = useState(["ALL"]);
+  const [isSiteOpen, setIsSiteOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = useCallback((): void => {
+    setIsModalOpen(true);
+  }, [isModalOpen]);
+  const closeModal = useCallback((): void => {
+    setIsModalOpen(false);
+  }, [isModalOpen]);
+
   const handlePrice = useCallback(
     (ev: { target: { value: string } }): void => {
       setActivePrice(ev.target.value);
@@ -35,16 +46,6 @@ const MobileFilters = ({
     },
     [activePrice],
   );
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = useCallback((): void => {
-    setIsModalOpen(true);
-  }, [isModalOpen]);
-  const closeModal = useCallback((): void => {
-    setIsModalOpen(false);
-  }, [isModalOpen]);
-  const [activeSourceType, setActiveSourceType] = useState(["ALL"]);
-  const [isSiteOpen, setIsSiteOpen] = useState(false);
 
   const handleSourceType = useCallback(
     (source: StringValue): void => {
@@ -76,6 +77,17 @@ const MobileFilters = ({
     [activeSourceType],
   );
 
+  const handleFilterReset = (): void => {
+    reset("brand");
+    reset("region");
+    reset("sourceType");
+    reset("period");
+    reset("minPrice");
+    reset("maxPrice");
+    setActivePrice("ALL");
+    setActiveSourceType(["ALL"]);
+  };
+
   const isActive = (value: number | string | string[] | undefined): boolean =>
     !Array.isArray(value) &&
     value !== undefined &&
@@ -91,6 +103,16 @@ const MobileFilters = ({
       className={`${styles.m_filters_container} ${isSiteOpen && styles.show}`}
     >
       <ul>
+        <li>
+          <button className={styles.filter_reset} onClick={handleFilterReset}>
+            <Image
+              src="./images/icon_refresh.svg"
+              alt="filter reset button"
+              width={15}
+              height={15}
+            />
+          </button>
+        </li>
         <li
           className={`${styles.filter_item} ${isActive(filter.brand) && styles.active}`}
         >

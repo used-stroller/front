@@ -520,14 +520,13 @@
     background-color: transparent;
     border: none;
     outline: none;
-    text-indent: 0.6rem;
+    text-align: center;
   }
 
   .filter_item_region {
     display: block;
     width: 100%;
-    text-indent: 0.6rem;
-    text-align: left;
+    text-align: center;
   }
 
   .filter_item>input {
@@ -544,9 +543,20 @@
   }
 
   .filter.active {
-    background-color: #534A78;
+    background-color: #ADA4D3;
     color: #FFFFFF;
     transition: all 0.2s ease-in-out;
+  }
+
+  .filter_reset {
+    width: 36px;
+    height: 36px;
+    background-color: #a6acd7;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   }
 
   .popup_btn {
