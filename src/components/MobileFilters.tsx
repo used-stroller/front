@@ -151,6 +151,22 @@ const MobileFilters = ({
           />
         </li>
         <li
+          className={`${styles.filter_item} ${isSiteActive && styles.active}`}
+        >
+          <button
+            onClick={() => {
+              setIsSiteOpen(!isSiteOpen);
+            }}
+          >
+            {isSiteActive && (
+              <i className={styles.source_type_count}>
+                {filter.sourceType?.length}
+              </i>
+            )}
+            사이트
+          </button>
+        </li>
+        <li
           className={`${styles.filter_item} ${isActive(filter.period) && styles.active}`}
         >
           <select name={"period"} value={filter.period} onChange={handleFilter}>
@@ -160,17 +176,6 @@ const MobileFilters = ({
               </option>
             ))}
           </select>
-        </li>
-        <li
-          className={`${styles.filter_item} ${isSiteActive && styles.active}`}
-        >
-          <button
-            onClick={() => {
-              setIsSiteOpen(!isSiteOpen);
-            }}
-          >
-            {`${isSiteActive ? "✓ 사이트" : "사이트"}`}
-          </button>
         </li>
       </ul>
       <div className={`${isSiteOpen && styles.site_list_container}`}>
