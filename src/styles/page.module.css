@@ -205,10 +205,9 @@
 
 .ad_empty {
   width: 100%;
-  margin-bottom: 20px;
-  padding: 3rem;
+  padding: 2rem;
   border-radius: 15px;
-  background-color: rgba(173, 164, 211, 0.08);
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -218,8 +217,16 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.ad_empty>div>h2 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #3e2f56;
+  line-height: 3;
+  text-align: left;
 }
 
 .ad_empty>div>p {
@@ -228,13 +235,15 @@
   color: #534A78;
   font-size: 1rem;
   line-height: 1.6;
-  text-align: center;
+  text-align: left;
   word-break: keep-all;
   overflow: hidden;
 }
 
 .ad_empty>div>a {
-  background-color: #fff;
+  align-self: center;
+  color: #fff;
+  background-color: #a6acd7;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   font-weight: 600;
   font-size: 1rem;
@@ -466,6 +475,7 @@
   .menu {
     grid-column: 4/5;
     grid-row: 1/2;
+    margin-bottom: 10px;
   }
 
   .search_bar {
