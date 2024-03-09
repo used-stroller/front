@@ -523,8 +523,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    min-width: 80px;
+    width: 92px;
     line-height: 35px;
     height: 36px;
     font-weight: bold;
@@ -532,6 +531,12 @@
     border-radius: 15px;
     background-color: #FFFFFF;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    text-align: -moz-center;
+    text-align: -webkit-center;
+    text-align-last: center;
+    -ms-text-align-last: center;
+    -moz-text-align-last: center;
   }
 
   .filter_item.active {
@@ -544,11 +549,12 @@
     background-color: transparent;
     border: none;
     outline: none;
-    max-width: 100px;
-  }
-
-  .filter_item>select>option {
     text-align: center;
+    text-align: -moz-center;
+    text-align: -webkit-center;
+    text-align-last: center;
+    -ms-text-align-last: center;
+    -moz-text-align-last: center;
   }
 
   .filter_item_region {
