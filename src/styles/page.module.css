@@ -520,6 +520,9 @@
   }
 
   .filter_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     min-width: 80px;
     line-height: 35px;
@@ -537,12 +540,11 @@
   }
 
   .filter_item>select {
-    width: 100%;
-    height: 100%;
     overflow: hidden;
     background-color: transparent;
     border: none;
     outline: none;
+    text-indent: 16px;
   }
 
   .filter_item>select>option {
