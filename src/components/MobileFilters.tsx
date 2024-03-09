@@ -4,7 +4,6 @@ import ModalRegion from "./ModalRegion";
 import {
   type FilterContextType,
   type MinMaxPrice,
-  type sourceType,
   type StringValue,
 } from "@/types";
 import {
