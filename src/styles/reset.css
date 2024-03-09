@@ -7,3 +7,8 @@ button {background:none;border:0;cursor:pointer;}
 a {text-decoration:none;outline:none;}
 table {border-collapse:collapse;border-spacing:0}
 ol,ul{list-style:none}
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
