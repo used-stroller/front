@@ -544,7 +544,7 @@
     background-color: transparent;
     border: none;
     outline: none;
-    text-indent: 16px;
+    max-width: 100px;
   }
 
   .filter_item>select>option {
