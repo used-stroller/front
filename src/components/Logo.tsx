@@ -1,8 +1,12 @@
+"use client";
+
 import styles from "@/styles/page.module.css";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Logo(): JSX.Element {
+  const router = useRouter();
   const [logo, setLogo] = useState<JSX.Element>();
 
   const changeLogo = (): void => {
@@ -39,11 +43,11 @@ export default function Logo(): JSX.Element {
     <div
       className={styles.logo}
       onClick={() => {
-        window.location.reload();
+        router.push("/");
       }}
       onKeyDown={(event) => {
         if (event.key === "Enter") {
-          window.location.reload();
+          router.push("/");
         }
       }}
       role="button"

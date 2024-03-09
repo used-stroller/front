@@ -169,7 +169,7 @@ const MobileFilters = ({
               setIsSiteOpen(!isSiteOpen);
             }}
           >
-            {`${isSiteActive ? "사이트 ✓" : "사이트별"}`}
+            {`${isSiteActive ? "✓ 사이트" : "사이트"}`}
           </button>
         </li>
       </ul>

@@ -286,7 +286,7 @@ const WebFilters = ({
         })}
       </div>
       <div className={styles.filters_wrapper}>
-        <h3>사이트별</h3>
+        <h3>사이트</h3>
         {SOURCE_TYPE_LIST.map((sourceType) => {
           return (
             <button

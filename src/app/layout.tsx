@@ -2,6 +2,8 @@ import "@/styles/reset.css";
 import "@/styles/globals.css";
 import React, { type ReactElement } from "react";
 import type { Metadata } from "next";
+import Footer from "@/components/Footer";
+import { FilterProvider } from "@/context/FilterContext";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://jungmocha.co.kr"),
@@ -34,7 +36,14 @@ export default function RootLayout({
 }): ReactElement {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <FilterProvider>
+          <div className="main">
+            {children}
+            <Footer />
+          </div>
+        </FilterProvider>
+      </body>
     </html>
   );
 }

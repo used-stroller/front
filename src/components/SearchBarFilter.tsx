@@ -7,6 +7,7 @@ import MobileFilters from "./MobileFilters";
 import { useFilter } from "@/context/FilterContext";
 import React, { type ChangeEvent, type ReactElement } from "react";
 import Logo from "@/components/Logo";
+import Menu from "@/components/Menu";
 
 const SearchBarFilter = (): ReactElement => {
   const { filter, handleFilter, minMaxPrice, reset } = useFilter();
@@ -51,6 +52,7 @@ const SearchBarFilter = (): ReactElement => {
             />
           </button>
         </div>
+        <Menu />
       </div>
 
       <WebFilters
