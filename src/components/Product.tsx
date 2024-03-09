@@ -7,6 +7,10 @@ import FormattedPrice from "./FormattedPrice";
 import ProductImage from "@/components/ProductImage";
 import { type Content } from "@/types";
 
+function formatDate(date: string): string {
+  return date?.replaceAll(/^20/g, "").replaceAll("-", ".");
+}
+
 export default function Product({
   content,
 }: {
@@ -43,7 +47,7 @@ export default function Product({
           />
           <span className={styles.region}>{content.region}</span>
         </div>
-        <span>{content.uploadDate}</span>
+        <span>{formatDate(content.uploadDate)}</span>
       </div>
     </div>
   );

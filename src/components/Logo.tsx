@@ -20,7 +20,7 @@ export default function Logo(): JSX.Element {
           src="./images/logo_block.png"
           alt="중모차 로고"
           width={142}
-          height={55}
+          height={54}
           priority={true}
         />
       ),

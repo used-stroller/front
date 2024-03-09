@@ -37,7 +37,7 @@ const ModalRegion = ({
 
   const customStyles = {
     overlay: {
-      backgroundColor: " rgba(0, 0, 0, 0.4)",
+      backgroundColor: "rgba(0, 0, 0, 0.4)",
       width: "100%",
       height: "100vh",
       zIndex: "10",
@@ -53,9 +53,9 @@ const ModalRegion = ({
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      borderRadius: "10px",
+      borderRadius: "15px",
       boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
-      backgroundColor: "white",
+      backgroundColor: "#eee",
       justifyContent: "center",
       overflow: "auto",
     },

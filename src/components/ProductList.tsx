@@ -10,8 +10,8 @@ const ProductList = (): ReactElement => {
 
   return (
     <div>
-      <SearchResult resultCount={resultCount} />
       <Ad />
+      <SearchResult resultCount={resultCount} />
       <div className={styles.product_container}>
         <InfinityScroll setResultCount={setResultCount} />
       </div>

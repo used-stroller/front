@@ -4,6 +4,7 @@ import ModalRegion from "./ModalRegion";
 import {
   type FilterContextType,
   type MinMaxPrice,
+  type sourceType,
   type StringValue,
 } from "@/types";
 import {
@@ -61,6 +62,10 @@ const MobileFilters = ({
         prevArr = activeSourceType.filter((sourceType) => sourceType !== "ALL");
         prevArr.push(source.value);
       }
+      if (prevArr.length === 0) {
+        prevArr = ["ALL"];
+        source = SOURCE_TYPE_LIST[0];
+      }
       setActiveSourceType(prevArr);
       handleFilter({
         target: {
@@ -72,12 +77,24 @@ const MobileFilters = ({
     [activeSourceType],
   );
 
+  const isActive = (value: number | string | string[] | undefined): boolean =>
+    !Array.isArray(value) &&
+    value !== undefined &&
+    value !== null &&
+    value !== "ALL" &&
+    value !== "";
+
+  const isSiteActive: boolean =
+    Array.isArray(filter.sourceType) && filter.sourceType?.length > 0;
+
   return (
     <div
       className={`${styles.m_filters_container} ${isSiteOpen && styles.show}`}
     >
       <ul>
-        <li className={styles.filter_title}>
+        <li
+          className={`${styles.filter_item} ${isActive(filter.brand) && styles.active}`}
+        >
           <select name={"brand"} value={filter.brand} onChange={handleFilter}>
             {BRAND_LIST.map((brand) => (
               <option key={brand} value={brand === "ALL" ? "" : brand}>
@@ -86,7 +103,9 @@ const MobileFilters = ({
             ))}
           </select>
         </li>
-        <li className={styles.filter_title}>
+        <li
+          className={`${styles.filter_item} ${isActive(activePrice) && styles.active}`}
+        >
           <select name={"minPrice"} value={activePrice} onChange={handlePrice}>
             {PRICE_LIST.map((price) => (
               <option key={price.key} value={price.key}>
@@ -95,8 +114,11 @@ const MobileFilters = ({
             ))}
           </select>
         </li>
-        <li className={styles.filter_title} id={"region"}>
-          <button className={styles.filter_title_region} onClick={openModal}>
+        <li
+          className={`${styles.filter_item} ${isActive(filter.region) && styles.active}`}
+          id={"region"}
+        >
+          <button className={styles.filter_item_region} onClick={openModal}>
             {filter.region === "" ? "동네" : filter.region}
           </button>
           <input name={"region"} type={"text"} onChange={handleFilter} />
@@ -107,7 +129,9 @@ const MobileFilters = ({
             reset={reset}
           />
         </li>
-        <li className={styles.filter_title}>
+        <li
+          className={`${styles.filter_item} ${isActive(filter.period) && styles.active}`}
+        >
           <select name={"period"} value={filter.period} onChange={handleFilter}>
             {PERIOD_LIST.map((period) => (
               <option key={period.key} value={period.value}>
@@ -116,13 +140,15 @@ const MobileFilters = ({
             ))}
           </select>
         </li>
-        <li className={styles.filter_title}>
+        <li
+          className={`${styles.filter_item} ${isSiteActive && styles.active}`}
+        >
           <button
             onClick={() => {
               setIsSiteOpen(!isSiteOpen);
             }}
           >
-            사이트별
+            {`${isSiteActive ? "사이트 ✓" : "사이트별"}`}
           </button>
         </li>
       </ul>

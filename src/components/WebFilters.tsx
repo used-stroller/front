@@ -35,6 +35,7 @@ const WebFilters = ({
 
   const handleBrand = useCallback(
     (value: string): void => {
+      console.log(value);
       let prevArr = activeBrand;
       if (value === "ALL") {
         prevArr = ["ALL"];
@@ -47,6 +48,10 @@ const WebFilters = ({
         // activeBrand에 value가 없으면 추가
         prevArr = activeBrand.filter((brand) => brand !== "ALL");
         prevArr.push(value);
+      }
+      if (prevArr.length === 0) {
+        prevArr = ["ALL"];
+        value = "ALL";
       }
       setActiveBrand(prevArr);
       handleFilter({
@@ -110,6 +115,10 @@ const WebFilters = ({
         // activeSourceType에 value가 없으면 추가
         prevArr = activeSourceType.filter((sourceType) => sourceType !== "ALL");
         prevArr.push(source.value);
+      }
+      if (prevArr.length === 0) {
+        prevArr = ["ALL"];
+        source = SOURCE_TYPE_LIST[0];
       }
       setActiveSourceType(prevArr);
       handleFilter({

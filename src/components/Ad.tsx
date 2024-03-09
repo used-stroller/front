@@ -20,9 +20,7 @@ const Ad = (): ReactElement | boolean => {
       ) : (
         <p>
           제휴 및 기타 문의
-          <Link href={"mailto://hoonyhoeny@gmail.com"}>
-            hoonyhoeny@gmail.com
-          </Link>
+          <Link href={"mailto:hoonyhoeny@gmail.com"}>hoonyhoeny@gmail.com</Link>
         </p>
       )}
     </div>
