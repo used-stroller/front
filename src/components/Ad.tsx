@@ -1,4 +1,4 @@
-import styles from "@/styles/page.module.css";
+import styles from "@/styles/about.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import type { ReactElement } from "react";
