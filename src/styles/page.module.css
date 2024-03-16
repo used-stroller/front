@@ -472,8 +472,7 @@
   }
 
   .m_filters_container>ul::-webkit-scrollbar { /* WebKit */
-    width: 0;
-    height: 0;
+    display: none;
   }
 
   .filter_item {
