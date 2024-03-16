@@ -452,6 +452,8 @@
 
   .m_filters_container {
     display: block;
+    position: relative;
+    z-index: 1;
   }
 
   .m_filters_container>ul {
