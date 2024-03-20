@@ -7,7 +7,7 @@ import ReactGA from "react-ga4";
 ReactGA.initialize("G-B2KK9DNYZ1");
 ReactGA.send({
   hitType: "pageview",
-  page: window.location.pathname,
+  page: "/",
   title: "Custom Title",
 });
 export default function About(): ReactElement {
