@@ -5,11 +5,7 @@ import styles from "@/styles/about.module.css";
 import ReactGA from "react-ga4";
 
 ReactGA.initialize("G-B2KK9DNYZ1");
-ReactGA.send({
-  hitType: "pageview",
-  page: "/",
-  title: "Custom Title",
-});
+ReactGA.send("pageview");
 export default function About(): ReactElement {
   return (
     <div className={styles.contents}>
