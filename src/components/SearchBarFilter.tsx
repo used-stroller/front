@@ -5,18 +5,11 @@ import Image from "next/image";
 import WebFilters from "./WebFilters";
 import MobileFilters from "./MobileFilters";
 import { useFilter } from "@/context/FilterContext";
-import React, { useEffect, type ChangeEvent, type ReactElement } from "react";
+import React, { type ChangeEvent, type ReactElement } from "react";
 import Logo from "@/components/Logo";
 import Menu from "@/components/Menu";
-import ReactGA from "react-ga4";
-
-ReactGA.initialize("G-B2KK9DNYZ1");
-
 
 const SearchBarFilter = (): ReactElement => {
-  useEffect(() => {
-    ReactGA.send("pageview");
-  }, []);
   const { filter, handleFilter, minMaxPrice, reset } = useFilter();
   const [keyword, setKeyword] = React.useState("");
 

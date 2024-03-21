@@ -4,7 +4,10 @@ import React, { type ReactElement } from "react";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import { FilterProvider } from "@/context/FilterContext";
+import ReactGA from "react-ga4";
 
+ReactGA.initialize("G-B2KK9DNYZ1");
+ReactGA.send("pageview");
 export const metadata: Metadata = {
   metadataBase: new URL("https://jungmocha.co.kr"),
   alternates: {
