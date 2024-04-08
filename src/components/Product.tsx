@@ -22,7 +22,7 @@ export default function Product({
         <Link
           href={content.link}
           className={styles.product_link}
-          target={"_self"}
+          target={"_blank"}
         >
           <ProductImage content={content} />
         </Link>
