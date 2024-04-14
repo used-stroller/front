@@ -4,10 +4,8 @@ import React, { type ReactElement } from "react";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import { FilterProvider } from "@/context/FilterContext";
-import ReactGA from "react-ga4";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
-ReactGA.initialize("G-B2KK9DNYZ1");
-ReactGA.send("pageview");
 export const metadata: Metadata = {
   metadataBase: new URL("https://jungmocha.co.kr"),
   alternates: {
@@ -37,9 +35,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }): ReactElement {
+  const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ?? "";
+
   return (
     <html lang="ko">
       <body>
+        <GoogleAnalytics gaId={gaId} />
         <FilterProvider>
           <div className="main">
             {children}
