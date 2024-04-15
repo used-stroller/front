@@ -4,7 +4,7 @@ import React, { type ReactElement } from "react";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import { FilterProvider } from "@/context/FilterContext";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://jungmocha.co.kr"),
@@ -36,10 +36,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }): ReactElement {
   const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ?? "";
+  const gtmId = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER ?? "";
 
   return (
     <html lang="ko">
       <body>
+        <GoogleTagManager gtmId={gtmId} />
         <GoogleAnalytics gaId={gaId} />
         <FilterProvider>
           <div className="main">

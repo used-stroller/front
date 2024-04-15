@@ -8,7 +8,7 @@ import {
   type FilterReq,
   type MinMaxPrice,
 } from "@/types";
-import { sendGAEvent } from "@next/third-parties/google";
+import { sendGAEvent, sendGTMEvent } from "@next/third-parties/google";
 
 const FilterContext = React.createContext<[FilterReq, FilterAction]>([
   {},
@@ -40,6 +40,7 @@ const useFilter = (): FilterContextType => {
       const { name, value } = ev.target;
       setFilter((prevFilter) => ({ ...prevFilter, [name]: value }));
       sendGAEvent({ event: name, value });
+      sendGTMEvent({ event: name, value });
     },
     [setFilter],
   );
