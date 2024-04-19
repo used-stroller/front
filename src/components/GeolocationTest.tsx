@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { type ReactElement, useEffect, useState } from "react";
 import { geoLocation } from "@/utils/geolocation";
 
 export default function GeolocationTest() :ReactElement {
