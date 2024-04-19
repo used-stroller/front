@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import React, { type ReactElement } from "react";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
+import GeolocationTest from "@/components/geolocationTest";
 import { FilterProvider } from "@/context/FilterContext";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body>
         <GoogleTagManager gtmId={gtmId} />
         <GoogleAnalytics gaId={gaId} />
+        <GeolocationTest />
         <FilterProvider>
           <div className="main">
             {children}
