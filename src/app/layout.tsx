@@ -44,7 +44,7 @@ export default function RootLayout({
       <body>
         <GoogleTagManager gtmId={gtmId} />
         <GoogleAnalytics gaId={gaId} />
-        <GeolocationTest />
+        {/* <GeolocationTest /> */}
         <FilterProvider>
           <div className="main">
             {children}
