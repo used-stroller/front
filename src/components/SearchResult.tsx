@@ -14,24 +14,41 @@ const SearchResult = ({
   resultCount: number;
 }): ReactElement => {
   const { filter, handleFilter } = useFilter();
-  const [second, setSecond] = useState("");
+  const [uploadDate, setUploadDate] = useState("");
+  const [price, setPirce] = useState("");
 
-  const handleSecondFilter = useCallback(
+  const handlePriceFilters = useCallback(
     (ev: React.MouseEvent<HTMLButtonElement>): void => {
       const target = ev.target as HTMLButtonElement;
-      second === target.value ? setSecond("") : setSecond(target.value);
+      if (price.includes(target.value)) {
+        setPirce("");
+      } else {
+        setPirce(target.value);
+      }
     },
-    [second],
+    [price],
+  );
+
+  const handleSecondFilters = useCallback(
+    (ev: React.MouseEvent<HTMLButtonElement>): void => {
+      const target = ev.target as HTMLButtonElement;
+      if (uploadDate.includes(target.value)) {
+        setUploadDate("");
+      } else {
+        setUploadDate(target.value);
+      }
+    },
+    [uploadDate],
   );
 
   useEffect(() => {
     handleFilter({
       target: {
         name: "sort",
-        value: second,
+        value: [price, uploadDate].filter((v) => v !== "").join(","),
       },
     });
-  }, [second]);
+  }, [uploadDate, price]);
 
   return (
     <div className={styles.search_result_wrapper}>
@@ -41,22 +58,24 @@ const SearchResult = ({
       </div>
       <div className={styles.second_filter}>
         <button
-          onClick={handleSecondFilter}
-          className={second === "uploadDate,desc" ? styles.active : ""}
+          onClick={handleSecondFilters}
+          className={
+            uploadDate.includes("uploadDate,desc") ? styles.active : ""
+          }
           value={"uploadDate,desc"}
         >
           최신순
         </button>
         <button
-          onClick={handleSecondFilter}
-          className={second === "price,asc" ? styles.active : ""}
+          onClick={handlePriceFilters}
+          className={price.includes("price,asc") ? styles.active : ""}
           value={"price,asc"}
         >
           저가순
         </button>
         <button
-          onClick={handleSecondFilter}
-          className={second === "price,desc" ? styles.active : ""}
+          onClick={handlePriceFilters}
+          className={price.includes("price,desc") ? styles.active : ""}
           value={"price,desc"}
         >
           고가순
