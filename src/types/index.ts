@@ -68,6 +68,14 @@ interface Content {
   address: string;
   region: string;
   content: string;
+  model: Model;
+}
+
+interface Model {
+  id: number;
+  name: string;
+  brand: string;
+  price: string;
 }
 
 interface Sort {
@@ -111,4 +119,5 @@ export type {
   MinMaxPrice,
   FilterContextType,
   ValueOf,
+  Model,
 };

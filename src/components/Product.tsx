@@ -6,6 +6,7 @@ import SourceImage from "./SourceImage";
 import FormattedPrice from "./FormattedPrice";
 import ProductImage from "@/components/ProductImage";
 import { type Content } from "@/types";
+import BrandNewPrice from "./BrandNewPrice";
 
 function formatDate(date: string): string {
   return date?.replaceAll(/^20/g, "").replaceAll("-", ".");
@@ -34,7 +35,10 @@ export default function Product({
       </div>
       <div className={styles.title_price_wrapper}>
         <span className={styles.title}>{content.title}</span>
-        <FormattedPrice value={content.price} />
+        <div className={styles.new_old_price}>
+          <FormattedPrice value={content.price} />
+          <BrandNewPrice value={content.model} />
+        </div>
       </div>
       <i className={styles.separator} />
       <div className={styles.address_date_wrapper}>
