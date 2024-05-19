@@ -43,7 +43,8 @@ export default function Logo(): JSX.Element {
     <div
       className={styles.logo}
       onClick={() => {
-        router.push("/");
+        // router.push("/");
+        window.location.reload();
       }}
       onKeyDown={(event) => {
         if (event.key === "Enter") {
