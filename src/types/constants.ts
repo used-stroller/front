@@ -2,7 +2,7 @@ import type { MinMaxPrice, StringValue, Value } from "@/types/index";
 
 export const BRAND_LIST: string[] = [
   "ALL",
-  "RYAN",
+  "리안",
   "오이스터",
   "부가부",
   "타보",
