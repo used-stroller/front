@@ -9,6 +9,7 @@ interface FilterReq {
   minPrice?: number | string;
   maxPrice?: number | string;
   region?: string;
+  defaultRegion?: string;
   period?: number;
   model?: string[];
   brand?: string[];

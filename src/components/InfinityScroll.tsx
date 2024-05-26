@@ -9,10 +9,11 @@ import React, {
   useState,
 } from "react";
 import Product from "@/components/Product";
-import { getProductList } from "@/utils/productUtils";
+import { getLocation, getProductList } from "@/utils/productUtils";
 import { useFilter } from "@/context/FilterContext";
 import Image from "next/image";
 import { type Content } from "@/types";
+import useGeolocation from "@/hooks/useGeolocation";
 
 const InfinityScroll = ({
   setResultCount,
@@ -23,9 +24,24 @@ const InfinityScroll = ({
   const [products, setProducts] = useState<Content[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const elementRef = useRef<HTMLDivElement | null>(null);
+  const { location, error, loading, refresh } = useGeolocation();
+  const [defaultRegion, setDefaultRegion] = useState<string>("");
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      if (location?.longitude && location?.latitude) {
+        const locations = await getLocation(
+          location.longitude,
+          location.latitude,
+        );
+        setDefaultRegion(locations);
+      }
+    };
+    fetchLocations();
+  }, [location]);
 
   const fetchMoreItems = useCallback((): void => {
-    getProductList(filter)
+    getProductList(filter, defaultRegion)
       .then((response) => {
         setResultCount(response.totalElements);
         if (response.content.length === 0) {
@@ -84,6 +100,7 @@ const InfinityScroll = ({
     filter.minPrice,
     filter.maxPrice,
     filter.region,
+    filter.defaultRegion,
     filter.period,
     filter.model,
     filter.brand,
@@ -95,7 +112,7 @@ const InfinityScroll = ({
       {products?.map((product, index) => (
         <Product content={product} key={index} />
       ))}
-      {hasMore && (
+      {(hasMore || loading) && (
         <div ref={elementRef} style={{ textAlign: "center" }}>
           <Image
             src="./images/loading.svg"

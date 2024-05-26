@@ -5,13 +5,13 @@ import Image from "next/image";
 import WebFilters from "./WebFilters";
 import MobileFilters from "./MobileFilters";
 import { useFilter } from "@/context/FilterContext";
-import React, { type ChangeEvent, type ReactElement } from "react";
+import React, { type ChangeEvent, type ReactElement, useState } from "react";
 import Logo from "@/components/Logo";
 import Menu from "@/components/Menu";
 
 const SearchBarFilter = (): ReactElement => {
   const { filter, handleFilter, minMaxPrice, reset } = useFilter();
-  const [keyword, setKeyword] = React.useState("");
+  const [keyword, setKeyword] = useState("");
 
   const handleKeyword = (ev: ChangeEvent<HTMLInputElement>): void => {
     setKeyword(ev.target.value);
