@@ -24,12 +24,12 @@ const InfinityScroll = ({
   const [products, setProducts] = useState<Content[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const elementRef = useRef<HTMLDivElement | null>(null);
-  const { location, error, loading, refresh } = useGeolocation();
+  const { location, loading } = useGeolocation();
   const [defaultRegion, setDefaultRegion] = useState<string>("");
 
   useEffect(() => {
-    const fetchLocations = async () => {
-      if (location?.longitude && location?.latitude) {
+    const fetchLocations = async (): Promise<void> => {
+      if (location?.longitude != null && location?.latitude != null) {
         const locations = await getLocation(
           location.longitude,
           location.latitude,
@@ -37,7 +37,7 @@ const InfinityScroll = ({
         setDefaultRegion(locations);
       }
     };
-    fetchLocations();
+    void fetchLocations();
   }, [location]);
 
   const fetchMoreItems = useCallback((): void => {
