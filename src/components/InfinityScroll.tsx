@@ -34,6 +34,7 @@ const InfinityScroll = ({
           location.longitude,
           location.latitude,
         );
+        console.log("locations: ", locations);
         setDefaultRegion(locations);
       }
     };

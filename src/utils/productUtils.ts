@@ -66,25 +66,40 @@ export const getLocation = async (
   longitude: number | null,
   latitude: number | null,
 ): Promise<string> => {
-  const url = `${VWORLD_API_URL}${VWORLD_API_PARAMS}${longitude},${latitude}`;
+  if (longitude == null || latitude == null) {
+    return "";
+  }
   const address = new Set<string>();
-  try {
-    const result: ResultType[] = await axios
-      .get(url)
-      .then((r) => r.data.response.result);
-    result.forEach((r) => {
-      if (r.structure.level3.length > 0) {
-        address.add(r.structure.level3);
-      }
-      if (r.structure.level4A.length > 0) {
-        address.add(r.structure.level4A);
-      }
-      if (r.structure.level4L.length > 0) {
-        address.add(r.structure.level4L);
-      }
-    });
-  } catch (error) {
-    console.error("Error fetching location data: ", error);
+  let url = "";
+  const nearGeoNum = [];
+  const nearNum = [-0.01, 0, 0.01];
+  for (const num1 of nearNum) {
+    for (const num2 of nearNum) {
+      const nearLongitude = longitude + num1;
+      const nearLatitude = latitude + num2;
+      nearGeoNum.push({ nearLongitude, nearLatitude });
+    }
+  }
+  for (const { nearLongitude, nearLatitude } of nearGeoNum) {
+    url = `${VWORLD_API_URL}${VWORLD_API_PARAMS}${nearLongitude},${nearLatitude}`;
+    try {
+      const result: ResultType[] = await axios
+        .get(url)
+        .then((r) => r.data.response.result);
+      result.forEach((r) => {
+        if (r.structure.level3.length > 0) {
+          address.add(r.structure.level3);
+        }
+        if (r.structure.level4A.length > 0) {
+          address.add(r.structure.level4A);
+        }
+        if (r.structure.level4L.length > 0) {
+          address.add(r.structure.level4L);
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching location data: ", error);
+    }
   }
   return [...address].join(",");
 };
