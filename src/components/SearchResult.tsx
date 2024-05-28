@@ -16,6 +16,11 @@ const SearchResult = ({
   const { filter, handleFilter } = useFilter();
   const [uploadDate, setUploadDate] = useState("");
   const [price, setPirce] = useState("");
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setCount(resultCount);
+  }, [resultCount]);
 
   const handlePriceFilters = useCallback(
     (ev: React.MouseEvent<HTMLButtonElement>): void => {
@@ -54,7 +59,7 @@ const SearchResult = ({
     <div className={styles.search_result_wrapper}>
       <div className={styles.search_result}>
         <span className={styles.keyword}>{filter.keyword ?? "모든 상품"}</span>
-        검색결과 <span className={styles.result_qty}>{resultCount}</span> 개
+        검색결과 <span className={styles.result_qty}>{count}</span> 개
       </div>
       <div className={styles.second_filter}>
         <button

@@ -29,6 +29,7 @@ const InfinityScroll = ({
     fixedAddress: "",
     detailAddress: "",
   });
+  const [locationFetched, setLocationFetched] = useState(false);
 
   useEffect(() => {
     const fetchLocations = async (): Promise<void> => {
@@ -39,14 +40,20 @@ const InfinityScroll = ({
         );
         console.log("locations: ", locations);
         setDefaultRegion(locations);
+        setLocationFetched(true);
+      } else {
+        setLocationFetched(false);
       }
     };
     void fetchLocations();
   }, [location]);
 
   const fetchMoreItems = useCallback((): void => {
+    if (!locationFetched) return;
+
     getProductList(filter, defaultRegion)
       .then((response) => {
+        console.log("count: ", response.totalElements);
         setResultCount(response.totalElements);
         if (response.content.length === 0) {
           setHasMore(false);
@@ -63,7 +70,7 @@ const InfinityScroll = ({
       .catch((error) => {
         console.error("error: ", error);
       });
-  }, [filter]);
+  }, [filter, locationFetched, defaultRegion]);
 
   // callback 함수 정의
   const onIntersection = useCallback(
