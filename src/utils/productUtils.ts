@@ -1,5 +1,11 @@
 import axios from "axios";
-import type { FilterReq, ProductRes } from "@/types";
+import type {
+  DefaultRegionType,
+  FilterReq,
+  ProductRes,
+  ResultType,
+} from "@/types";
+import { cleansedLevel1 } from "@/types/constants";
 
 const axiosClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -13,11 +19,16 @@ const axiosClient = axios.create({
 
 export const getProductList = async (
   filter: FilterReq,
-  defaultRegion?: string,
+  defaultRegion?: DefaultRegionType,
 ): Promise<ProductRes> => {
   let queryParams = createQueryParams(filter);
   if (defaultRegion != null) {
-    queryParams = queryParams + "&defaultRegion=" + defaultRegion;
+    queryParams =
+      queryParams +
+      "&fixedAddress=" +
+      defaultRegion.fixedAddress +
+      "&detailAddress=" +
+      defaultRegion.detailAddress;
   }
   return await axiosClient.get(`/list${queryParams}`).then((r) => r.data);
 };
@@ -47,29 +58,15 @@ const VWORLD_API_URL = process.env.NEXT_PUBLIC_VWORLD_API_URL;
 const VWORLD_API_KEY = process.env.NEXT_PUBLIC_VWORLD_API_KEY;
 const VWORLD_API_PARAMS: string = `?service=address&request=getAddress&version=2.0&crs=epsg:4326&type=both&zipcode=true&simple=true&key=${VWORLD_API_KEY}&point=`;
 
-interface StructureType {
-  level0: string;
-  level1: string;
-  level2: string;
-  level3: string;
-  level4L: string;
-  level4A: string;
-}
-
-interface ResultType {
-  zipcode: string;
-  text: string;
-  structure: StructureType;
-}
-
 export const getLocation = async (
   longitude: number | null,
   latitude: number | null,
-): Promise<string> => {
+): Promise<{ fixedAddress: string; detailAddress: string }> => {
   if (longitude == null || latitude == null) {
-    return "";
+    return { fixedAddress: "", detailAddress: "" };
   }
-  const address = new Set<string>();
+  const fixed = new Set<string>();
+  const detail = new Set<string>();
   let url = "";
   const nearGeoNum = [];
   const nearNum = [-0.01, 0, 0.01];
@@ -87,21 +84,29 @@ export const getLocation = async (
         .get(url)
         .then((r) => r.data.response.result);
       result.forEach((r) => {
+        if (r.structure.level1.length > 0) {
+          const cleansed =
+            cleansedLevel1[r.structure.level1] ?? r.structure.level1;
+          fixed.add(cleansed);
+        }
         if (r.structure.level3.length > 0) {
-          address.add(r.structure.level3);
+          detail.add(r.structure.level3);
         }
         if (r.structure.level4A.length > 0) {
-          address.add(r.structure.level4A);
+          detail.add(r.structure.level4A);
         }
         if (r.structure.level4L.length > 0) {
-          address.add(r.structure.level4L);
+          detail.add(r.structure.level4L);
         }
       });
     } catch (error) {
       console.error("Error fetching location data: ", error);
     }
   }
-  return [...address].join(",");
+  return {
+    fixedAddress: [...fixed].join(","),
+    detailAddress: [...detail].join(","),
+  };
 };
 
 export const isMobile = (): boolean => {

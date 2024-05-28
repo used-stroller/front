@@ -12,7 +12,7 @@ import Product from "@/components/Product";
 import { getLocation, getProductList } from "@/utils/productUtils";
 import { useFilter } from "@/context/FilterContext";
 import Image from "next/image";
-import { type Content } from "@/types";
+import { type Content, type DefaultRegionType } from "@/types";
 import useGeolocation from "@/hooks/useGeolocation";
 
 const InfinityScroll = ({
@@ -25,7 +25,10 @@ const InfinityScroll = ({
   const [hasMore, setHasMore] = useState(true);
   const elementRef = useRef<HTMLDivElement | null>(null);
   const { location, loading } = useGeolocation();
-  const [defaultRegion, setDefaultRegion] = useState<string>("");
+  const [defaultRegion, setDefaultRegion] = useState<DefaultRegionType>({
+    fixedAddress: "",
+    detailAddress: "",
+  });
 
   useEffect(() => {
     const fetchLocations = async (): Promise<void> => {

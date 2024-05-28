@@ -102,6 +102,26 @@ interface MinMaxPrice {
 
 type ValueOf<T> = T[keyof T];
 
+interface StructureType {
+  level0: string;
+  level1: string;
+  level2: string;
+  level3: string;
+  level4L: string;
+  level4A: string;
+}
+
+interface ResultType {
+  zipcode: string;
+  text: string;
+  structure: StructureType;
+}
+
+interface DefaultRegionType {
+  fixedAddress: string;
+  detailAddress: string;
+}
+
 export type {
   FilterProviderProps,
   FilterAction,
@@ -121,4 +141,7 @@ export type {
   FilterContextType,
   ValueOf,
   Model,
+  StructureType,
+  ResultType,
+  DefaultRegionType,
 };
