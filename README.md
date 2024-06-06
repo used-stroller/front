@@ -6,18 +6,16 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Description
 
-* 중고 유모차를 모아 볼 수 있는 사이트
-* 최저가 검색, 브랜드별 검색, 사이트별 검색 기능 등 제공
-* 반응형 웹 서비스(웹, 모바일)
+- 중고 유모차를 모아 볼 수 있는 사이트
+- 최저가 검색, 브랜드별 검색, 사이트별 검색 기능 등 제공
+- 반응형 웹 서비스(웹, 모바일)
 
 <img src="https://lh3.googleusercontent.com/u/0/drive-viewer/AKGpihZoucB45dbG767GyoCCCnpBBRrZL-8M99YxPeYP8SgbyI0V5R1Y_OJ3VdxulZLeOKa5FuP7O6zNZ1UlZqfKPVfUM5hltg=w1920-h919" width="300"/>
 
 ### Dependencies
 
-* React 18
-* Typescript 5.3.3
-  
-
+- React 18
+- Typescript 5.3.3
 
 ## Getting Started
 
@@ -54,10 +52,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-
-  
-## Authors
+### Authors
 
 <a href="https://github.com/clowncdi" > Daeil Choi </a></br>
 <a href="https://github.com/hoonyhoney" > DONGHUN LEE </a></br>
-
