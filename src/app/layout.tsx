@@ -23,7 +23,8 @@ export const metadata: Metadata = {
   robots: "index, follow",
   openGraph: {
     title: "중모차",
-    description: "똑똑한 엄빠의 중모차",
+    description:
+      "중고유모차 구매팁! 중고플랫폼의 유모차매물만 모아서 보여드립니다. 중고유모차 살때 , 똑똑한 엄빠의 선택 “중모차”에서 검색하세요! ",
     type: "website",
     url: "https://jungmocha.co.kr",
     images: [{ url: `https://jungmocha.co.kr/images/logo_block.png` }],
