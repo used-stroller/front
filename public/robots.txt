@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://jungmocha.co.kr
+
+# Sitemaps
+Sitemap: https://jungmocha.co.kr/sitemap.xml

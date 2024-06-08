@@ -76,6 +76,10 @@ const nextConfig = {
         source: '/req/:path*',
         destination: 'https://api.vworld.kr/req/:path*', // 프록시할 대상 URL
       },
+      {
+        source: '/sitemap.xml',
+        destination: '/sitemap.xml', 
+      },
     ];
   },
 };
