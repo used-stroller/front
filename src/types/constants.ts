@@ -45,6 +45,27 @@ export const SOURCE_TYPE_LIST: StringValue[] = [
   { key: "네이버", value: "NAVER" },
 ];
 
+export const REGION_LIST: string[] = [
+  "ALL",
+  "서울",
+  "경기",
+  "인천",
+  "부산",
+  "대구",
+  "광주",
+  "대전",
+  "울산",
+  "세종",
+  "강원",
+  "충청북도",
+  "충청남도",
+  "전라남도",
+  "전라북도",
+  "경상남도",
+  "경상북도",
+  "제주",
+];
+
 export const cleansedLevel1: Record<string, string> = {
   강원특별자치도: "강원도",
   경기도: "경기도",

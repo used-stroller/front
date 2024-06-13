@@ -17,6 +17,7 @@ import {
   PERIOD_LIST,
   PRICE_LIST,
   SOURCE_TYPE_LIST,
+  REGION_LIST,
 } from "@/types/constants";
 
 const WebFilters = ({
@@ -29,9 +30,12 @@ const WebFilters = ({
   const [activePrice, setActivePrice] = useState("ALL");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
-  const [activeRegion, setActiveRegion] = useState("");
+  const [activeRegion, setActiveRegion] = useState(["ALL"]);
+  const [town, setTown] = useState("");
   const [activePeriod, setActivePeriod] = useState("ALL");
   const [activeSourceType, setActiveSourceType] = useState(["ALL"]);
+  const [text, setText] = useState("");
+  const [, setRender] = useState("");
 
   const handleBrand = useCallback(
     (value: string): void => {
@@ -62,6 +66,38 @@ const WebFilters = ({
       });
     },
     [activeBrand],
+  );
+
+  const selectRegion = useCallback(
+    (value: string): void => {
+      let prevArr = activeRegion;
+      setRender(text);
+      setText("");
+      if (value === "ALL") {
+        prevArr = ["ALL"];
+      } else if (activeRegion.includes(value)) {
+        // activeRegion에 value가 있으면 제거
+        prevArr = activeRegion.filter(
+          (region) => region !== value && region !== "ALL",
+        );
+      } else {
+        // activeBrand에 value가 없으면 추가
+        prevArr = activeRegion.filter((region) => region !== "ALL");
+        prevArr.push(value);
+      }
+      if (prevArr.length === 0) {
+        prevArr = ["ALL"];
+        value = "ALL";
+      }
+      setActiveRegion(prevArr);
+      handleFilter({
+        target: {
+          name: "region",
+          value: value === "ALL" ? "" : prevArr,
+        },
+      });
+    },
+    [activeRegion],
   );
 
   const handlePrice = useCallback(
@@ -131,21 +167,22 @@ const WebFilters = ({
     [activeSourceType],
   );
 
-  const handleRegion = useCallback(
-    (ev: ChangeEvent<HTMLInputElement>): void => {
-      setActiveRegion(ev.target.value);
-    },
-    [activeRegion],
-  );
+  const textHandler = (event: ChangeEvent<HTMLInputElement>): void => {
+    setTown(event.target.value);
+    const inputText = event.target.value;
+    setText(inputText);
+    console.log(event.target.value);
+  };
 
   const searchRegion = useCallback((): void => {
+    setActiveRegion(["ALL"]);
     handleFilter({
       target: {
         name: "region",
-        value: activeRegion,
+        value: town,
       },
     });
-  }, [activeRegion]);
+  }, [town]);
 
   return (
     <div className={styles.filters_container}>
@@ -242,10 +279,10 @@ const WebFilters = ({
         <div className={styles.search_region}>
           <input
             type="text"
+            value={text}
             name="region"
             placeholder="동네검색"
-            value={activeRegion !== "" ? activeRegion : ""}
-            onChange={handleRegion}
+            onChange={textHandler}
             onKeyDown={(ev) => {
               if (ev.key === "Enter") {
                 searchRegion();
@@ -261,6 +298,29 @@ const WebFilters = ({
             />
           </button>
         </div>
+      </div>
+      <div className={styles.filters_wrapper}>
+        <h3>지역</h3>
+        {REGION_LIST.map((region) => {
+          return (
+            <button
+              className={`${styles.filter} ${
+                activeRegion.includes(region) ? styles.active : ""
+              }`}
+              key={region}
+              onClick={() => {
+                selectRegion(region);
+              }}
+              onKeyDown={(ev) => {
+                if (ev.key === "Enter") {
+                  selectRegion(region);
+                }
+              }}
+            >
+              {region}
+            </button>
+          );
+        })}
       </div>
       <div className={styles.filters_wrapper}>
         <h3>기간</h3>
