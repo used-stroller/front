@@ -7,6 +7,11 @@ import { FilterProvider } from "@/context/FilterContext";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
+  verification: {
+    other: {
+      "naver-site-verification": "5517d95af4969a496cdba656444f3dcd128ecdc6",
+    },
+  },
   metadataBase: new URL("https://jungmocha.co.kr"),
   alternates: {
     canonical: "/",
