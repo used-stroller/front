@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import { FilterProvider } from "@/context/FilterContext";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import AuthProvider from "@/context/AuthProvider";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = {
   verification: {
@@ -37,25 +39,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}): ReactElement {
+}): Promise<ReactElement> {
   const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ?? "";
   const gtmId = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER ?? "";
+  const session = await auth();
+  // console.log("layout session: ", session);
 
   return (
     <html lang="ko">
       <body>
-        <GoogleTagManager gtmId={gtmId} />
-        <GoogleAnalytics gaId={gaId} />
-        <FilterProvider>
-          <div className="main">
-            {children}
-            <Footer />
-          </div>
-        </FilterProvider>
+        <AuthProvider session={session}>
+          <GoogleTagManager gtmId={gtmId} />
+          <GoogleAnalytics gaId={gaId} />
+          <FilterProvider>
+            <div className="main">
+              {children}
+              <Footer />
+            </div>
+          </FilterProvider>
+        </AuthProvider>
       </body>
     </html>
   );

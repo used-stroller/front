@@ -1,8 +1,8 @@
 import SearchBarFilter from "@/components/SearchBarFilter";
 import ProductList from "@/components/ProductList";
-import type { ReactElement } from "react";
+import { type ReactElement } from "react";
 
-export default function Home(): ReactElement {
+export default async function Home(): Promise<ReactElement> {
   return (
     <>
       <SearchBarFilter />
