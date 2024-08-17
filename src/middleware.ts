@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { match } from "path-to-regexp";
 import { auth } from "@/auth";
 
-const matchersForAuth = ["/admin/*", "/mypage/*"];
+const matchersForAuth = ["/admin/*", "/mypage", "/mypage/*"];
 const matchersForSignIn = ["/login", "/signup"];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   if (isMatch(request.nextUrl.pathname, matchersForAuth)) {
     // console.log("로그인 필요 session: ", session);
 
-    return session
+    return session != null
       ? NextResponse.next()
       : NextResponse.redirect(new URL("/login", request.url));
   }
@@ -20,16 +20,17 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   if (isMatch(request.nextUrl.pathname, matchersForSignIn)) {
     // console.log("로그인 필요없음 session: ", session);
 
-    return session
+    return session != null
       ? NextResponse.redirect(new URL("/", request.url))
       : NextResponse.next();
   }
-  console.log(
-    "middleware pass session: ",
-    session,
-    " / pathname: ",
-    request.nextUrl.pathname,
-  );
+  // console.log(
+  //   "middleware pathname: ",
+  //   request.nextUrl.pathname,
+  //   ", session: ",
+  //   session?.accessToken,
+  //   session?.refreshToken,
+  // );
   return NextResponse.next();
 }
 

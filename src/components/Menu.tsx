@@ -1,7 +1,8 @@
 import styles from "@/styles/page.module.css";
 import Link from "next/link";
 import React, { type ReactElement, useEffect, useState } from "react";
-import { signOut, useSession } from "next-auth/react";
+import { signOutWithForm } from "@/serverActions/auth";
+import { useSession } from "next-auth/react";
 
 export default function Menu(): ReactElement {
   const session = useSession();
@@ -23,17 +24,16 @@ export default function Menu(): ReactElement {
         <h3>About</h3>
       </Link>
       {isSession ? (
-        <button
-          onClick={async () => {
-            await signOut();
-          }}
-        >
-          로그아웃
-        </button>
+        <>
+          <form action={signOutWithForm}>
+            <button type="submit">logout</button>
+          </form>
+          <Link href="/mypage">mypage</Link>
+        </>
       ) : (
         <>
-          <Link href="/login">로그인</Link>
-          <Link href="/signup">회원가입</Link>
+          <Link href="/login">login</Link>
+          <Link href="/signup">signup</Link>
         </>
       )}
     </div>

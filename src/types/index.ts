@@ -122,7 +122,15 @@ interface DefaultRegionType {
   detailAddress: string;
 }
 
+interface MyUserType {
+  email?: string;
+  password?: string;
+  nickname?: string;
+  address?: string;
+}
+
 export type {
+  MyUserType,
   FilterProviderProps,
   FilterAction,
   FilterReq,

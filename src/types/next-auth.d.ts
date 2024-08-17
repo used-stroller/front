@@ -1,12 +1,10 @@
-import { type DefaultJWT } from "next-auth/jwt";
 import { type DefaultUser } from "next-auth";
 import { type DefaultSession } from "next-auth/src/core/types";
 
-declare module "next-auth" {
+export declare module "next-auth" {
   interface User extends DefaultUser {
     email: string;
     name: string;
-    adminSeq: number;
     role: string;
     accessToken: string;
     refreshToken: string;
@@ -17,20 +15,21 @@ declare module "next-auth" {
     email: string;
     accessToken: string;
     refreshToken: string;
-    accessTokenExpiry: number;
     role: string;
+    expires: Date;
+    exp: number;
     error?: string | null;
     errorCode?: string | null;
   }
 }
 
-declare module "next-auth/jwt" {
-  interface JWT extends DefaultJWT {
+export declare module "@auth/core/jwt" {
+  interface JWT {
     name: string;
     email: string;
     accessToken: string;
     refreshToken: string;
-    accessTokenExpiry: number;
+    exp: number;
     role: string;
     error?: string | null;
     errorCode?: string | null;

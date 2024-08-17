@@ -2,7 +2,7 @@ import NextAuth, { type User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { decodeToken } from "react-jwt";
 import { type JWT } from "@auth/core/jwt";
-import axios from "axios";
+import axios, { type AxiosResponse, type AxiosResponseHeaders } from "axios";
 import { z } from "zod";
 import { CallbackRouteError } from "@auth/core/errors";
 
@@ -14,24 +14,22 @@ export interface IUserDecodedToken {
   exp: number;
 }
 
-function shouldUpdateToken(token: JWT) {
-  if (Date.now() < token.accessTokenExpiry * 1000) {
+function shouldUpdateToken(token: JWT): boolean {
+  if (Date.now() < token.exp * 1000 - 10000) {
     // console.log(
-    //   "업데이트 안해도 됨. Date.now(): ",
+    //   "토큰 업데이트 안해도 됨. ",
     //   Date.now(),
-    //   Date.now() < token.accessTokenExpiry * 1000,
+    //   Date.now() < token.exp * 1000 - 10000,
     // );
     return false;
   }
-  // console.log(
-  //   "업데이트 해야 됨. Date.now(): ",
-  //   Date.now(),
-  //   Date.now() < token.accessTokenExpiry * 1000,
-  // );
+  console.log(
+    "====================== 토큰 업데이트 시작 ========================",
+  );
   return true;
 }
 
-const refreshAccessToken = async (token: JWT): Promise<JWT> => {
+const refreshAccessToken = async (token: JWT): Promise<JWT | null> => {
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/reissue`;
   console.log("refresh url: ", url, token.refreshToken);
 
@@ -40,10 +38,17 @@ const refreshAccessToken = async (token: JWT): Promise<JWT> => {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         Cookie: `refresh=${token.refreshToken}`,
       },
+      cache: "force-cache",
     });
+
+    console.log(
+      "response: ",
+      response.status,
+      response.headers.get("Set-Cookie"),
+    );
 
     if (!response.ok) {
       throw new Error("Failed to refresh access token");
@@ -62,20 +67,14 @@ const refreshAccessToken = async (token: JWT): Promise<JWT> => {
     // return user object with their profile data
     return {
       ...token,
-      accessTokenExpiry: userDecodedToken.exp ?? "",
+      exp: userDecodedToken.exp ?? "",
       accessToken: newAccessToken ?? "",
       refreshToken: newRefreshToken ?? "",
       error: null,
     };
   } catch (error) {
     console.error("Failed to refresh access token:", error);
-    return {
-      ...token,
-      accessTokenExpiry: 0,
-      accessToken: "",
-      refreshToken: "",
-      error: "RefreshAccessTokenError",
-    };
+    return null;
   }
 };
 
@@ -86,6 +85,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   session: {
     strategy: "jwt",
+    maxAge: 60 * 30, // sec
   },
   providers: [
     Credentials({
@@ -107,29 +107,37 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
           const { email, password } = parsedCredentials.data;
 
-          const response = await axios.post("http://localhost:8080/login", {
-            email,
-            password,
-          });
+          const response: AxiosResponse = await axios.post(
+            "http://localhost:8080/login",
+            {
+              email,
+              password,
+            },
+          );
 
-          if (response.status !== 200) {
-            return null;
+          if (response === null || response.status !== 200) {
+            throw new CallbackRouteError("로그인 실패! 관리자에게 문의하세요");
           }
 
-          const { headers } = response;
-          const accessToken = headers.getAuthorization();
+          const headers: AxiosResponseHeaders = response.headers;
+          const accessToken = headers.get("authorization") as string;
+          if (accessToken === null || accessToken === undefined) {
+            throw new CallbackRouteError("accessToken not found");
+          }
           const userDecodedToken: IUserDecodedToken | null =
             decodeToken(accessToken);
-          if (!userDecodedToken) {
+          if (userDecodedToken == null) {
             throw new CallbackRouteError("JWT decoded error");
           }
 
           const cookie = headers["set-cookie"];
-          const match = cookie[0]?.match(/refresh=([^;]*)/);
-          const refreshToken = match ? match[1] : "";
+          if (cookie === undefined) {
+            throw new CallbackRouteError("refreshToken not found");
+          }
+          const match = cookie[0].match(/refresh=([^;]*)/);
+          const refreshToken = match !== null ? match[1] : "";
 
           return {
-            id: "",
             email: email ?? "",
             name: email ?? "",
             role: userDecodedToken.role ?? "",
@@ -147,53 +155,50 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
-      // console.log("콜백 jwt: ", token, " / user: ", user);
+    async jwt({ token, user, trigger }) {
+      // console.log(
+      //   "콜백 jwt: ",
+      //   token,
+      //   ", user: ",
+      //   user,
+      //   ", trigger: ",
+      //   trigger,
+      // );
 
       // 로그인 시 user 객체에 값이 들어옴
-      if (user) {
-        token.accessToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
-        token.accessTokenExpiry = user.exp;
-        token.role = user.role;
-        token.exp = user.exp;
-        // console.log("신규 로그인: ", token);
+      if (trigger === "signIn") {
+        token = Object.assign(token, user);
         return token;
       }
 
       if (token.accessToken === null || token.accessToken === undefined) {
+        console.error("콜백 jwt에 accessToken 없음. token: ", token);
         return token;
       }
 
       if (shouldUpdateToken(token)) {
         const newTokenInfo = await refreshAccessToken(token);
-        if (newTokenInfo.error === "RefreshAccessTokenError") {
+        if (newTokenInfo === null) {
           // 세션을 초기화하고 로그인 페이지로 리다이렉트할 수 있습니다.
-          return {
-            accessToken: null,
-            refreshToken: null,
-            accessTokenExpiry: null,
-            role: null,
-            exp: 0,
-            iat: 0,
-            sub: null,
-            email: null,
-            name: null,
-            error: "RefreshAccessTokenError",
-          };
+          return null;
         }
-        return newTokenInfo;
+        token = Object.assign(token, newTokenInfo);
+        console.log(
+          "토큰갱신: ",
+          new Date(token.exp * 1000),
+          token.refreshToken,
+        );
       }
       return token;
     },
-    async session({ session, token, user }) {
-      // console.log("콜백 session: ", session, " / token:", token);
-      session.accessToken = token.accessToken;
-      session.refreshToken = token.refreshToken;
-      session.accessTokenExpiry = token.accessTokenExpiry;
-      session.error = token.error;
-      session.role = token.role;
-      session.expires = new Date(token.accessTokenExpiry * 1000);
+    async session({ session, token }) {
+      // console.log("콜백 session: ", session, ", token:", token);
+      if (token === null) {
+        console.log("콜백 세션에 토큰 없음. token: ", token);
+        return token;
+      }
+      session = Object.assign(session, token);
+      session.expires = new Date(token.exp * 1000);
       return session;
     },
   },

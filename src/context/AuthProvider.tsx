@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactElement, type ReactNode, useEffect } from "react";
+import { type ReactElement, type ReactNode } from "react";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 
@@ -18,10 +18,6 @@ export default function AuthProvider({
   children,
   session,
 }: Props): ReactElement {
-  useEffect(() => {
-    console.log("프로바이더 세션 변경됨", session);
-  }, [session]);
-
   return (
     <SessionProvider
       session={session}

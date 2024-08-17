@@ -47,7 +47,6 @@ export default async function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ?? "";
   const gtmId = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER ?? "";
   const session = await auth();
-  // console.log("layout session: ", session);
 
   return (
     <html lang="ko">
