@@ -129,7 +129,15 @@ interface MyUserType {
   address?: string;
 }
 
+interface UserResponse {
+  status: string;
+  statusCode: number;
+  success: boolean;
+  message: string;
+}
+
 export type {
+  UserResponse,
   MyUserType,
   FilterProviderProps,
   FilterAction,

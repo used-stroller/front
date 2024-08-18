@@ -2,8 +2,11 @@
 
 import axios from "axios";
 import { auth, signIn, signOut } from "@/auth";
-import { redirect, RedirectType } from "next/navigation";
+import { redirect } from "next/navigation";
 import type { MyUserType } from "@/types";
+import { CallbackRouteError } from "@auth/core/errors";
+
+export { auth as getSession };
 
 export const updateMyInfo = async (formData: FormData): Promise<void> => {
   const session = await auth();
@@ -47,23 +50,50 @@ export const getMyInfo = async () => {
   }
 };
 
-export const signInWithCredentials = async (
-  formData: FormData,
-): Promise<void> => {
-  await signIn("credentials", {
-    email: formData.get("email") ?? "",
-    password: formData.get("password") ?? "",
-    redirectTo: "/",
-  });
+export const signInWithCredentials = async (formData: FormData) => {
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  try {
+    await signIn("credentials", {
+      email,
+      password,
+    });
+  } catch (error) {
+    if (error instanceof CallbackRouteError) {
+      console.error("로그인 에러!", error.cause?.err?.message);
+      if (error.cause?.err?.message === "UNAUTHORIZED") {
+        return { error: "로그인 실패. 아이디와 비밀번호를 확인 해 주세요." };
+      }
+    }
+  }
+  return { error: null };
+  // .then((e) => {
+  //   console.log("로그인 성공");
+  //   return {
+  //     error: null,
+  //   };
+  // })
+  // .catch((e) => {
+  //   if (e instanceof Error) {
+  //     if (e.message === "NEXT_REDIRECT") {
+  //       return {
+  //         error: null,
+  //       };
+  //     }
+  //   }
+  //   console.error("로그인 실패: ", email, e);
+  //   return {
+  //     error: "로그인 실패. 아이디와 비밀번호를 확인 해 주세요.",
+  //   };
+  // });
 };
 
 export const signOutWithForm = async (formData: FormData): Promise<void> => {
   await signOut({ redirect: true, redirectTo: "/" });
 };
 
-export const signUpWithCredentials = async (
-  formData: FormData,
-): Promise<void> => {
+export const signUpWithCredentials = async (formData: FormData) => {
   const email = formData.get("email");
   const password = formData.get("password");
   try {
@@ -72,13 +102,23 @@ export const signUpWithCredentials = async (
       password,
     });
     console.log(response.data);
+    if (response.status !== 200) {
+      throw new Error("관리자에게 문의하세요.");
+    }
+
     if (response.data.success) {
-      redirect("/login", RedirectType.push);
+      console.log("회원가입 성공");
+      return { error: null };
     } else {
-      redirect("/signup", RedirectType.push);
+      console.error("회원가입 실패: ", email);
+      return {
+        error: `회원가입 실패. ${response.data.message}`,
+      };
     }
   } catch (error) {
     console.error("Error signup.", error);
-    throw error;
+    return {
+      error: `회원가입 실패. ${error}`,
+    };
   }
 };

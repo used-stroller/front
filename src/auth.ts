@@ -5,6 +5,7 @@ import { type JWT } from "@auth/core/jwt";
 import axios, { type AxiosResponse, type AxiosResponseHeaders } from "axios";
 import { z } from "zod";
 import { CallbackRouteError } from "@auth/core/errors";
+import { type UserResponse } from "@/types";
 
 export interface IUserDecodedToken {
   role: string;
@@ -93,7 +94,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: {},
         password: {},
       },
-      authorize: async (credentials): Promise<User> => {
+      authorize: async (credentials): Promise<User | UserResponse> => {
         const parsedCredentials = z
           .object({
             email: z.string().email(),
@@ -146,34 +147,35 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             refreshToken,
           };
         } catch (error) {
-          console.error("authorize 에러!", error.response.data);
-          throw new CallbackRouteError(
-            "로그인 실패! 아이디와 비밀번호를 확인 해 주세요.",
-          );
+          if (axios.isAxiosError(error)) {
+            console.error("로그인 싪패: ", error.response?.data);
+            const { status } = error.response?.data as UserResponse;
+            throw new Error(status);
+          }
         }
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user, trigger }) {
-      // console.log(
-      //   "콜백 jwt: ",
-      //   token,
-      //   ", user: ",
-      //   user,
-      //   ", trigger: ",
-      //   trigger,
-      // );
-
+    signIn: async () => {
+      return true;
+    },
+    jwt: async ({ token, user, trigger }) => {
       // 로그인 시 user 객체에 값이 들어옴
       if (trigger === "signIn") {
-        token = Object.assign(token, user);
-        return token;
+        if (
+          user?.accessToken !== undefined &&
+          user?.refreshToken !== undefined
+        ) {
+          token = Object.assign(token, user);
+          return token;
+        }
+        return null;
       }
 
       if (token.accessToken === null || token.accessToken === undefined) {
         console.error("콜백 jwt에 accessToken 없음. token: ", token);
-        return token;
+        return null;
       }
 
       if (shouldUpdateToken(token)) {
@@ -191,7 +193,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return token;
     },
-    async session({ session, token }) {
+    session: async ({ session, token }) => {
       // console.log("콜백 session: ", session, ", token:", token);
       if (token === null) {
         console.log("콜백 세션에 토큰 없음. token: ", token);
@@ -201,5 +203,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.expires = new Date(token.exp * 1000);
       return session;
     },
+    // async redirect({ url, baseUrl }) {
+    //   console.log("baseUrl: ", baseUrl, ", url: ", url);
+    //   return url;
+    // },
   },
 });

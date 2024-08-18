@@ -1,12 +1,12 @@
 import type { ReactElement } from "react";
-import Logo from "@/components/Logo";
-import styles from "@/styles/about.module.css";
+import styles from "@/styles/user.module.css";
 import { SignIn } from "@/components/SignIn";
+import SubPageLogo from "@/components/SubPageLogo";
 
 export default function Login(): ReactElement {
   return (
     <div className={styles.contents}>
-      <Logo />
+      <SubPageLogo />
       <SignIn />
     </div>
   );
