@@ -2,7 +2,11 @@ import NextAuth, { type User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { decodeToken } from "react-jwt";
 import { type JWT } from "@auth/core/jwt";
-import axios, { type AxiosResponse, type AxiosResponseHeaders } from "axios";
+import axios, {
+  type AxiosResponse,
+  type AxiosResponseHeaders,
+  type RawAxiosResponseHeaders,
+} from "axios";
 import { z } from "zod";
 import { CallbackRouteError } from "@auth/core/errors";
 import { type UserResponse } from "@/types";
@@ -94,7 +98,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: {},
         password: {},
       },
-      authorize: async (credentials): Promise<User | UserResponse> => {
+      authorize: async (credentials): Promise<User | null> => {
         const parsedCredentials = z
           .object({
             email: z.string().email(),
@@ -120,7 +124,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             throw new CallbackRouteError("로그인 실패! 관리자에게 문의하세요");
           }
 
-          const headers: AxiosResponseHeaders = response.headers;
+          const headers: RawAxiosResponseHeaders | AxiosResponseHeaders =
+            response.headers;
           const accessToken = headers.get("authorization") as string;
           if (accessToken === null || accessToken === undefined) {
             throw new CallbackRouteError("accessToken not found");

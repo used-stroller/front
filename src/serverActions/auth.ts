@@ -2,13 +2,17 @@
 
 import axios from "axios";
 import { auth, signIn, signOut } from "@/auth";
-import { redirect } from "next/navigation";
 import type { MyUserType } from "@/types";
 import { CallbackRouteError } from "@auth/core/errors";
+import { type Session } from "next-auth";
 
-export { auth as getSession };
+export const getSession = async (): Promise<Session | null> => {
+  return await auth();
+};
 
-export const updateMyInfo = async (formData: FormData): Promise<void> => {
+export const updateMyInfo = async (
+  formData: FormData,
+): Promise<{ message: string }> => {
   const session = await auth();
   const nickname = formData.get("nickname");
   const address = formData.get("address");
@@ -24,16 +28,17 @@ export const updateMyInfo = async (formData: FormData): Promise<void> => {
       },
     );
     console.log(response.data);
-    if (response.data.success) {
-      redirect("/mypage");
+    if (response.data) {
+      return { message: "업데이트 완료" };
     }
+    return { message: "업데이트 실패" };
   } catch (error) {
     console.error("Error update mypage.", error);
-    throw error;
+    return { message: "업데이트 실패" };
   }
 };
 
-export const getMyInfo = async () => {
+export const getMyInfo = async (): Promise<MyUserType | null> => {
   const session = await auth();
   try {
     const response = await axios.get("http://localhost:8080/mypage", {
@@ -43,7 +48,7 @@ export const getMyInfo = async () => {
     if (response.data !== null) {
       return response.data as MyUserType;
     }
-    // return null;
+    return null;
   } catch (error) {
     console.error("Error get mypage.", error);
     throw error;

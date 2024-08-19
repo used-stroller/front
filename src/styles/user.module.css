@@ -21,7 +21,17 @@
   font-size: 1.6rem;
 }
 
-.user_container > input {
+.user_container .input_wrapper {
+  min-width: 360px;
+  display: flex;
+  align-items: center;
+}
+
+.user_container label {
+  margin-right: 0.5rem;
+}
+
+.user_container input {
   min-width: 300px;
   max-width: 60%;
   height: 32px;
@@ -29,6 +39,8 @@
   border: 1px solid #ddd;
   border-radius: 5px;
 }
+
+
 
 .button {
   width: 6rem;
