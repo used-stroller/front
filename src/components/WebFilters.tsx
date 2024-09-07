@@ -16,8 +16,8 @@ import {
   BRAND_LIST,
   PERIOD_LIST,
   PRICE_LIST,
-  SOURCE_TYPE_LIST,
   REGION_LIST,
+  SOURCE_TYPE_LIST,
 } from "@/types/constants";
 
 const WebFilters = ({
@@ -39,7 +39,6 @@ const WebFilters = ({
 
   const handleBrand = useCallback(
     (value: string): void => {
-      console.log(value);
       let prevArr = activeBrand;
       if (value === "ALL") {
         prevArr = ["ALL"];
@@ -171,7 +170,6 @@ const WebFilters = ({
     setTown(event.target.value);
     const inputText = event.target.value;
     setText(inputText);
-    console.log(event.target.value);
   };
 
   const searchRegion = useCallback((): void => {

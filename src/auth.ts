@@ -2,14 +2,8 @@ import NextAuth, { type User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { decodeToken } from "react-jwt";
 import { type JWT } from "@auth/core/jwt";
-import axios, {
-  type AxiosResponse,
-  type AxiosResponseHeaders,
-  type RawAxiosResponseHeaders,
-} from "axios";
-import { z } from "zod";
+import axios, { type AxiosResponse } from "axios";
 import { CallbackRouteError } from "@auth/core/errors";
-import { type UserResponse } from "@/types";
 
 export interface IUserDecodedToken {
   role: string;
@@ -21,58 +15,89 @@ export interface IUserDecodedToken {
 
 function shouldUpdateToken(token: JWT): boolean {
   if (Date.now() < token.exp * 1000 - 10000) {
-    // console.log(
-    //   "토큰 업데이트 안해도 됨. ",
-    //   Date.now(),
-    //   Date.now() < token.exp * 1000 - 10000,
-    // );
     return false;
   }
-  console.log(
-    "====================== 토큰 업데이트 시작 ========================",
-  );
+  console.log("============ 토큰 업데이트 시작 ============");
   return true;
 }
 
+const getUsers = async (credentials: Partial<any>): Promise<User | null> => {
+  const { email, password } = credentials;
+  const response: AxiosResponse = await axios.post(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/login`,
+    {
+      email,
+      password,
+    },
+  );
+
+  if (response === null || response.status !== 200) {
+    throw new CallbackRouteError("UNAUTHORIZED");
+  }
+
+  const headers = response.headers;
+  const accessToken: string = headers.authorization;
+  if (accessToken === null || accessToken === undefined) {
+    throw new CallbackRouteError("accessToken not found");
+  }
+  const userDecodedToken: IUserDecodedToken | null = decodeToken(accessToken);
+  if (userDecodedToken == null) {
+    throw new CallbackRouteError("JWT decoded error");
+  }
+
+  const cookie = headers["set-cookie"];
+  if (cookie === undefined) {
+    throw new CallbackRouteError("refreshToken not found");
+  }
+  const match = cookie[0].match(/refresh=([^;]*)/);
+  const refreshToken = match !== null ? match[1] : "";
+
+  return {
+    email: email ?? "",
+    name: email ?? "",
+    role: userDecodedToken.role ?? "",
+    exp: userDecodedToken.exp ?? "",
+    accessToken,
+    refreshToken,
+  };
+};
+
 const refreshAccessToken = async (token: JWT): Promise<JWT | null> => {
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/reissue`;
-  console.log("refresh url: ", url, token.refreshToken);
 
   try {
     const response = await fetch(url, {
       method: "POST",
       headers: {
         Accept: "application/json",
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         Cookie: `refresh=${token.refreshToken}`,
       },
       cache: "force-cache",
     });
 
-    console.log(
-      "response: ",
-      response.status,
-      response.headers.get("Set-Cookie"),
-    );
-
     if (!response.ok) {
       throw new Error("Failed to refresh access token");
     }
+
     const newAccessToken = response.headers.get("Authorization");
-    const userDecodedToken: IUserDecodedToken | null =
-      decodeToken(newAccessToken);
-    if (!userDecodedToken) {
+    let userDecodedToken: IUserDecodedToken | null = null;
+
+    if (newAccessToken !== null) {
+      userDecodedToken = decodeToken(newAccessToken);
+    }
+
+    if (userDecodedToken === null) {
       throw Error("JWT decoded error");
     }
 
     const cookies = response.headers.get("Set-Cookie");
     const match = cookies?.match(/refresh=([^;]*)/);
-    const newRefreshToken = match ? match[1] : null;
+    const newRefreshToken = match != null ? match[1] : null;
 
-    // return user object with their profile data
     return {
       ...token,
-      exp: userDecodedToken.exp ?? "",
+      exp: userDecodedToken?.exp ?? 0,
       accessToken: newAccessToken ?? "",
       refreshToken: newRefreshToken ?? "",
       error: null,
@@ -90,7 +115,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   session: {
     strategy: "jwt",
-    maxAge: 60 * 30, // sec
+    maxAge: 60 * 60, // sec
   },
   providers: [
     Credentials({
@@ -98,66 +123,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: {},
         password: {},
       },
-      authorize: async (credentials): Promise<User | null> => {
-        const parsedCredentials = z
-          .object({
-            email: z.string().email(),
-            password: z.string().min(3, "Must be a valid email address"),
-          })
-          .safeParse(credentials);
-
-        try {
-          if (!parsedCredentials.success) {
-            throw new CallbackRouteError("Invalid Credentials");
-          }
-          const { email, password } = parsedCredentials.data;
-
-          const response: AxiosResponse = await axios.post(
-            "http://localhost:8080/login",
-            {
-              email,
-              password,
-            },
-          );
-
-          if (response === null || response.status !== 200) {
-            throw new CallbackRouteError("로그인 실패! 관리자에게 문의하세요");
-          }
-
-          const headers: RawAxiosResponseHeaders | AxiosResponseHeaders =
-            response.headers;
-          const accessToken = headers.get("authorization") as string;
-          if (accessToken === null || accessToken === undefined) {
-            throw new CallbackRouteError("accessToken not found");
-          }
-          const userDecodedToken: IUserDecodedToken | null =
-            decodeToken(accessToken);
-          if (userDecodedToken == null) {
-            throw new CallbackRouteError("JWT decoded error");
-          }
-
-          const cookie = headers["set-cookie"];
-          if (cookie === undefined) {
-            throw new CallbackRouteError("refreshToken not found");
-          }
-          const match = cookie[0].match(/refresh=([^;]*)/);
-          const refreshToken = match !== null ? match[1] : "";
-
-          return {
-            email: email ?? "",
-            name: email ?? "",
-            role: userDecodedToken.role ?? "",
-            exp: userDecodedToken.exp ?? "",
-            accessToken,
-            refreshToken,
-          };
-        } catch (error) {
-          if (axios.isAxiosError(error)) {
-            console.error("로그인 싪패: ", error.response?.data);
-            const { status } = error.response?.data as UserResponse;
-            throw new Error(status);
-          }
-        }
+      authorize: async (credentials) => {
+        return await getUsers(credentials);
       },
     }),
   ],
@@ -190,27 +157,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
         token = Object.assign(token, newTokenInfo);
-        console.log(
-          "토큰갱신: ",
-          new Date(token.exp * 1000),
-          token.refreshToken,
-        );
       }
       return token;
     },
     session: async ({ session, token }) => {
       // console.log("콜백 session: ", session, ", token:", token);
       if (token === null) {
-        console.log("콜백 세션에 토큰 없음. token: ", token);
         return token;
       }
       session = Object.assign(session, token);
       session.expires = new Date(token.exp * 1000);
       return session;
     },
-    // async redirect({ url, baseUrl }) {
-    //   console.log("baseUrl: ", baseUrl, ", url: ", url);
-    //   return url;
-    // },
   },
 });

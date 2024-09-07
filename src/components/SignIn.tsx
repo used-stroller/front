@@ -2,10 +2,10 @@
 
 import { signInWithCredentials } from "@/serverActions/auth";
 import styles from "@/styles/user.module.css";
-import { useState, useTransition } from "react";
+import { type ReactElement, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-export const SignIn = () => {
+export const SignIn = (): ReactElement => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -13,7 +13,6 @@ export const SignIn = () => {
   const submitLogin = (formdata: FormData): void => {
     startTransition(async () => {
       const response = await signInWithCredentials(formdata);
-      console.log("로그인페이지 응답 결과: ", response);
       if (response?.error === null) {
         router.push("/");
       }

@@ -18,7 +18,6 @@ export default function Menu(): ReactElement {
   const refreshSession = (): void => {
     startTransition(async () => {
       const session = await getSession();
-      console.log("menu session: ", session);
       if (session !== null) {
         setIsSession(true);
       }
@@ -29,6 +28,14 @@ export default function Menu(): ReactElement {
     startTransition(async () => {
       await signOutWithForm(formData);
       setIsSession(false);
+    });
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    submitSignOut(formData).catch((e) => {
+      console.error(e);
     });
   };
 
@@ -43,7 +50,7 @@ export default function Menu(): ReactElement {
       </Link>
       {isSession ? (
         <>
-          <form action={submitSignOut}>
+          <form onSubmit={handleSubmit}>
             <button type="submit">로그아웃</button>
           </form>
           <Link href="/mypage">마이페이지</Link>

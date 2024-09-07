@@ -38,7 +38,6 @@ const InfinityScroll = ({
           location.longitude,
           location.latitude,
         );
-        console.log("locations: ", locations);
         setDefaultRegion(locations);
         setLocationFetched(true);
       } else {
@@ -53,7 +52,6 @@ const InfinityScroll = ({
 
     getProductList(filter, defaultRegion)
       .then((response) => {
-        console.log("count: ", response.totalElements);
         setResultCount(response.totalElements);
         if (response.content.length === 0) {
           setHasMore(false);
