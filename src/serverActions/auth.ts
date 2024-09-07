@@ -7,7 +7,7 @@ import { CallbackRouteError } from "@auth/core/errors";
 import { type Session } from "next-auth";
 import { z } from "zod";
 
-const url = process.env.NEXT_PUBLIC_BASE_URL;
+const url = process.env.NEXT_PUBLIC_API_URL;
 
 export const getSession = async (): Promise<Session | null> => {
   return await auth();

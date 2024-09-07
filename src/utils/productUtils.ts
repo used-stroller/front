@@ -28,7 +28,9 @@ export const getProductList = async (
       "&detailAddress=" +
       defaultRegion.detailAddress;
   }
-  return await axiosClient.get(`/list${queryParams}`).then((r) => r.data);
+  return await axiosClient
+    .get(`/product/list${queryParams}`)
+    .then((r) => r.data);
 };
 
 export const getImageUrl = (imgSrc: string): string => {
