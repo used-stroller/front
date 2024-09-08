@@ -23,8 +23,9 @@ function shouldUpdateToken(token: JWT): boolean {
 
 const getUsers = async (credentials: Partial<any>): Promise<User | null> => {
   const { email, password } = credentials;
+
   const response: AxiosResponse = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/login`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/login`,
     {
       email,
       password,
@@ -63,7 +64,7 @@ const getUsers = async (credentials: Partial<any>): Promise<User | null> => {
 };
 
 const refreshAccessToken = async (token: JWT): Promise<JWT | null> => {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/reissue`;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/reissue`;
 
   try {
     const response = await fetch(url, {

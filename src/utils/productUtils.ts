@@ -8,7 +8,7 @@ import type {
 import { cleansedLevel1 } from "@/types/constants";
 
 const axiosClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

@@ -7,7 +7,7 @@ import { CallbackRouteError } from "@auth/core/errors";
 import { type Session } from "next-auth";
 import { z } from "zod";
 
-const url = process.env.NEXT_PUBLIC_API_URL;
+const url = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getSession = async (): Promise<Session | null> => {
   return await auth();
@@ -21,7 +21,7 @@ export const updateMyInfo = async (
   const address = formData.get("address");
   try {
     const response = await axios.post(
-      `${url}/mypage/update`,
+      `${url}/user/mypage/update`,
       {
         nickname,
         address,
@@ -43,7 +43,7 @@ export const updateMyInfo = async (
 export const getMyInfo = async (): Promise<MyUserType | null> => {
   const session = await auth();
   try {
-    const response = await axios.get(`${url}/mypage`, {
+    const response = await axios.get(`${url}/user/mypage`, {
       headers: { Authorization: session?.accessToken },
     });
     console.log(response.data);
@@ -125,7 +125,7 @@ export const signUpWithCredentials = async (
   }
 
   try {
-    const response = await axios.post(`${url}/signup`, {
+    const response = await axios.post(`${url}/user/signup`, {
       email,
       password,
     });
