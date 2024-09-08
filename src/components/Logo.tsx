@@ -13,9 +13,9 @@ export default function Logo(): JSX.Element {
     setLogo(
       window.matchMedia("(max-width: 600px)").matches ? (
         <Image
-          src="./images/logo_line.png"
+          src="./images/logo_simple.png"
           alt="중모차 로고"
-          width={193}
+          width={91}
           height={29}
           priority={true}
         />
