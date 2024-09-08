@@ -110,8 +110,9 @@ const refreshAccessToken = async (token: JWT): Promise<JWT | null> => {
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   pages: {
-    signIn: "/login",
+    signIn: "/signin",
     newUser: "/signup",
   },
   session: {
