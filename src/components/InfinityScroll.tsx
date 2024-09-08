@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 import Product from "@/components/Product";
-import { getLocation, getProductList, isMobile } from "@/utils/productUtils";
+import { getLocation, getProductList } from "@/utils/productUtils";
 import { useFilter } from "@/context/FilterContext";
 import Image from "next/image";
 import { type Content, type DefaultRegionType } from "@/types";
@@ -48,7 +48,7 @@ const InfinityScroll = ({
   }, [location]);
 
   const fetchMoreItems = useCallback((): void => {
-    if (isMobile() && !locationFetched) return;
+    // if (isMobile() && !locationFetched) return;
 
     getProductList(filter, defaultRegion)
       .then((response) => {
