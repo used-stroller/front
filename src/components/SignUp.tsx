@@ -19,7 +19,7 @@ export function SignUp(): ReactElement {
           setMessage("가입완료. 로그인 페이지로 이동...");
         }, 0);
         setTimeout(() => {
-          router.push("/login");
+          router.push("/signin");
         }, 1000);
       }
       inputRef.current?.focus();
