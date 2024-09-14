@@ -16,9 +16,9 @@ const getGeolocation = async (): Promise<Coordinates> => {
       (error) => {
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            alert(
-              "위치 정보 제공을 거부했습니다. 현재 위치 근처의 당근마켓 제품을 확인하려면 브라우저 설정에서 위치 권한을 허용해 주세요.",
-            );
+            // alert(
+            //   "위치 정보 제공을 거부했습니다. 현재 위치 근처의 당근마켓 제품을 확인하려면 브라우저 설정에서 위치 권한을 허용해 주세요.",
+            // );
             reject(new Error("위치 정보 제공을 거부했습니다."));
             break;
           case error.POSITION_UNAVAILABLE:
