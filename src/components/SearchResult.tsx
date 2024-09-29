@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 import { useFilter } from "@/context/FilterContext";
+import Link from "next/link";
 
 const SearchResult = ({
   resultCount,
@@ -62,6 +63,9 @@ const SearchResult = ({
         검색결과 <span className={styles.result_qty}>{count}</span> 개
       </div>
       <div className={styles.second_filter}>
+        <button>
+          <Link href={"/recommend"}>추천매물</Link>
+        </button>
         <button
           onClick={handleSecondFilters}
           className={
