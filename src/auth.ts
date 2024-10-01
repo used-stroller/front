@@ -1,9 +1,9 @@
 import NextAuth, { type User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { decodeToken } from "react-jwt";
-import { type JWT } from "@auth/core/jwt";
 import axios, { type AxiosResponse } from "axios";
 import { CallbackRouteError } from "@auth/core/errors";
+import { type JWT } from "next-auth/jwt";
 
 export interface IUserDecodedToken {
   role: string;
@@ -21,7 +21,7 @@ function shouldUpdateToken(token: JWT): boolean {
   return true;
 }
 
-const getUsers = async (credentials: any): Promise<User | null> => {
+const getUsers = async (credentials: Partial<any>): Promise<User | null> => {
   const { email, password } = credentials;
 
   const response: AxiosResponse = await axios.post(
@@ -37,7 +37,7 @@ const getUsers = async (credentials: any): Promise<User | null> => {
   }
 
   const headers = response.headers;
-  const accessToken: string = headers.authorization;
+  const accessToken: string = headers?.authorization;
   if (accessToken === null || accessToken === undefined) {
     throw new CallbackRouteError("accessToken not found");
   }
@@ -60,7 +60,7 @@ const getUsers = async (credentials: any): Promise<User | null> => {
     exp: userDecodedToken.exp ?? "",
     accessToken,
     refreshToken,
-  };
+  } satisfies User;
 };
 
 const refreshAccessToken = async (token: JWT): Promise<JWT | null> => {
@@ -72,6 +72,7 @@ const refreshAccessToken = async (token: JWT): Promise<JWT | null> => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         Cookie: `refresh=${token.refreshToken}`,
       },
       cache: "force-cache",
