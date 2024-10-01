@@ -21,7 +21,7 @@ function shouldUpdateToken(token: JWT): boolean {
   return true;
 }
 
-const getUsers = async (credentials: Partial<any>): Promise<User | null> => {
+const getUsers = async (credentials: any): Promise<User | null> => {
   const { email, password } = credentials;
 
   const response: AxiosResponse = await axios.post(

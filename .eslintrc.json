@@ -9,7 +9,6 @@
     "sourceType": "module"
   },
   "extends": [
-    "standard-with-typescript",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "plugin:jsx-a11y/recommended",
