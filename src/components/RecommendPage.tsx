@@ -10,23 +10,14 @@ import React, {
 import Product from "@/components/Product";
 import { useFilter } from "@/context/FilterContext";
 import Image from "next/image";
-import { type ProductRes, type Content } from "@/types";
+import { type Content } from "@/types";
+import { getRecommendProductList } from "@/utils/productUtils";
 
 const RecommendPage = (): ReactElement => {
   const { filter, handleFilter } = useFilter();
   const [products, setProducts] = useState<Content[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const elementRef = useRef<HTMLDivElement | null>(null);
-  const getRecommendProductList = async (
-    page = 0,
-    size = 20,
-  ): Promise<ProductRes> => {
-    const response = await fetch(
-      `http://localhost:8080/product/list/recommend?page=${page}&size=${size}`,
-    );
-    const data = await response.json();
-    return data;
-  };
 
   const fetchMoreItems = useCallback((): void => {
     // if (isMobile() && !locationFetched) return;

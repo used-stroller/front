@@ -198,6 +198,11 @@
   color: #FFFFFF
 }
 
+.second_filter>button.recommend {
+  background-color: #534A78;
+  color: #FFFFFF;
+}
+
 .product_container {
   display: flex;
   justify-content: center;

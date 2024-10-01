@@ -33,6 +33,15 @@ export const getProductList = async (
     .then((r) => r.data);
 };
 
+export const getRecommendProductList = async (
+  page = 0,
+  size = 20,
+): Promise<ProductRes> => {
+  return await axiosClient
+    .get(`/product/list/recommend?page=${page}&size=${size}`)
+    .then((r) => r.data);
+};
+
 export const getImageUrl = (imgSrc: string): string => {
   return imgSrc.startsWith("http") ? imgSrc : "/images/default_thumbnail.svg";
 };

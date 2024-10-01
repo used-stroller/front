@@ -63,7 +63,7 @@ const SearchResult = ({
         검색결과 <span className={styles.result_qty}>{count}</span> 개
       </div>
       <div className={styles.second_filter}>
-        <button>
+        <button className={styles.recommend}>
           <Link href={"/recommend"}>추천매물</Link>
         </button>
         <button
