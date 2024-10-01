@@ -9,6 +9,7 @@
     "sourceType": "module"
   },
   "extends": [
+    "eslint:recommended",
     "standard-with-typescript",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
