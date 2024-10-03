@@ -1,8 +1,7 @@
-import { type DefaultUser } from "next-auth";
-import { type DefaultSession } from "next-auth/src/core/types";
+import { type JWT as NextAuthJWT } from "next-auth/jwt";
 
 export declare module "next-auth" {
-  interface User extends DefaultUser {
+  interface User {
     email: string;
     name: string;
     role: string;
@@ -10,7 +9,7 @@ export declare module "next-auth" {
     refreshToken: string;
     exp: number;
   }
-  interface Session extends DefaultSession {
+  interface Session {
     name: string;
     email: string;
     accessToken: string;
@@ -23,8 +22,8 @@ export declare module "next-auth" {
   }
 }
 
-export declare module "@auth/core/jwt" {
-  interface JWT {
+export declare module "next-auth/jwt" {
+  interface JWT extends NextAuthJWT {
     name: string;
     email: string;
     accessToken: string;
