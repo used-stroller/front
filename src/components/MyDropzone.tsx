@@ -3,6 +3,7 @@
 import { type ReactElement } from "react";
 import styles from "@/styles/dropzone.module.css";
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 
 function MyDropzone(): ReactElement {
   const [images, setImages] = useState<Array<{ name: string; url: string }>>(
@@ -29,18 +30,13 @@ function MyDropzone(): ReactElement {
     }
   }
 
-  function uploadImages(): void {
-    console.log("images: ", images);
-  }
   function deleteImage(index): void{
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   }
 
   return (
     <div className={styles.card}>
-      <div className={styles.top}>
-        <p>Drag & Drop</p>
-      </div>
+      <div className={styles.top}></div>
       <div className="drag-area">
         <span
           className={styles.select}
@@ -55,7 +51,7 @@ function MyDropzone(): ReactElement {
             }
           }}
         >
-          Browse
+          <Image src="./images/camera.png" alt="photo" width={20} height={15} />
         </span>
         <input
           name="file"
@@ -91,9 +87,9 @@ function MyDropzone(): ReactElement {
           </div>
         ))}
       </div>
-      <button type="button" onClick={uploadImages}>
+      {/* <button type="button" onClick={uploadImages}>
         upload
-      </button>
+      </button> */}
     </div>
   );
 }

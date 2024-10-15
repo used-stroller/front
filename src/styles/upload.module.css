@@ -1,0 +1,64 @@
+.container {
+    text-align: center;
+}
+
+.title {
+    display: inline-block;
+}
+
+.price {
+    display:block;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+  }
+  
+  .checkbox {
+    display: none; /* 체크박스 숨기기 */
+  }
+
+
+  .checkboxLabel{
+
+  }
+
+  .option_container{
+ 
+  }
+
+  .option {
+    display: inline-block;
+  }
+
+  .textarea_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .textarea {
+    display: block;
+    width: 30%;
+    min-height: 150px;
+    resize: none; /* 수동 크기 조절 불가 */
+    overflow: hidden; /* 내용이 넘칠 경우 스크롤바 숨기기 */
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 8px;
+    max-height: 400px; /* 최대 높이 설정 (원하는 값으로 조정 가능) */
+  }
+
+  .complete_button {
+    margin-top: 50px;
+    background-color: #534A78;
+    color: #FFFFFF;
+    width: 30%;
+    border-radius: 50px;
+    padding: 8px 12px;
+    margin-left: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  }
