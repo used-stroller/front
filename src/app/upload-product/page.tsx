@@ -5,6 +5,7 @@ import Logo from "@/components/Logo";
 import MyDropzone from "@/components/MyDropzone";
 import { type ReactElement, useState, type ChangeEvent, useRef } from "react";
 import Image from "next/image";
+import { FaCamera } from "react-icons/fa"; // 카메라 아이콘 import
 
 export default function Recommend(): ReactElement {
   const [selectedStatus, setSelectedStatus] = useState<string>("새상품");
