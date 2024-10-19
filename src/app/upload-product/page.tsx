@@ -5,7 +5,6 @@ import Logo from "@/components/Logo";
 import MyDropzone from "@/components/MyDropzone";
 import { type ReactElement, useState, type ChangeEvent, useRef } from "react";
 import Image from "next/image";
-import { FaCamera } from "react-icons/fa"; // 카메라 아이콘 import
 
 export default function Recommend(): ReactElement {
   const [selectedStatus, setSelectedStatus] = useState<string>("새상품");
@@ -43,86 +42,99 @@ export default function Recommend(): ReactElement {
       </div>
       <div className={uploadCss.container}>
         <MyDropzone />
-        <div>
-          <p >제목</p>
-          <div className={uploadCss.title}>
-            <input className={uploadCss.title_input}></input>
+        <div className={uploadCss.product_detail_container}>
+          <p className={uploadCss.title_p}>제목</p>
+          <div className={uploadCss.title_div}>
+            <input className={uploadCss.input_field}></input>
           </div>
           <div className={uploadCss.price}>
             <input
-              className={uploadCss.price_input}
+              className={uploadCss.input_field}
               placeholder="₩ 가격을 입력해 주세요"
             ></input>
           </div>
-          <div className={uploadCss.buy_status}>
-          <label>
-              <input
-                type="radio" // 라디오 버튼 타입
-                name="buy_status"
-                value="새상품" // value에 큰따옴표 추가
-                checked={selectedStatus === "새상품"}
-                onChange={handleStatusChange}
-              />
-              새상품
-            </label>
-            <label>
-              <input
-                type="radio" // 라디오 버튼 타입
-                name="buy_status"
-                value="중고" // value에 큰따옴표 추가
-                checked={selectedStatus === "중고"}
-                onChange={handleStatusChange}
-              />
-              중고
-            </label>
+          <div className={uploadCss.buy_status_div}>
+            <p className={uploadCss.buy_status_p}>구입상태</p>
+            <div className={uploadCss.buy_status}>
+              <label>
+                <input
+                  className={uploadCss.input_radio}
+                  type="radio" // 라디오 버튼 타입
+                  name="buy_status"
+                  value="새상품" // value에 큰따옴표 추가
+                  checked={selectedStatus === "새상품"}
+                  onChange={handleStatusChange}
+                />
+                새상품
+              </label>
+              <label>
+                <input
+                  className={uploadCss.input_radio}
+                  type="radio" // 라디오 버튼 타입
+                  name="buy_status"
+                  value="중고" // value에 큰따옴표 추가
+                  checked={selectedStatus === "중고"}
+                  onChange={handleStatusChange}
+                />
+                중고
+              </label>
+            </div>
           </div>
 
-          <div className={uploadCss.usePeriod}>
-            <p>사용기간</p>
-            <label>
-              <input
-                type="radio" // 라디오 버튼 타입
-                name="period"
-                value="1년이하" // value에 큰따옴표 추가
-                checked={selectedPeriod === "1년이하"}
-                onChange={handlePeriodChange}
-              />
-              1년이하
-            </label>
-            <label>
-              <input
-                type="radio" // 라디오 버튼 타입
-                name="period"
-                value="2년이하" // value에 큰따옴표 추가
-                checked={selectedPeriod === "2년이하"}
-                onChange={handlePeriodChange}
-              />
-              2년이하
-            </label>
-            <label>
-              <input
-                type="radio" // 라디오 버튼 타입
-                name="period"
-                value="3년이하" // value에 큰따옴표 추가
-                checked={selectedPeriod === "3년이하"}
-                onChange={handlePeriodChange}
-              />
-              3년이하
-            </label>
-            <label>
-              <input
-                type="radio" // 라디오 버튼 타입
-                name="period"
-                value="3년이상" // value에 큰따옴표 추가
-                checked={selectedPeriod === "3년이상"}
-                onChange={handlePeriodChange}
-              />
-              3년이상
-            </label>
+          <div>
+            <p className={uploadCss.use_period_p}>사용기간</p>
+            <div className={uploadCss.use_period}>
+              <label>
+                <input
+                  className={uploadCss.input_radio}
+                  type="radio" // 라디오 버튼 타입
+                  name="period"
+                  value="1년이하" // value에 큰따옴표 추가
+                  checked={selectedPeriod === "1년이하"}
+                  onChange={handlePeriodChange}
+                />
+                1년이하
+              </label>
+              <label>
+                <input
+                  className={uploadCss.input_radio}
+                  type="radio" // 라디오 버튼 타입
+                  name="period"
+                  value="2년이하" // value에 큰따옴표 추가
+                  checked={selectedPeriod === "2년이하"}
+                  onChange={handlePeriodChange}
+                />
+                2년이하
+              </label>
+              <label>
+                <input
+                  className={uploadCss.input_radio}
+                  type="radio" // 라디오 버튼 타입
+                  name="period"
+                  value="3년이하" // value에 큰따옴표 추가
+                  checked={selectedPeriod === "3년이하"}
+                  onChange={handlePeriodChange}
+                />
+                3년이하
+              </label>
+              <label>
+                <input
+                  className={uploadCss.input_radio}
+                  type="radio" // 라디오 버튼 타입
+                  name="period"
+                  value="3년이상" // value에 큰따옴표 추가
+                  checked={selectedPeriod === "3년이상"}
+                  onChange={handlePeriodChange}
+                />
+                3년이상
+              </label>
+            </div>
           </div>
 
           {/* ==============================option======================== */}
           <div className={uploadCss.option_container}>
+            <p className={uploadCss.option_p}>구성품</p>
+            <div className={uploadCss.option_table}>
             <div className={uploadCss.option}>
               <input
                 type="checkbox"
@@ -230,32 +242,6 @@ export default function Recommend(): ReactElement {
             <div className={uploadCss.option}>
               <input
                 type="checkbox"
-                value="parasol"
-                className={uploadCss.checkbox}
-                onChange={() => {
-                  handleOptionChange("parasol");
-                }}
-                checked={selectedOptions.includes("parasol")}
-              />
-              <Image
-                src={
-                  selectedOptions.includes("parasol")
-                    ? "/images/parasol.png"
-                    : "/images/cupholder.png"
-                }
-                className={uploadCss.image}
-                onClick={() => {
-                  handleOptionChange("parasol");
-                }}
-                alt={"cupholder"}
-                width={50}
-                height={50}
-              />
-              <p>파라솔</p>
-            </div>
-            <div className={uploadCss.option}>
-              <input
-                type="checkbox"
                 value="raincover"
                 className={uploadCss.checkbox}
                 onChange={() => {
@@ -305,21 +291,22 @@ export default function Recommend(): ReactElement {
               />
               <p>방풍커버</p>
             </div>
-            <div className={uploadCss.textarea_container}>
-              <textarea
-                ref={textareaRef}
-                value={text}
-                onChange={handleInputChange}
-                rows={1} // 기본 줄 크기
-                className={uploadCss.textarea}
-                placeholder={
-                  "게시글 내용을 작성해 주세요. \n추가 옵션이 이나, 제품설명을 해주시면 좋아요!"
-                }
-              />
             </div>
-            <div>
-              <button className={uploadCss.complete_button}>작성완료</button>
-            </div>
+          </div>
+          <div className={uploadCss.textarea_container}>
+            <textarea
+              ref={textareaRef}
+              value={text}
+              onChange={handleInputChange}
+              rows={1} // 기본 줄 크기
+              className={uploadCss.textarea}
+              placeholder={
+                "게시글 내용을 작성해 주세요. \n추가 옵션이 이나, 제품설명을 해주시면 좋아요!"
+              }
+            />
+          </div>
+          <div>
+            <button className={uploadCss.complete_button}>작성완료</button>
           </div>
         </div>
       </div>

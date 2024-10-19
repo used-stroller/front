@@ -1,17 +1,13 @@
 
 
 .card {
-    display: flex;
-    overflow-x: scroll; /* 가로 스크롤 가능 */
-    white-space: nowrap; /* 가로로 나열 */
-
     /* scrollbar-width: none; Firefox에서 스크롤바 숨기기 */
     /* -ms-overflow-style: none; IE 및 Edge에서 스크롤바 숨기기 */
     padding: 10px;
     box-shadow: 0 0 5px #534A78;
     border-radius: 5px;
     width: 30%;
-    
+    touch-action: pan-y; /* 터치스크린에서 세로로 드래그 가능 */
 }
 
 .card::-webkit-scrollbar {
@@ -76,16 +72,19 @@
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
+    gap:3.7%;
     flex-wrap: wrap;
     max-height: 200px;
     overflow-y: auto;
     margin-top: 10px;
+    overflow-y: hidden; /* 세로 스크롤 숨김 */
+    touch-action: pan-y; /*터치스크린에서 세로로 드래그 가능 */
 }
 
 .card .container .image {
-    width: 75px;
+    width: 80px; /* 3개가 들어갈 수 있도록 너비 조정 */
+    height: 80px; /* 비율 유지 */
     margin-right: 5px;
-    height: 75px;
     position: relative;
     margin-bottom: 8px;
 }
@@ -125,6 +124,7 @@
 }
 
 .camera_container {
+    margin-top: 12px;;
     display: flex;
     justify-content: center;
     align-items: center;

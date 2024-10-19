@@ -1,15 +1,25 @@
 "use client";
 
-import { type ReactElement } from "react";
+import { useEffect, type ReactElement } from "react";
 import styles from "@/styles/dropzone.module.css";
 import React, { useState, useRef } from "react";
 import { FaCamera } from "react-icons/fa"; // 카메라 아이콘 import
 import { type image } from "@/types";
 import axios from "axios";
+import { enableDragScroll } from "@/utils/enableDragScroll";
 
 function MyDropzone(): ReactElement {
   const [images, setImages] = useState<image[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+
+    if (containerRef.current !== null) {
+      // 드래그 스크롤 함수 적용
+      enableDragScroll(containerRef.current);
+    }
+  }, []);
   function selectFiles(): void {
     fileInputRef.current?.click();
   }
@@ -56,7 +66,7 @@ function MyDropzone(): ReactElement {
           headers: {
             "Content-Type": "multipart/form-data", // 파일 업로드를 위해 Content-Type을 설정
           },
-        }
+        },
       );
       if (response.status === 200) {
         console.log("Upload successful!");
@@ -77,7 +87,6 @@ function MyDropzone(): ReactElement {
 
   return (
     <div className={styles.card}>
-      <div className={styles.top}></div>
       <div className={styles.select_zone}>
         <div
           className={styles.select}
@@ -96,7 +105,7 @@ function MyDropzone(): ReactElement {
             <FaCamera className={styles.camera_icon} />
           </div>
         </div>
-        <button onClick={handleUpload}>upload</button>
+        {/* <button onClick={handleUpload}>upload</button> */}
         <input
           name="file"
           type="file"
@@ -106,7 +115,7 @@ function MyDropzone(): ReactElement {
           onChange={onFileSelect}
         ></input>
       </div>
-      <div className={styles.container}>
+      <div className={styles.container} ref={containerRef}>
         {images.map((images, index: number) => (
           <div className={styles.image} key={index}>
             <span
