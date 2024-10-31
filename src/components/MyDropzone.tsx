@@ -7,14 +7,15 @@ import { FaCamera } from "react-icons/fa"; // 카메라 아이콘 import
 import { type image } from "@/types";
 import axios from "axios";
 import { enableDragScroll } from "@/utils/enableDragScroll";
+import { useUploadForm } from "@/utils/useUploadForm";
 
 function MyDropzone(): ReactElement {
-  const [images, setImages] = useState<image[]>([]);
+  const { images, setImages } = useUploadForm();
+  // const [images, setImages] = useState<image[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-
     if (containerRef.current !== null) {
       // 드래그 스크롤 함수 적용
       enableDragScroll(containerRef.current);
@@ -26,64 +27,27 @@ function MyDropzone(): ReactElement {
   function onFileSelect(event: React.ChangeEvent<HTMLInputElement>): void {
     const files = event.target.files;
     if (files == null || files.length === 0) return;
+    const newImages = []; // 새로운 이미지 배열 생성
     for (let i = 0; i < files.length; i++) {
       if (files[i].type.split("/")[0] !== "image") continue;
       if (!images.some((e) => e.name === files[i].name)) {
-        setImages((prevImages) => [
-          ...prevImages,
-          {
-            name: files[i].name,
-            url: URL.createObjectURL(files[i]),
-            file: files[i],
-          },
-        ]);
+        newImages.push({
+          name: files[i].name,
+          url: URL.createObjectURL(files[i]),
+          file: files[i],
+        });
       }
+    }
+    // 새로운 이미지가 있을 경우 setImages에 배열을 직접 전달
+    if (newImages.length > 0) {
+      setImages([...images, ...newImages]); // 배열을 직접 전달
     }
   }
 
   function deleteImage(index: number): void {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    const updatedImages = images.filter((_, i) => i !== index);
+    setImages(updatedImages); // 배열을 직접 할당
   }
-
-  async function uploadImages(): Promise<void> {
-    console.log("upload_called");
-    const formData = new FormData();
-    // 선택된 이미지 파일을 FormData에 추가 
-    images.forEach((image: image) => {
-      formData.append("files", image.file); // 서버로 전송할 때 key이름은 서버에 맞게 설정 
-    });
-
-    // FormData 로그 출력
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value); // key와 value 출력
-    }
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/product/image/upload",
-        formData, // formData를 두 번째 인자로 직접 전달
-        {
-          headers: {
-            "Content-Type": "multipart/form-data", // 파일 업로드를 위해 Content-Type을 설정
-          },
-        },
-      );
-      if (response.status === 200) {
-        console.log("Upload successful!");
-        // 성공 처리
-      } else {
-        console.error("Upload failed");
-      }
-    } catch (error) {
-      console.error("Error uploading files:", error);
-    }
-  }
-
-  const handleUpload = () => {
-    uploadImages().catch((error) => {
-      console.error("Upload failed:", error);
-    });
-  };
 
   return (
     <div className={styles.card}>

@@ -4,7 +4,9 @@
     /* scrollbar-width: none; Firefox에서 스크롤바 숨기기 */
     /* -ms-overflow-style: none; IE 및 Edge에서 스크롤바 숨기기 */
     padding: 10px;
-    box-shadow: 0 0 5px #534A78;
+    border: 2px solid #534A78;
+    background-color: #FFFFFF;
+
     border-radius: 5px;
     width: 30%;
     touch-action: pan-y; /* 터치스크린에서 세로로 드래그 가능 */

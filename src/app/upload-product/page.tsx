@@ -5,311 +5,403 @@ import Logo from "@/components/Logo";
 import MyDropzone from "@/components/MyDropzone";
 import { type ReactElement, useState, type ChangeEvent, useRef } from "react";
 import Image from "next/image";
+import { useUploadForm } from "@/utils/useUploadForm";
+import axios from "axios";
 
 export default function Recommend(): ReactElement {
-  const [selectedStatus, setSelectedStatus] = useState<string>("새상품");
-  const [selectedPeriod, setSelectedPeriod] = useState<string>("1년이하");
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [text, setText] = useState<string>("");
+  const {
+    images,
+    selectedStatus,
+    selectedPeriod,
+    selectedOptions,
+    text,
+    setSelectedStatus,
+    setSelectedPeriod,
+    setSelectedOptions,
+    setText,
+  } = useUploadForm();
+
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const handlePeriodChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setSelectedPeriod(event.target.value);
+    console.log("selectedPeriod", selectedPeriod);
+  };
+
+  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setTitle(event.target.value);
+    console.log("title", title);
+  };
+
+  const handlePriceChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setPrice(event.target.value);
+    console.log("price", price);
+  };
 
   const handleStatusChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setSelectedStatus(event.target.value);
+    console.log("selectedStatus", selectedStatus);
   };
-  const handlePeriodChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setSelectedPeriod(event.target.value);
-  };
+
   const handleOptionChange = (value: string): void => {
-    setSelectedOptions((prev) =>
-      prev.includes(value)
+    setSelectedOptions((prev: string[]) => {
+      // 이전 값이 배열인지 확인
+      if (!Array.isArray(prev)) {
+        return [value]; // 상태가 비정상일 경우 배열로 초기화
+      }
+
+      const newOptions = prev.includes(value)
         ? prev.filter((option) => option !== value)
-        : [...prev, value],
-    );
+        : [...prev, value];
+
+      console.log("New options (after update):", newOptions); // 업데이트된 상태 확인
+      return newOptions; // 항상 배열 반환
+    });
   };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
-    // 입력 내용에 맞게 텍스트 박스의 높이 조절 
+    // 입력 내용에 맞게 텍스트 박스의 높이 조절
     if (textareaRef.current != null) {
       textareaRef.current.style.height = "auto"; // 높이 초기화
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 내용에 맞춰 높이 조정 
     }
+    console.log("text", text);
+  }
+
+  const submit = (): void => {
+    void handleSubmit();
+  }
+
+  async function handleSubmit(): Promise<void> {
+    console.log("submit");
+    const formData = new FormData();
+    // 선택된 이미지 파일을 FormData에 추가
+    images.forEach((image: typeof image) => {
+      formData.append("imageList", image.file); // 서버로 전송할 때 key이름은 서버에 맞게 설정 
+    });
+
+    formData.append("title", title);
+    formData.append("price", price);
+    formData.append("buyStatus", selectedStatus);
+    formData.append("usePeriod", selectedPeriod);
+    selectedOptions.forEach((option: string) => {
+      formData.append("options", option);
+    });
+    formData.append("content", text);
+
+    // FormData 로그 출력
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value); // key와 value 출력
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/product/register",
+        formData, // formData를 두 번째 인자로 직접 전달
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // 파일 업로드를 위해 Content-Type을 설정
+          },
+        },
+      );
+      if (response.status === 200) {
+        console.log("Upload successful!");
+        // 성공 처리
+      } else {
+        console.error("Upload failed");
+      }
+    } catch (error) {
+      console.error("Error uploading files:", error);
+    }
   }
 
   return (
-    <div className={styles.contents}>
-      <div className={styles.header_wrapper}>
-        <Logo />
-      </div>
-      <div className={uploadCss.container}>
-        <MyDropzone />
-        <div className={uploadCss.product_detail_container}>
-          <p className={uploadCss.title_p}>제목</p>
-          <div className={uploadCss.title_div}>
-            <input className={uploadCss.input_field}></input>
-          </div>
-          <div className={uploadCss.price}>
-            <input
-              className={uploadCss.input_field}
-              placeholder="₩ 가격을 입력해 주세요"
-            ></input>
-          </div>
-          <div className={uploadCss.buy_status_div}>
-            <p className={uploadCss.buy_status_p}>구입상태</p>
-            <div className={uploadCss.buy_status}>
-              <label>
-                <input
-                  className={uploadCss.input_radio}
-                  type="radio" // 라디오 버튼 타입
-                  name="buy_status"
-                  value="새상품" // value에 큰따옴표 추가
-                  checked={selectedStatus === "새상품"}
-                  onChange={handleStatusChange}
-                />
-                새상품
-              </label>
-              <label>
-                <input
-                  className={uploadCss.input_radio}
-                  type="radio" // 라디오 버튼 타입
-                  name="buy_status"
-                  value="중고" // value에 큰따옴표 추가
-                  checked={selectedStatus === "중고"}
-                  onChange={handleStatusChange}
-                />
-                중고
-              </label>
+    <form onSubmit={submit}>
+      <div className={styles.contents}>
+        <div className={styles.header_wrapper}>
+          <Logo />
+        </div>
+        <div className={uploadCss.container}>
+          <MyDropzone />
+          <div className={uploadCss.product_detail_container}>
+            <p className={uploadCss.title_p}>제목</p>
+            <div className={uploadCss.title_div}>
+              <input
+                className={uploadCss.input_field}
+                onInput={handleTitleChange}
+              ></input>
             </div>
-          </div>
+            <div className={uploadCss.price_div}>
+              <span className={uploadCss.fixed_char}>₩</span>
+              <input
+                className={`${uploadCss.input_field} ${uploadCss.input_price}`}
+                placeholder="가격을 입력해 주세요"
+                onChange={handlePriceChange}
+              ></input>
+            </div>
+            <div className={uploadCss.buy_status_div}>
+              <p className={uploadCss.buy_status_p}>구입상태</p>
+              <div className={uploadCss.buy_status}>
+                <label>
+                  <input
+                    className={uploadCss.input_radio}
+                    type="radio" // 라디오 버튼 타입
+                    name="buy_status"
+                    value="새상품" // value에 큰따옴표 추가
+                    checked={selectedStatus === "새상품"}
+                    onChange={handleStatusChange}
+                  />
+                  새상품
+                </label>
+                <label>
+                  <input
+                    className={uploadCss.input_radio}
+                    type="radio" // 라디오 버튼 타입
+                    name="buy_status"
+                    value="중고" // value에 큰따옴표 추가
+                    checked={selectedStatus === "중고"}
+                    onChange={handleStatusChange}
+                  />
+                  중고
+                </label>
+              </div>
+            </div>
 
-          <div>
-            <p className={uploadCss.use_period_p}>사용기간</p>
-            <div className={uploadCss.use_period}>
-              <label>
-                <input
-                  className={uploadCss.input_radio}
-                  type="radio" // 라디오 버튼 타입
-                  name="period"
-                  value="1년이하" // value에 큰따옴표 추가
-                  checked={selectedPeriod === "1년이하"}
-                  onChange={handlePeriodChange}
-                />
-                1년이하
-              </label>
-              <label>
-                <input
-                  className={uploadCss.input_radio}
-                  type="radio" // 라디오 버튼 타입
-                  name="period"
-                  value="2년이하" // value에 큰따옴표 추가
-                  checked={selectedPeriod === "2년이하"}
-                  onChange={handlePeriodChange}
-                />
-                2년이하
-              </label>
-              <label>
-                <input
-                  className={uploadCss.input_radio}
-                  type="radio" // 라디오 버튼 타입
-                  name="period"
-                  value="3년이하" // value에 큰따옴표 추가
-                  checked={selectedPeriod === "3년이하"}
-                  onChange={handlePeriodChange}
-                />
-                3년이하
-              </label>
-              <label>
-                <input
-                  className={uploadCss.input_radio}
-                  type="radio" // 라디오 버튼 타입
-                  name="period"
-                  value="3년이상" // value에 큰따옴표 추가
-                  checked={selectedPeriod === "3년이상"}
-                  onChange={handlePeriodChange}
-                />
-                3년이상
-              </label>
+            <div>
+              <p className={uploadCss.use_period_p}>사용기간</p>
+              <div className={uploadCss.use_period}>
+                <label>
+                  <input
+                    className={uploadCss.input_radio}
+                    type="radio" // 라디오 버튼 타입
+                    name="period"
+                    value="1" // value에 큰따옴표 추가
+                    checked={selectedPeriod === "1"}
+                    onChange={handlePeriodChange}
+                  />
+                  1년이하
+                </label>
+                <label>
+                  <input
+                    className={uploadCss.input_radio}
+                    type="radio" // 라디오 버튼 타입
+                    name="period"
+                    value="2" // value에 큰따옴표 추가
+                    checked={selectedPeriod === "2"}
+                    onChange={handlePeriodChange}
+                  />
+                  2년이하
+                </label>
+                <label>
+                  <input
+                    className={uploadCss.input_radio}
+                    type="radio" // 라디오 버튼 타입
+                    name="period"
+                    value="3" // value에 큰따옴표 추가
+                    checked={selectedPeriod === "3"}
+                    onChange={handlePeriodChange}
+                  />
+                  3년이하
+                </label>
+                <label>
+                  <input
+                    className={uploadCss.input_radio}
+                    type="radio" // 라디오 버튼 타입
+                    name="period"
+                    value="4" // value에 큰따옴표 추가
+                    checked={selectedPeriod === "4"}
+                    onChange={handlePeriodChange}
+                  />
+                  3년이상
+                </label>
+              </div>
             </div>
-          </div>
 
-          {/* ==============================option======================== */}
-          <div className={uploadCss.option_container}>
-            <p className={uploadCss.option_p}>구성품</p>
-            <div className={uploadCss.option_table}>
-            <div className={uploadCss.option}>
-              <input
-                type="checkbox"
-                value="cupholder"
-                className={uploadCss.checkbox}
-                onChange={() => {
-                  handleOptionChange("cupholder");
-                }}
-                checked={selectedOptions.includes("cupholder")}
-              />
-              <Image
-                src={
-                  selectedOptions.includes("cupholder")
-                    ? "/images/cupholder.png"
-                    : "/images/bassinet.png"
+            {/* ==============================option======================== */}
+            <div className={uploadCss.option_container}>
+              <p className={uploadCss.option_p}>구성품(정품)</p>
+              <div className={uploadCss.option_table}>
+                <div className={uploadCss.option}>
+                  <input
+                    type="checkbox"
+                    value="cupholder"
+                    className={uploadCss.checkbox}
+                    onChange={() => {
+                      handleOptionChange("cupholder");
+                    }}
+                    checked={selectedOptions.includes("cupholder")}
+                  />
+                  <Image
+                    src={
+                      selectedOptions.includes("cupholder")
+                        ? "/images/cupholder.png"
+                        : "/images/bassinet.png"
+                    }
+                    className={uploadCss.image}
+                    onClick={() => {
+                      handleOptionChange("cupholder");
+                    }}
+                    alt={"cupholder"}
+                    width={50}
+                    height={50}
+                  />
+                  <p>컵홀더</p>
+                </div>
+                <div className={uploadCss.option}>
+                  <input
+                    type="checkbox"
+                    value="bassinet"
+                    className={uploadCss.checkbox}
+                    onChange={() => {
+                      handleOptionChange("bassinet");
+                    }}
+                    checked={selectedOptions.includes("bassinet")}
+                  />
+                  <Image
+                    src={
+                      selectedOptions.includes("bassinet")
+                        ? "/images/bassinet.png"
+                        : "/images/cupholder.png"
+                    }
+                    className={uploadCss.image}
+                    onClick={() => {
+                      handleOptionChange("bassinet");
+                    }}
+                    alt={"cupholder"}
+                    width={50}
+                    height={50}
+                  />
+                  <p>베시넷</p>
+                </div>
+                <div className={uploadCss.option}>
+                  <input
+                    type="checkbox"
+                    value="footmuff"
+                    className={uploadCss.checkbox}
+                    onChange={() => {
+                      handleOptionChange("footmuff");
+                    }}
+                    checked={selectedOptions.includes("footmuff")}
+                  />
+                  <Image
+                    src={
+                      selectedOptions.includes("footmuff")
+                        ? "/images/footmuff.png"
+                        : "/images/cupholder.png"
+                    }
+                    className={uploadCss.image}
+                    onClick={() => {
+                      handleOptionChange("footmuff");
+                    }}
+                    alt={"cupholder"}
+                    width={50}
+                    height={50}
+                  />
+                  <p>풋머프</p>
+                </div>
+                <div className={uploadCss.option}>
+                  <input
+                    type="checkbox"
+                    value="moskito"
+                    className={uploadCss.checkbox}
+                    onChange={() => {
+                      handleOptionChange("moskito");
+                    }}
+                    checked={selectedOptions.includes("moskito")}
+                  />
+                  <Image
+                    src={
+                      selectedOptions.includes("moskito")
+                        ? "/images/moskito.png"
+                        : "/images/cupholder.png"
+                    }
+                    className={uploadCss.image}
+                    onClick={() => {
+                      handleOptionChange("moskito");
+                    }}
+                    alt={"cupholder"}
+                    width={50}
+                    height={50}
+                  />
+                  <p>모기장</p>
+                </div>
+                <div className={uploadCss.option}>
+                  <input
+                    type="checkbox"
+                    value="raincover"
+                    className={uploadCss.checkbox}
+                    onChange={() => {
+                      handleOptionChange("raincover");
+                    }}
+                    checked={selectedOptions.includes("raincover")}
+                  />
+                  <Image
+                    src={
+                      selectedOptions.includes("raincover")
+                        ? "/images/raincover.png"
+                        : "/images/cupholder.png"
+                    }
+                    className={uploadCss.image}
+                    onClick={() => {
+                      handleOptionChange("raincover");
+                    }}
+                    alt={"cupholder"}
+                    width={50}
+                    height={50}
+                  />
+                  <p>레인커버</p>
+                </div>
+                <div className={uploadCss.option}>
+                  <input
+                    type="checkbox"
+                    value="windcover"
+                    className={uploadCss.checkbox}
+                    onChange={() => {
+                      handleOptionChange("windcover");
+                    }}
+                    checked={selectedOptions.includes("windcover")}
+                  />
+                  <Image
+                    src={
+                      selectedOptions.includes("windcover")
+                        ? "/images/windcover.png"
+                        : "/images/cupholder.png"
+                    }
+                    className={uploadCss.image}
+                    onClick={() => {
+                      handleOptionChange("windcover");
+                    }}
+                    alt={"cupholder"}
+                    width={50}
+                    height={50}
+                  />
+                  <p>방풍커버</p>
+                </div>
+              </div>
+            </div>
+            <div className={uploadCss.textarea_container}>
+              <textarea
+                ref={textareaRef}
+                value={text}
+                onChange={handleInputChange}
+                rows={1} // 기본 줄 크기
+                className={uploadCss.textarea}
+                placeholder={
+                  "게시글 내용을 작성해 주세요. \n추가 옵션이 이나, 제품설명을 해주시면 좋아요!"
                 }
-                className={uploadCss.image}
-                onClick={() => {
-                  handleOptionChange("cupholder");
-                }}
-                alt={"cupholder"}
-                width={50}
-                height={50}
               />
-              <p>컵홀더</p>
             </div>
-            <div className={uploadCss.option}>
-              <input
-                type="checkbox"
-                value="bassinet"
-                className={uploadCss.checkbox}
-                onChange={() => {
-                  handleOptionChange("bassinet");
-                }}
-                checked={selectedOptions.includes("bassinet")}
-              />
-              <Image
-                src={
-                  selectedOptions.includes("bassinet")
-                    ? "/images/bassinet.png"
-                    : "/images/cupholder.png"
-                }
-                className={uploadCss.image}
-                onClick={() => {
-                  handleOptionChange("bassinet");
-                }}
-                alt={"cupholder"}
-                width={50}
-                height={50}
-              />
-              <p>베시넷</p>
+            <div>
+              <button type="submit" className={uploadCss.complete_button}>
+                작성완료
+              </button>
             </div>
-            <div className={uploadCss.option}>
-              <input
-                type="checkbox"
-                value="footmuff"
-                className={uploadCss.checkbox}
-                onChange={() => {
-                  handleOptionChange("footmuff");
-                }}
-                checked={selectedOptions.includes("footmuff")}
-              />
-              <Image
-                src={
-                  selectedOptions.includes("footmuff")
-                    ? "/images/footmuff.png"
-                    : "/images/cupholder.png"
-                }
-                className={uploadCss.image}
-                onClick={() => {
-                  handleOptionChange("footmuff");
-                }}
-                alt={"cupholder"}
-                width={50}
-                height={50}
-              />
-              <p>풋머프</p>
-            </div>
-            <div className={uploadCss.option}>
-              <input
-                type="checkbox"
-                value="moskito"
-                className={uploadCss.checkbox}
-                onChange={() => {
-                  handleOptionChange("moskito");
-                }}
-                checked={selectedOptions.includes("moskito")}
-              />
-              <Image
-                src={
-                  selectedOptions.includes("moskito")
-                    ? "/images/moskito.png"
-                    : "/images/cupholder.png"
-                }
-                className={uploadCss.image}
-                onClick={() => {
-                  handleOptionChange("moskito");
-                }}
-                alt={"cupholder"}
-                width={50}
-                height={50}
-              />
-              <p>모기장</p>
-            </div>
-            <div className={uploadCss.option}>
-              <input
-                type="checkbox"
-                value="raincover"
-                className={uploadCss.checkbox}
-                onChange={() => {
-                  handleOptionChange("raincover");
-                }}
-                checked={selectedOptions.includes("raincover")}
-              />
-              <Image
-                src={
-                  selectedOptions.includes("raincover")
-                    ? "/images/raincover.png"
-                    : "/images/cupholder.png"
-                }
-                className={uploadCss.image}
-                onClick={() => {
-                  handleOptionChange("raincover");
-                }}
-                alt={"cupholder"}
-                width={50}
-                height={50}
-              />
-              <p>레인커버</p>
-            </div>
-            <div className={uploadCss.option}>
-              <input
-                type="checkbox"
-                value="windcover"
-                className={uploadCss.checkbox}
-                onChange={() => {
-                  handleOptionChange("windcover");
-                }}
-                checked={selectedOptions.includes("windcover")}
-              />
-              <Image
-                src={
-                  selectedOptions.includes("windcover")
-                    ? "/images/windcover.png"
-                    : "/images/cupholder.png"
-                }
-                className={uploadCss.image}
-                onClick={() => {
-                  handleOptionChange("windcover");
-                }}
-                alt={"cupholder"}
-                width={50}
-                height={50}
-              />
-              <p>방풍커버</p>
-            </div>
-            </div>
-          </div>
-          <div className={uploadCss.textarea_container}>
-            <textarea
-              ref={textareaRef}
-              value={text}
-              onChange={handleInputChange}
-              rows={1} // 기본 줄 크기
-              className={uploadCss.textarea}
-              placeholder={
-                "게시글 내용을 작성해 주세요. \n추가 옵션이 이나, 제품설명을 해주시면 좋아요!"
-              }
-            />
-          </div>
-          <div>
-            <button className={uploadCss.complete_button}>작성완료</button>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
