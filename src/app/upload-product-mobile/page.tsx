@@ -1,12 +1,12 @@
 "use client";
 import styles from "@/styles/page.module.css";
-import uploadCss from "@/styles/upload.module.css";
+import uploadCss from "@/styles/uploadMobile.module.css";
 import Logo from "@/components/Logo";
-import MyDropzone from "@/components/MyDropzone";
 import { type ReactElement, useState, type ChangeEvent, useRef } from "react";
 import Image from "next/image";
 import { useUploadForm } from "@/utils/useUploadForm";
 import axios from "axios";
+import MyDropzoneMobile from "@/components/MyDropzoneMobile";
 
 export default function Recommend(): ReactElement {
   const {
@@ -61,6 +61,35 @@ export default function Recommend(): ReactElement {
     });
   };
 
+  const validCheck = (form: FormData): boolean => {
+    // 1. 유효성 검사
+    if (images.length === 0) {
+      alert("이미지를 한 개 이상 선택해주세요.");
+      return false; // 함수 종료
+    }
+    if (title.trim().length === 0) {
+      alert("제목을 입력해주세요.");
+      return false;
+    }
+    if (price.trim().length === 0) {
+      alert("가격을 입력해주세요.");
+      return false;
+    }
+    if (selectedStatus.trim().length === 0) {
+      alert("구매 상태를 선택해주세요.");
+      return false;
+    }
+    if (selectedPeriod.trim().length === 0) {
+      alert("사용 기간을 선택해주세요.");
+      return false;
+    }
+    if (text.trim().length === 0) {
+      alert("내용을 입력해주세요.");
+      return false;
+    }
+    return true;
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
     // 입력 내용에 맞게 텍스트 박스의 높이 조절
@@ -71,16 +100,27 @@ export default function Recommend(): ReactElement {
     console.log("text", text);
   }
 
-  const submit = (): void => {
+  const submit = (event: React.FormEvent): void => {
+    event.preventDefault();  // 폼 제출 시 새로고침 방지
     void handleSubmit();
   }
 
   async function handleSubmit(): Promise<void> {
     console.log("submit");
+
     const formData = new FormData();
-    // 선택된 이미지 파일을 FormData에 추가
-    images.forEach((image: typeof image) => {
-      formData.append("imageList", image.file); // 서버로 전송할 때 key이름은 서버에 맞게 설정 
+    // 이미지 객체 타입 정의
+    interface ImageType {
+      file: File; // File은 브라우저의 파일 API에서 제공하는 타입
+      // 필요한 다른 속성들도 추가 가능
+    }
+
+    // images 배열의 타입 지정
+    const images: ImageType[] = [];
+
+    // FormData에 추가
+    images.forEach((image: ImageType) => {
+      formData.append("imageList", image.file); // 파일 추가
     });
 
     formData.append("title", title);
@@ -91,6 +131,11 @@ export default function Recommend(): ReactElement {
       formData.append("options", option);
     });
     formData.append("content", text);
+
+    const isValid = validCheck(formData);
+    if (!isValid) {
+      return;
+    }
 
     // FormData 로그 출력
     for (const [key, value] of formData.entries()) {
@@ -125,7 +170,7 @@ export default function Recommend(): ReactElement {
           <Logo />
         </div>
         <div className={uploadCss.container}>
-          <MyDropzone />
+          <MyDropzoneMobile />
           <div className={uploadCss.product_detail_container}>
             <p className={uploadCss.title_p}>제목</p>
             <div className={uploadCss.title_div}>
@@ -390,7 +435,7 @@ export default function Recommend(): ReactElement {
                 rows={1} // 기본 줄 크기
                 className={uploadCss.textarea}
                 placeholder={
-                  "게시글 내용을 작성해 주세요. \n추가 옵션이 이나, 제품설명을 해주시면 좋아요!"
+                  "게시글 내용을 작성해 주세요. \n추가 옵션이나, 제품설명을 해주시면 좋아요!"
                 }
               />
             </div>
