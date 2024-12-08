@@ -5,6 +5,7 @@ import { type Content } from "@/types";
 
 const ProductImage = ({ content }: { content: Content }): ReactElement => {
   const [image, setImage] = React.useState(getImageUrl(content.imgSrc));
+  console.log("content", content);
 
   const handleError = (): void => {
     setImage("/images/default_thumbnail.svg");

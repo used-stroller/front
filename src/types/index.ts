@@ -136,6 +136,12 @@ interface UserResponse {
   message: string;
 }
 
+interface image {
+  name: string;
+  url: string;
+  file: File;
+}
+
 export type {
   UserResponse,
   MyUserType,
@@ -160,4 +166,5 @@ export type {
   StructureType,
   ResultType,
   DefaultRegionType,
+  image,
 };

@@ -58,6 +58,16 @@ export default function SourceImage({
           height={13}
         />
       );
+    case "JUNGMOCHA":
+      return (
+        <Image
+          src="./images/jungmocha_icon.png"
+          alt="naver_shopping_logo"
+          className={styles.sourceImg}
+          width={25}
+          height={25}
+        />
+      );
     default:
       return <i />;
   }
