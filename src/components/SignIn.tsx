@@ -4,19 +4,22 @@ import { signInWithCredentials } from "@/serverActions/auth";
 import styles from "@/styles/user.module.css";
 import { type ReactElement, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-
 export const SignIn = (): ReactElement => {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const submitLogin = (formdata: FormData): void => {
-    startTransition(async () => {
-      const response = await signInWithCredentials(formdata);
-      if (response?.error === null) {
-        router.push("/");
-      }
-      setError(response?.error);
+    startTransition(() => {
+      signInWithCredentials(formdata)
+        .then((response) => {
+          if (response?.error === null) {
+            router.push("/");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     });
   };
 

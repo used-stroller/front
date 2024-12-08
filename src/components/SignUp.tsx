@@ -12,18 +12,24 @@ export function SignUp(): ReactElement {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const submitSignup = (formData: FormData): void => {
-    startTransition(async () => {
-      const response = await signUpWithCredentials(formData);
-      if (response?.error === null) {
-        setTimeout(() => {
-          setMessage("가입완료. 로그인 페이지로 이동...");
-        }, 0);
-        setTimeout(() => {
-          router.push("/signin");
-        }, 1000);
-      }
-      inputRef.current?.focus();
-      setMessage(response?.error);
+    startTransition(() => {
+      signUpWithCredentials(formData)
+        .then((response) => {
+          if (response?.error === null) {
+            setTimeout(() => {
+              setMessage("가입완료. 로그인 페이지로 이동...");
+            }, 0);
+            setTimeout(() => {
+              router.push("/signin");
+            }, 1000);
+          }
+          inputRef.current?.focus();
+          setMessage(response?.error);
+        })
+        .catch((error) => {
+          console.error(error);
+          setMessage("가입 중 오류가 발생했습니다.");
+        });
     });
   };
 
