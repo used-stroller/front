@@ -30,15 +30,20 @@ export default function Menu(): ReactElement {
   };
 
   const submitSignOut = async (formData: FormData): Promise<void> => {
-    startTransition(async () => {
+    try {
+      // 비동기 처리, 예를 들어 서버에 로그아웃 요청을 보냄
       await signOutWithForm(formData);
-      setIsSession(false);
-    });
+      setIsSession(false); // 세션 종료 처리
+    } catch (error) {
+      console.error("Sign out failed:", error);
+      throw error; // 오류를 호출한 곳으로 전달
+    }
   };
-
+  // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
     submitSignOut(formData).catch((e) => {
       console.error(e);
     });
