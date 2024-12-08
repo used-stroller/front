@@ -18,7 +18,7 @@ export function enableDragScroll(container: HTMLElement): void {
 
   container.addEventListener("mouseup", () => {
     isDown = false;
-    container.classList.remove('active');
+    container.classList.remove("active");
   });
 
   container.addEventListener("mousemove", (e: MouseEvent) => {

@@ -2,10 +2,8 @@
 
 import { useEffect, type ReactElement } from "react";
 import styles from "@/styles/dropzone.module.css";
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { FaCamera } from "react-icons/fa"; // 카메라 아이콘 import
-import { type image } from "@/types";
-import axios from "axios";
 import { enableDragScroll } from "@/utils/enableDragScroll";
 import { useUploadForm } from "@/utils/useUploadForm";
 
@@ -92,7 +90,7 @@ function MyDropzone(): ReactElement {
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   // Allow keyboard activation
-                e.preventDefault();
+                  e.preventDefault();
                   deleteImage(index);
                 }
               }}

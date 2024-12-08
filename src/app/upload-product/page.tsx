@@ -61,26 +61,26 @@ export default function Recommend(): ReactElement {
     });
   };
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
     // 입력 내용에 맞게 텍스트 박스의 높이 조절
     if (textareaRef.current != null) {
       textareaRef.current.style.height = "auto"; // 높이 초기화
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 내용에 맞춰 높이 조정 
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 내용에 맞춰 높이 조정
     }
     console.log("text", text);
-  }
+  };
 
   const submit = (): void => {
     void handleSubmit();
-  }
+  };
 
   async function handleSubmit(): Promise<void> {
     console.log("submit");
     const formData = new FormData();
-    // 선택된 이미지 파일을 FormData에 추가
-    images.forEach((image: typeof image) => {
-      formData.append("imageList", image.file); // 서버로 전송할 때 key이름은 서버에 맞게 설정 
+    images.forEach((image) => {
+      formData.append("imageList", image.file);
     });
 
     formData.append("title", title);
