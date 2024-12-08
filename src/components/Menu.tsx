@@ -16,11 +16,16 @@ export default function Menu(): ReactElement {
   const [isSession, setIsSession] = useState<boolean>(false);
 
   const refreshSession = (): void => {
-    startTransition(async () => {
-      const session = await getSession();
-      if (session !== null) {
-        setIsSession(true);
-      }
+    startTransition(() => {
+      getSession()
+        .then((session) => {
+          if (session !== null) {
+            setIsSession(true);
+          }
+        })
+        .catch((error) => {
+          console.error("Error refreshing session:", error);
+        });
     });
   };
 
