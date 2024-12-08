@@ -7,10 +7,7 @@ import Image from "next/image";
 import { useUploadForm } from "@/utils/useUploadForm";
 import axios from "axios";
 import MyDropzoneMobile from "@/components/MyDropzoneMobile";
-<<<<<<< HEAD
-import React from 'react';
-=======
->>>>>>> feature/upload
+import React from "react";
 
 export default function Recommend(): ReactElement {
   const {
@@ -94,10 +91,7 @@ export default function Recommend(): ReactElement {
     return true;
   };
 
-<<<<<<< HEAD
-=======
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
->>>>>>> feature/upload
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
     // 입력 내용에 맞게 텍스트 박스의 높이 조절
@@ -112,7 +106,6 @@ export default function Recommend(): ReactElement {
     event.preventDefault(); // 폼 제출 시 새로고침 방지
     void handleSubmit();
   };
-
 
   async function handleSubmit(): Promise<void> {
     console.log("submit");
