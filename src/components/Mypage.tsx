@@ -17,12 +17,16 @@ export const Mypage = (): ReactElement => {
   const [myInfo, setMyInfo] = useState<MyUserType | null>(null);
 
   const loadMyInfo = (): void => {
-    startTransition(async () => {
-      const dbMyInfo = await getMyInfo();
-      setMyInfo(dbMyInfo);
-      setEmail(dbMyInfo?.email);
-      setNickname(dbMyInfo?.nickname);
-      setAddress(dbMyInfo?.address);
+    startTransition(() => {
+      // 비동기 작업을 `async` 없이 처리
+      getMyInfo()
+        .then((dbMyInfo) => {
+          setMyInfo(dbMyInfo);
+          setEmail(dbMyInfo?.email);
+        })
+        .catch((error) => {
+          console.error("Error loading my info:", error);
+        });
     });
   };
 
