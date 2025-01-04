@@ -31,6 +31,8 @@
     "react-jwt": "^1.2.2",
     "react-modal": "^3.16.1",
     "react-query": "^3.39.3",
+    "react-slick": "^0.30.3",
+    "slick-carousel": "^1.8.1",
     "zod": "^3.23.8",
     "zustand": "^5.0.0"
   },
@@ -40,6 +42,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-modal": "^3.16.3",
+    "@types/react-slick": "^0.23.13",
     "@typescript-eslint/eslint-plugin": "^6.18.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.0.4",

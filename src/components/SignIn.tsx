@@ -51,7 +51,7 @@ export const SignIn = (): ReactElement => {
         </button>
         {error !== null && <span>{error}</span>}
       </form>
-      <div className={`${styles.container}`}>
+      <div className={`${styles.toHome_div}`}>
         <button onClick={goHome} className={`${styles.button} ${styles.home}`}>
           홈으로
         </button>
