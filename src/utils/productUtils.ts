@@ -19,18 +19,19 @@ export const getProductList = async (
   filter: FilterReq,
   defaultRegion?: DefaultRegionType,
 ): Promise<ProductRes> => {
-  let queryParams = createQueryParams(filter);
-  if (defaultRegion != null) {
-    queryParams =
-      queryParams +
-      "&fixedAddress=" +
-      defaultRegion.fixedAddress +
-      "&detailAddress=" +
-      defaultRegion.detailAddress;
-  }
-  return await axiosClient
-    .get(`/product/list${queryParams}`)
-    .then((r) => r.data);
+  const queryParams = createQueryParams(filter);
+  // if (defaultRegion != null) {
+  //   queryParams =
+  //     queryParams +
+  //     "&fixedAddress=" +
+  //     defaultRegion.fixedAddress +
+  //     "&detailAddress=" +
+  //     defaultRegion.detailAddress;
+  // }
+
+  // queryParams가 빈 문자열인지 명확하게 확인
+  const url = `/product/list${queryParams !== "" ? queryParams : ""}`;
+  return await axiosClient.get(url).then((r) => r.data);
 };
 
 export const getRecommendProductList = async (

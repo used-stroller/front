@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useUploadForm } from "@/utils/useUploadForm";
 import axios from "axios";
 import MyDropzoneMobile from "@/components/MyDropzoneMobile";
+import React from "react";
 
 export default function Recommend(): ReactElement {
   const {

@@ -9,7 +9,7 @@
     "start": "next start -p 3000",
     "lint": "next lint",
     "predeploy": "npm run build",
-    "deploy": "pm2 kill && npx pm2 start npm -- start",
+    "deploy": "pm2 stop front && npx pm2 start npm --name front -- start",
     "postbuild": "next-sitemap"
   },
   "dependencies": {

@@ -33,14 +33,12 @@
   border-radius: 5px;
 }
 
-
-
 .button {
   width: 6rem;
   border-radius: 50px;
   padding: 8px 12px;
   color: #fff;
-  background-color: #534A78;
+  background-color: #534a78;
   font-weight: 600;
   font-size: 13px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
@@ -58,7 +56,7 @@
 }
 
 .user_container > span {
-  color: #FF91B0;
+  color: #ff91b0;
   font-weight: 600;
   font-size: 13px;
 }
@@ -67,7 +65,6 @@
   display: flex;
   width: 100%;
   align-items: center;
-
 }
 
 .profile_img {
@@ -77,8 +74,8 @@
   justify-content: center;
   color: white;
   font-size: 18px;
-  margin-top:10px;
-  margin-left:10px;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 .nickname {
@@ -87,9 +84,9 @@
 }
 
 .profileName {
-  marginTop: '10px';
-  fontSize: '18px';
-  fontWeight: 'bold';
+  margintop: "10px";
+  fontsize: "18px";
+  fontweight: "bold";
 }
 
 .gap {
@@ -98,27 +95,26 @@
 
 .trade_div {
   width: 100%;
-  margin-left:10px;
+  margin-left: 10px;
 }
 
 .trade_h3 {
   text-align: left;
   font-weight: bold;
-  font-size:large
+  font-size: large;
 }
 
 .list {
-
 }
 
 .item_img {
-  margin-right:5px;
+  margin-right: 5px;
 }
 
 .listItem {
   display: flex;
   align-items: center;
-  position:relative;
+  position: relative;
   margin-top: 10px;
 }
 
@@ -129,7 +125,7 @@
 
 .community_div {
   width: 100%;
-  margin-left:10px;
+  margin-left: 10px;
 }
 
 .community_img {
@@ -139,7 +135,7 @@
 
 .community_h3 {
   font-weight: bold;
-  font-size:large
+  font-size: large;
 }
 
 .home_div {
