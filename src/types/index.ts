@@ -142,6 +142,14 @@ interface image {
   file: File;
 }
 
+interface userData {
+  accountId : string;
+  favorites : Content[];
+  image : string;
+  sellingList : Content[];
+  name : string;
+}
+
 export type {
   UserResponse,
   MyUserType,
@@ -167,4 +175,5 @@ export type {
   ResultType,
   DefaultRegionType,
   image,
+  userData,
 };

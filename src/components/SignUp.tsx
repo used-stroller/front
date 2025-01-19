@@ -1,6 +1,5 @@
 "use client";
 
-import { signUpWithCredentials } from "@/serverActions/auth";
 import styles from "@/styles/user.module.css";
 import { useRouter } from "next/navigation";
 import { type ReactElement, useRef, useState, useTransition } from "react";

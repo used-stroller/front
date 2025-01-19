@@ -5,8 +5,10 @@ import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import { FilterProvider } from "@/context/FilterContext";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
-import AuthProvider from "@/context/AuthProvider";
-import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
+import ClientSessionProvider from "@/components/ClientSessionProvider"; // 클라이언트 컴포넌트로 SessionProvider 처리
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export const metadata: Metadata = {
   verification: {
@@ -46,12 +48,13 @@ export default async function RootLayout({
 }): Promise<ReactElement> {
   const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ?? "";
   const gtmId = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER ?? "";
-  const session = await auth();
+    // 서버에서 세션을 가져옵니다.
+    const session = await getServerSession(authOptions);
 
   return (
     <html lang="ko">
       <body>
-        <AuthProvider session={session}>
+      <ClientSessionProvider session={session}>
           <GoogleTagManager gtmId={gtmId} />
           <GoogleAnalytics gaId={gaId} />
           <FilterProvider>
@@ -60,7 +63,7 @@ export default async function RootLayout({
               <Footer />
             </div>
           </FilterProvider>
-        </AuthProvider>
+      </ClientSessionProvider>
       </body>
     </html>
   );

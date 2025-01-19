@@ -141,3 +141,19 @@
 .home_div {
   text-align: center;
 }
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  pointer-events: none;
+}
+
+.kakao_image {
+  object-fit: cover;
+  pointer-events: auto;
+}
+
+.blank {
+  height:100px;
+}

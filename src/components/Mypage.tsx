@@ -1,21 +1,37 @@
 "use client";
 
-import { getMyInfo, updateMyInfo } from "@/serverActions/auth";
 import { type ReactElement, useEffect, useState, useTransition } from "react";
 import styles from "@/styles/user.module.css";
 import { useRouter } from "next/navigation";
-import { type MyUserType } from "@/types";
+import { userData, type MyUserType } from "@/types";
 import Image from 'next/image';
+import apiClient from '@/utils/apiClient';
+import Loading from '@/app/loading';
 
 export const Mypage = (): ReactElement => {
-  const [email, setEmail] = useState<string>();
-  const [nickname, setNickname] = useState<string>();
-  const [address, setAddress] = useState<string>();
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   const [isSubmit, setIsSubmit] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [myInfo, setMyInfo] = useState<MyUserType | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null); 
+  const [loading, setLoading] = useState<boolean>(true);
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
+        const response = await apiClient.get("user/mypage");
+        setUserData(response.data.data);
+        console.log("userdata", userData)
+      } catch (err: any) {
+        console.log("데이터 가져오기 실패");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchUserData();
+  },[]);
 
 
   const handleNavigation = (url) => {
@@ -56,19 +72,23 @@ export const Mypage = (): ReactElement => {
     }
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <div className={styles.profile_nick_div}>
         <div>
           <Image
-            src="../images/jungmocha_icon.png" // 실제 이미지 경로로 변경
+            src={userData.image} // 실제 이미지 경로로 변경
             alt="Profile"
             width={80}
             height={80}
             className={styles.profile_img}
           />
         </div>
-        <div className={styles.nickname}>꿀빵꿀빵</div>
+        <div className={styles.nickname}>{userData.name}</div>
       </div>
       <div className={styles.gap}></div>
 
@@ -85,7 +105,7 @@ export const Mypage = (): ReactElement => {
             height={30}
             className={styles.item_img}
           />
-            <span>관심목록</span>
+            <span>관심목록(작업중..헤헤)</span>
             <Image
             src="../images/arrow_right.png" 
             alt="right_arrow"
@@ -102,7 +122,7 @@ export const Mypage = (): ReactElement => {
             height={30}
             className={styles.item_img}
           />
-            <span>판매내역</span>
+            <span>판매내역(조금만)</span>
             <Image
             src="../images/arrow_right.png"
             alt="right_arrow"
@@ -119,7 +139,7 @@ export const Mypage = (): ReactElement => {
             height={30}
             className={styles.item_img}
           />
-            <span>구매내역</span>
+            <span>구매내역(기다려주세영)</span>
             <Image
             src="../images/arrow_right.png" // 실제 이미지 경로로 변경
             alt="right_arrow"
