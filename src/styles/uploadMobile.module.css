@@ -1,17 +1,17 @@
 .container {
-    text-align: center;
-    display: grid;
-    place-items: center; /* 가로, 세로 모두 가운데 정렬 */
-    padding: 20px 3%;
-    background-color: #fafafa;
+  text-align: center;
+  display: grid;
+  place-items: center; /* 가로, 세로 모두 가운데 정렬 */
+  padding: 20px 3%;
+  background-color: #fafafa;
 }
 
 .title_p {
-    margin-top: 10px;
-    display: inline-block;
-    width: 100%;
-    text-align: left;
-    font-weight: 900;
+  margin-top: 10px;
+  display: inline-block;
+  width: 100%;
+  text-align: left;
+  font-weight: 900;
 }
 
 .title_div {
@@ -24,8 +24,8 @@
 }
 
 .price {
-    display:block;
-    margin-left: 10px;
+  display: block;
+  margin-left: 10px;
 }
 
 .price input {
@@ -39,7 +39,7 @@
 
 .buy_status {
   margin-top: 10px;
-  display:flex;
+  display: flex;
   justify-content: space-around;
 }
 
@@ -65,12 +65,12 @@
 
 .use_period {
   margin-top: 10px;
-  display:flex;
+  display: flex;
   justify-content: space-around;
 }
 
 .option_container {
-  margin-top:30px;
+  margin-top: 30px;
 }
 
 .option_p {
@@ -81,74 +81,72 @@
   font-weight: 900;
 }
 
-
 .option {
-    display: flex;
-    align-items: center;
-    margin: 2px;
+  display: flex;
+  align-items: center;
+  margin: 2px;
 }
 
 .option_table {
   margin-top: 10px;
-  display:flex;
+  display: flex;
   justify-content: space-around;
 }
-  
-  .checkbox {
-    display: none; /* 체크박스 숨기기 */
-  }
-  .option {
-    display: inline-block;
-  }
 
-  .textarea_container {
-    margin-top:20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.checkbox {
+  display: none; /* 체크박스 숨기기 */
+}
+.option {
+  display: inline-block;
+}
 
-  .textarea {
-    display: block;
-    width: 100%;
-    min-height: 150px;
-    resize: none; /* 수동 크기 조절 불가 */
-    overflow: hidden; /* 내용이 넘칠 경우 스크롤바 숨기기 */
-    box-sizing: border-box;
-    font-size: 16px;
-    padding: 8px;
-    max-height: 400px; /* 최대 높이 설정 (원하는 값으로 조정 가능) */
-    padding: 5px;
-    border: 2px solid #534A78;
-    border-radius: 5px;
-  }
+.textarea_container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .complete_button {
-    margin-top: 20px;
-    background-color: #534A78;
-    color: #FFFFFF;
-    width: 100%;
-    border-radius: 50px;
-    padding: 8px 12px;
-    font-weight: 600;
-    font-size: 13px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-  }
+.textarea {
+  display: block;
+  width: 100%;
+  min-height: 150px;
+  resize: none; /* 수동 크기 조절 불가 */
+  overflow: hidden; /* 내용이 넘칠 경우 스크롤바 숨기기 */
+  box-sizing: border-box;
+  font-size: 16px;
+  padding: 8px;
+  max-height: 400px; /* 최대 높이 설정 (원하는 값으로 조정 가능) */
+  padding: 5px;
+  border: 2px solid #534a78;
+  border-radius: 5px;
+}
 
-  .title_p {
+.complete_button {
+  margin-top: 20px;
+  background-color: #534a78;
+  color: #ffffff;
+  width: 100%;
+  border-radius: 50px;
+  padding: 8px 12px;
+  font-weight: 600;
+  font-size: 13px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
 
-  }
+.title_p {
+}
 
-  .product_detail_container {
-    width: 100%;
-  }
+.product_detail_container {
+  width: 100%;
+}
 
-  .input_field {
-    padding: 5px;
-    width: 100%;
-    border: 2px solid #534A78;
-    background-color: #FFFFFF;
-    border-radius: 5px;
+.input_field {
+  padding: 5px;
+  width: 100%;
+  border: 2px solid #534a78;
+  background-color: #ffffff;
+  border-radius: 5px;
 }
 
 .price_div {
@@ -157,17 +155,17 @@
   margin-left: 10px;
 }
 
-  .fixed_char {
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-  }
+.fixed_char {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
 
-  .input_price {
-      padding-left: 30px; /* 고정된 글자의 위치에 맞춰서 패딩 조정 */
-  }
+.input_price {
+  padding-left: 30px; /* 고정된 글자의 위치에 맞춰서 패딩 조정 */
+}
 
 .input_radio {
   transform: scale(1.5); /* 크기를 1.5배로 확대 */

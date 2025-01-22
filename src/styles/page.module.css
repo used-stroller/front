@@ -18,32 +18,32 @@
   position: relative;
   width: calc(100% - 400px);
   height: 55px;
-  border: 3px solid #534A78;
-  background-color: #FFFFFF;
+  border: 3px solid #534a78;
+  background-color: #ffffff;
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.search_bar>input {
+.search_bar > input {
   width: 100%;
   height: 100%;
   text-indent: 20px;
   border: none;
   outline: none;
   background-color: transparent;
-  color: #534A78;
+  color: #534a78;
   font-size: 18px;
   font-weight: 700;
 }
 
-.search_bar>input::placeholder {
+.search_bar > input::placeholder {
   font-weight: 400;
-  color: #ADA4D3;
+  color: #ada4d3;
 }
 
-.search_bar>input:focus::placeholder {
+.search_bar > input:focus::placeholder {
   color: transparent;
 }
 
@@ -84,12 +84,12 @@
   justify-content: flex-start;
   align-items: center;
   gap: 20px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 5px;
   overflow: hidden;
 }
 
-.filters_wrapper>ul,
+.filters_wrapper > ul,
 .search_region,
 .price_wrapper {
   display: flex;
@@ -98,12 +98,12 @@
   gap: 6px;
 }
 
-.filters_wrapper>h3 {
+.filters_wrapper > h3 {
   font-weight: 700;
   width: 100px;
   line-height: 33px;
   text-align: center;
-  background-color: #FFEEF3;
+  background-color: #ffeef3;
 }
 
 .filter {
@@ -113,19 +113,19 @@
 }
 
 .filter.active {
-  background-color: #534A78;
-  color: #FFFFFF;
+  background-color: #534a78;
+  color: #ffffff;
   transition: all 0.2s ease-in-out;
 }
 
-.search_region>input {
+.search_region > input {
   width: 500px;
   height: 25px;
-  border: 1px solid #EEEEEE;
+  border: 1px solid #eeeeee;
   text-indent: 10px;
 }
 
-.search_region>input::placeholder {
+.search_region > input::placeholder {
   color: #999999;
 }
 
@@ -133,10 +133,10 @@
   margin-left: 10px;
 }
 
-.price_wrapper>input {
+.price_wrapper > input {
   width: 100px;
   height: 25px;
-  border: 1px solid #EEEEEE;
+  border: 1px solid #eeeeee;
   border-radius: 3px;
   text-indent: 10px;
 }
@@ -144,9 +144,9 @@
 .filter_inner_button {
   width: 25px;
   height: 25px;
-  color: #FFFFFF;
-  background-color: #FF9FBA;
-  border: 1px solid #FF91B0;
+  color: #ffffff;
+  background-color: #ff9fba;
+  border: 1px solid #ff91b0;
   border-radius: 3px;
   position: relative;
   display: flex;
@@ -165,7 +165,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  color: #3E2F56;
+  color: #3e2f56;
 }
 
 .keyword {
@@ -177,11 +177,11 @@
 .result_qty {
   margin-left: 5px;
   margin-right: 5px;
-  color: #FF91B0;
+  color: #ff91b0;
   font-weight: bold;
 }
 
-.second_filter>button {
+.second_filter > button {
   border-radius: 50px;
   padding: 8px 12px;
   margin-left: 10px;
@@ -192,15 +192,15 @@
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
-.second_filter>button.active,
-.second_filter>button:active {
-  background-color: #534A78;
-  color: #FFFFFF
+.second_filter > button.active,
+.second_filter > button:active {
+  background-color: #534a78;
+  color: #ffffff;
 }
 
-.second_filter>button.recommend {
-  background-color: #534A78;
-  color: #FFFFFF;
+.second_filter > button.recommend {
+  background-color: #534a78;
+  color: #ffffff;
 }
 
 .product_container {
@@ -216,7 +216,7 @@
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   border-radius: 15px;
   margin-bottom: 10px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 10px;
 }
 
@@ -230,11 +230,10 @@
   overflow: hidden;
 }
 
-.product>.product_img {
+.product > .product_img {
   width: 100%;
   position: relative;
   margin-bottom: 10px;
-
 }
 
 .region {
@@ -269,7 +268,7 @@
 
 .price {
   font-weight: 600;
-  color: #FF91B0;
+  color: #ff91b0;
 }
 
 .new_price {
@@ -281,12 +280,12 @@
 }
 
 .price::after {
-  content: '원';
+  content: "원";
 }
 
 .source_wrapper,
 .source_logo {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   width: 40px;
   height: 40px;
   border-radius: 40px;
@@ -364,10 +363,10 @@
 }
 
 .address {
-  color: #534A78;
+  color: #534a78;
 }
 
-.address>a {
+.address > a {
   margin: 0 10px;
   font-weight: 600;
 }
@@ -381,11 +380,11 @@
   gap: 3rem;
 }
 
-.not_found>.logo {
+.not_found > .logo {
   margin-bottom: 0;
 }
 
-.not_found>h1 {
+.not_found > h1 {
   font-size: 7rem;
   line-height: 7rem;
   font-weight: 600;
@@ -396,15 +395,14 @@
   align-items: center;
 }
 
-.not_found>h1>span {
+.not_found > h1 > span {
   font-size: 1.3rem;
   line-height: 1.6rem;
 }
 
 .not_found_link {
-  color: #534A78;
+  color: #534a78;
 }
-
 
 @media (max-width: 600px) {
   .product_container {
@@ -450,7 +448,7 @@
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   }
 
-  .search_bar>input {
+  .search_bar > input {
     font-size: 16px;
   }
 
@@ -466,7 +464,7 @@
     gap: 10px;
   }
 
-  .second_filter>button {
+  .second_filter > button {
     margin: 0;
   }
 
@@ -480,7 +478,7 @@
     z-index: 1;
   }
 
-  .m_filters_container>ul {
+  .m_filters_container > ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -493,11 +491,12 @@
     -ms-overflow-style: none; /* Internet Explorer 10+ */
   }
 
-  .m_filters_container.show>ul {
+  .m_filters_container.show > ul {
     margin-bottom: 5px;
   }
 
-  .m_filters_container>ul::-webkit-scrollbar { /* WebKit */
+  .m_filters_container > ul::-webkit-scrollbar {
+    /* WebKit */
     display: none;
   }
 
@@ -509,9 +508,9 @@
     line-height: 35px;
     height: 36px;
     font-weight: bold;
-    color: #534A78;
+    color: #534a78;
     border-radius: 15px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
     text-align: center;
     text-align: -moz-center;
@@ -525,10 +524,10 @@
     color: #fff;
     font-weight: 400;
     font-size: 0.7rem;
-    background-color: #534A78;
+    background-color: #534a78;
   }
 
-  .filter_item>select {
+  .filter_item > select {
     overflow: hidden;
     background-color: transparent;
     border: none;
@@ -547,7 +546,7 @@
     text-align: center;
   }
 
-  .filter_item>input {
+  .filter_item > input {
     width: 0;
     height: 0;
     display: none;
@@ -572,8 +571,8 @@
   }
 
   .filter.active {
-    background-color: #ADA4D3;
-    color: #FFFFFF;
+    background-color: #ada4d3;
+    color: #ffffff;
     transition: all 0.2s ease-in-out;
   }
 
@@ -592,8 +591,8 @@
     display: inline-block;
     width: 49%;
     height: 40px;
-    background-color: #534A78;
-    color: #FFFFFF;
+    background-color: #534a78;
+    color: #ffffff;
     font-weight: 600;
     font-size: 15px;
     border-radius: 15px;
@@ -602,8 +601,8 @@
 
   .popup_btn:first-of-type {
     margin-right: 2%;
-    background-color: #FFFFFF;
-    color: #534A78;
+    background-color: #ffffff;
+    color: #534a78;
   }
 
   .site_list_container {

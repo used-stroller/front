@@ -24,12 +24,14 @@ type HandleFilter = (ev: {
 }) => void;
 type MinMaxPriceFilter = ({ key, minPrice, maxPrice }: MinMaxPrice) => void;
 type Reset = (name: string) => void;
+type ResetAllFilters = () => void;
 
 interface FilterContextType {
   filter: FilterReq;
   handleFilter: HandleFilter;
   minMaxPrice: MinMaxPriceFilter;
   reset: Reset;
+  resetAllFilters: ResetAllFilters;
 }
 
 enum sourceType {
@@ -143,11 +145,11 @@ interface image {
 }
 
 interface userData {
-  accountId : string;
-  favorites : Content[];
-  image : string;
-  sellingList : Content[];
-  name : string;
+  accountId: string;
+  favorites: Content[];
+  image: string;
+  sellingList: Content[];
+  name: string;
 }
 
 export type {

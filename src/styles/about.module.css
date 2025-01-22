@@ -25,7 +25,7 @@
   align-items: center;
 }
 
-.ad_empty>div {
+.ad_empty > div {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -33,7 +33,7 @@
   align-items: flex-start;
 }
 
-.ad_empty>div>h2 {
+.ad_empty > div > h2 {
   font-size: 1.1rem;
   font-weight: bold;
   color: #3e2f56;
@@ -41,10 +41,10 @@
   text-align: left;
 }
 
-.ad_empty>div>p {
+.ad_empty > div > p {
   width: 100%;
   height: 100%;
-  color: #534A78;
+  color: #534a78;
   font-size: 1rem;
   line-height: 1.6;
   text-align: left;
@@ -52,7 +52,7 @@
   overflow: hidden;
 }
 
-.ad_empty>div>a {
+.ad_empty > div > a {
   align-self: center;
   color: #fff;
   background-color: #a6acd7;
@@ -72,5 +72,4 @@
 }
 
 @media (max-width: 600px) {
-
 }

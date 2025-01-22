@@ -12,7 +12,6 @@ export const SignIn = (): ReactElement => {
   const { data: session } = useSession();
   const [shouldSendToBackend, setShouldSendToBackend] = useState(false); // 백엔드 호출 조건
 
-
   const handleLogin = async () => {
     try {
       const result = await signIn("kakao", { redirect: false });
@@ -29,18 +28,20 @@ export const SignIn = (): ReactElement => {
   useEffect(() => {
     if (!shouldSendToBackend || !session) return; // 조건에 따라 실행
     axios
-      .post('http://localhost:8080/user/api/auth/kakao', {
-        loginResult: session,
+      .post(
+        "http://localhost:8080/user/api/auth/kakao",
+        {
+          loginResult: session,
       }, {
-        withCredentials: true,  // 쿠키를 요청에 포함시킴
+          withCredentials: true, // 쿠키를 요청에 포함시킴
       })
       .then((response) => {
-        console.log('백엔드 응답:', response.data);
-        window.location.href = '/';
+        console.log("백엔드 응답:", response.data);
+        window.location.href = "/";
       })
       .catch((error) => {
-        console.error('백엔드 요청 실패:', error);
-        alert('서버와의 통신 중 문제가 발생했습니다.');
+        console.error("백엔드 요청 실패:", error);
+        alert("서버와의 통신 중 문제가 발생했습니다.");
       })
       .finally(() => {
         setShouldSendToBackend(false); // 요청 완료 후 상태 초기화
@@ -51,19 +52,19 @@ export const SignIn = (): ReactElement => {
     <>
       <div className={styles.blank} ></div>
       <div className={styles.imageContainer}>
-          <Image
-            src="/images/kakao_login_medium_wide.png"
-            alt="카카오로그인"
-            fill
-            className={styles.kakao_image}
-            onClick={handleLogin}
-          />
+        <Image
+          src="/images/kakao_login_medium_wide.png"
+          alt="카카오로그인"
+          fill
+          className={styles.kakao_image}
+          onClick={handleLogin}
+        />
       </div>
 
       <div style={{ display: "flex", alignItems: "center", margin: "20px 0" }}>
-      <div style={{ flex: 1, height: "1px", backgroundColor: "black" }} />
-      <span style={{ margin: "0 10px", whiteSpace: "nowrap" }}>또는</span>
-      <div style={{ flex: 1, height: "1px", backgroundColor: "black" }} />
+        <div style={{ flex: 1, height: "1px", backgroundColor: "black" }} />
+        <span style={{ margin: "0 10px", whiteSpace: "nowrap" }}>또는</span>
+        <div style={{ flex: 1, height: "1px", backgroundColor: "black" }} />
       </div>
 
       <div className={`${styles.toHome_div}`}>

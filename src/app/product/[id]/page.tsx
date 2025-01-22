@@ -17,7 +17,7 @@ export default function ProductDetail({ params }: number) {
   return (
     <div>
       <h1>Product ID: {id}</h1>
-      <ImageSlider images={productImages} settings={sliderSettings}/>
+      <ImageSlider images={productImages} settings={sliderSettings} />
     </div>
   );
 }

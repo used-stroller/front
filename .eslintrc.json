@@ -19,9 +19,7 @@
   "globals": {
     "NodeJS": true
   },
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
   "settings": {
     "react": {
       // Tells eslint-plugin-react to automatically detect the version of React to use.
@@ -38,7 +36,8 @@
       }
     }
   },
-  "rules": {  // rules에 다음과 같이 추가
+  "rules": {
+    // rules에 다음과 같이 추가
     "prettier/prettier": [
       "error",
       {

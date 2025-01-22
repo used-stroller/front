@@ -8,7 +8,7 @@ const apiClient = axios.create({
   },
 });
 
-// jwt 토큰을 헤더에 추가 
+// jwt 토큰을 헤더에 추가
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     // 브라우저 쿠키에서 JWT 토큰 가져오기

@@ -2,20 +2,16 @@
 
 import styles from "@/styles/page.module.css";
 import Link from "next/link";
-import React, {
-  type ReactElement,
-  useEffect,
-  useState,
-} from "react";
+import React, { type ReactElement, useEffect, useState } from "react";
 
 export default function Menu(): ReactElement {
   const [isSession, setIsSession] = useState<boolean>(false);
 
   useEffect(() => {
     // 쿠키에서 jwt 값을 확인
-    const cookies = document.cookie.split(';');
-    console.log("cookies",cookies);
-    const jwtCookie = cookies.find((cookie) => cookie.trim().startsWith('jwt'));
+    const cookies = document.cookie.split(";");
+    console.log("cookies", cookies);
+    const jwtCookie = cookies.find((cookie) => cookie.trim().startsWith("jwt"));
 
     // jwt가 존재하면 isSession을 true로 설정
     if (jwtCookie) {

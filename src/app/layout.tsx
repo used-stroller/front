@@ -48,13 +48,13 @@ export default async function RootLayout({
 }): Promise<ReactElement> {
   const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ?? "";
   const gtmId = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER ?? "";
-    // 서버에서 세션을 가져옵니다.
-    const session = await getServerSession(authOptions);
+  // 서버에서 세션을 가져옵니다.
+  const session = await getServerSession(authOptions);
 
   return (
     <html lang="ko">
       <body>
-      <ClientSessionProvider session={session}>
+        <ClientSessionProvider session={session}>
           <GoogleTagManager gtmId={gtmId} />
           <GoogleAnalytics gaId={gaId} />
           <FilterProvider>
@@ -63,7 +63,7 @@ export default async function RootLayout({
               <Footer />
             </div>
           </FilterProvider>
-      </ClientSessionProvider>
+        </ClientSessionProvider>
       </body>
     </html>
   );
