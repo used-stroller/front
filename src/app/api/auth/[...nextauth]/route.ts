@@ -8,6 +8,11 @@ export const authOptions = {
       clientSecret: process.env.KAKAO_CLIENT_SECRET,
     }),
   ],
+  session: {
+    strategy : "jwt",
+    maxAge: 60 * 60, // 세션만료시간 (60분)
+    updateAge: 30 * 60, // 세션 갱신 추가 (10분)
+  },
   callbacks: {
     // 세션 콜백: 세션에 사용자 정보를 추가
     async session({ session, token }) {

@@ -152,6 +152,12 @@ interface userData {
   name: string;
 }
 
+interface imageObj {
+  id: number;
+  src: string;
+  orderSeq: number;
+}
+
 export type {
   UserResponse,
   MyUserType,
@@ -178,4 +184,5 @@ export type {
   DefaultRegionType,
   image,
   userData,
+  imageObj,
 };

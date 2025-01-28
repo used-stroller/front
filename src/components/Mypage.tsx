@@ -79,14 +79,14 @@ export const Mypage = (): ReactElement => {
       <div className={styles.profile_nick_div}>
         <div>
           <Image
-            src={userData.image} // 실제 이미지 경로로 변경
+            src={userData?.image} // 실제 이미지 경로로 변경
             alt="Profile"
             width={80}
             height={80}
             className={styles.profile_img}
           />
         </div>
-        <div className={styles.nickname}>{userData.name}</div>
+        <div className={styles.nickname}>{userData?.name}</div>
       </div>
       <div className={styles.gap}></div>
 

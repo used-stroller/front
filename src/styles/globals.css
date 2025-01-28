@@ -29,6 +29,7 @@ body {
   padding: 20px 3%;
   background-color: #fafafa;
   overflow-y: scroll;
+  overflow-x: hidden !important;
 }
 
 ul,
