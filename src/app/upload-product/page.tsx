@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useUploadForm } from "@/utils/useUploadForm";
 import axios from "axios";
 
-export default function Recommend(): ReactElement {
+export default function Upload(): ReactElement {
   const {
     images,
     selectedStatus,

@@ -13,7 +13,7 @@ export default function Logo(): JSX.Element {
     setLogo(
       window.matchMedia("(max-width: 600px)").matches ? (
         <Image
-          src="./images/logo_simple.png"
+          src="/images/logo_simple.png"
           alt="중모차 로고"
           width={91}
           height={29}
@@ -21,7 +21,7 @@ export default function Logo(): JSX.Element {
         />
       ) : (
         <Image
-          src="./images/logo_block.png"
+          src="/images/logo_block.png"
           alt="중모차 로고"
           width={142}
           height={54}
@@ -46,7 +46,7 @@ export default function Logo(): JSX.Element {
         if (location.pathname === "/") {
           window.location.reload();
         } else {
-          window.location.reload();
+          router.push("/");
         }
       }}
       onKeyDown={(event) => {

@@ -4,13 +4,13 @@ import { create } from "zustand";
 interface FormState {
   selectedStatus: string;
   selectedPeriod: string;
-  selectedOptions: string[];
+  selectedOptions: number[];
   text: string;
   images: image[];
 
   setSelectedStatus: (value: string) => void;
   setSelectedPeriod: (value: string) => void;
-  setSelectedOptions: (updater: (prev: string[]) => string[]) => void; // 함수형 업데이트를 지원하도록 타입 정의
+  setSelectedOptions: (updater: (prev: number[]) => number[]) => void; // 함수형 업데이트를 지원하도록 타입 정의
   setText: (value: string) => void;
   setImages: (value: image[]) => void;
 }

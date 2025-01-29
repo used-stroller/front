@@ -9,7 +9,7 @@ import axios from "axios";
 import MyDropzoneMobile from "@/components/MyDropzoneMobile";
 import React from "react";
 
-export default function Recommend(): ReactElement {
+export default function Upload(): ReactElement {
   const {
     images,
     selectedStatus,
