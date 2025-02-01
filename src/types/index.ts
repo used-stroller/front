@@ -140,6 +140,7 @@ interface UserResponse {
 
 interface image {
   name: string;
+  src: string;
   url: string;
   file: File;
 }

@@ -7,12 +7,15 @@ interface FormState {
   selectedOptions: number[];
   text: string;
   images: image[];
+  deleted: number[];
 
   setSelectedStatus: (value: string) => void;
   setSelectedPeriod: (value: string) => void;
   setSelectedOptions: (updater: (prev: number[]) => number[]) => void; // 함수형 업데이트를 지원하도록 타입 정의
   setText: (value: string) => void;
   setImages: (value: image[]) => void;
+  setDeleted: (updater: (prev: number[]) => number[]) => void; // 함수형 업데이트를 지원하도록 타입 정의
+  
 }
 
 export const useUploadForm = create<FormState>((set) => ({
@@ -21,6 +24,7 @@ export const useUploadForm = create<FormState>((set) => ({
   selectedOptions: [],
   text: "",
   images: [],
+  deleted: [],
   setSelectedStatus: (value) => {
     set({ selectedStatus: value });
   },
@@ -37,5 +41,10 @@ export const useUploadForm = create<FormState>((set) => ({
   },
   setImages: (value) => {
     set({ images: value });
+  },
+  setDeleted: (updater) => {
+    set((state) => ({
+      deleted: updater(state.deleted), // updater 함수 사용
+    }));
   },
 }));

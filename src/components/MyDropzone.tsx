@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type ReactElement } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import styles from "@/styles/dropzone.module.css";
 import React, { useRef } from "react";
 import { FaCamera } from "react-icons/fa"; // 카메라 아이콘 import
@@ -9,9 +9,11 @@ import { useUploadForm } from "@/utils/useUploadForm";
 
 function MyDropzone(): ReactElement {
   const { images, setImages } = useUploadForm();
+  const { deleted, setDeleted } = useUploadForm();
   // const [images, setImages] = useState<image[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  console.log("imagesdropzone",images)
 
   useEffect(() => {
     if (containerRef.current !== null) {
@@ -31,7 +33,7 @@ function MyDropzone(): ReactElement {
       if (!images.some((e) => e.name === files[i].name)) {
         newImages.push({
           name: files[i].name,
-          url: URL.createObjectURL(files[i]),
+          src: URL.createObjectURL(files[i]),
           file: files[i],
         });
       }
@@ -43,8 +45,15 @@ function MyDropzone(): ReactElement {
   }
 
   function deleteImage(index: number): void {
+    const imageToDelete = images[index]; // 삭제할 이미지 객체 가져오기
+    if (!imageToDelete) return; // 유효하지 않은 index 처리
+
     const updatedImages = images.filter((_, i) => i !== index);
     setImages(updatedImages); // 배열을 직접 할당
+    if(imageToDelete.id !== null && imageToDelete.id !== undefined){
+      setDeleted((prev)=>[...prev,imageToDelete.id])
+    }
+    console.log("deleted",deleted)
   }
 
   return (
@@ -98,7 +107,7 @@ function MyDropzone(): ReactElement {
             >
               &times;
             </span>
-            <img src={images.url} alt={images.name}></img>
+            <img src={images.src} alt={images.name}></img>
           </div>
         ))}
       </div>

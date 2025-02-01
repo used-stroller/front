@@ -76,7 +76,6 @@
   max-height: 200px;
   overflow-y: auto;
   margin-top: 10px;
-  overflow-y: hidden; /* 세로 스크롤 숨김 */
   touch-action: pan-y; /*터치스크린에서 세로로 드래그 가능 */
 }
 
