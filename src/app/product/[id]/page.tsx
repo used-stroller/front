@@ -22,6 +22,7 @@ export default function ProductDetail({ params }: number) {
   const [usePeriod , setUsePeriod] = useState<number>(0);
   const [productData, setProductData] = useState<Content | null>(null);
   const [productImages, setProductImages] = useState<string[]>([process.env.NEXT_PUBLIC_BASE_URL+"/images/default_thumbnail.svg"]);
+  // const [favorite, setFavorite] = useState(false);
   const { id } = params; // 동적 URL 파라미터 가져오기
 
   const sliderSettings = {
@@ -225,7 +226,12 @@ export default function ProductDetail({ params }: number) {
 
           <div className={styles.fixed_bottom_bar}>
             <Image
-                src="../images/favorite.png" // 실제 이미지 경로로 변경
+                src = "../images/favorite.png"
+                // src={
+                //     favorite == false
+                //     ? "../images/favorite.png"
+                //     : "../images/heart_with_border"
+                // } // 실제 이미지 경로로 변경
                 alt="favorite"
                 width={30}
                 height={30}

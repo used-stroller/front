@@ -6,7 +6,7 @@ import MyDropzone from "@/components/MyDropzone";
 import { type ReactElement, useState, type ChangeEvent, useRef } from "react";
 import Image from "next/image";
 import { useUploadForm } from "@/utils/useUploadForm";
-import axios from "axios";
+import apiClient from "@/utils/apiClient";
 
 export default function Upload(): ReactElement {
   const {
@@ -26,27 +26,25 @@ export default function Upload(): ReactElement {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const handlePeriodChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setSelectedPeriod(event.target.value);
-    console.log("selectedPeriod", selectedPeriod);
+    setSelectedPeriod(Number(event.target.value)); // 숫자로 변환
+    console.log("selectedPeriod", event.target.value);
   };
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setTitle(event.target.value);
-    console.log("title", title);
   };
 
   const handlePriceChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setPrice(event.target.value);
-    console.log("price", price);
   };
 
   const handleStatusChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setSelectedStatus(event.target.value);
-    console.log("selectedStatus", selectedStatus);
   };
 
-  const handleOptionChange = (value: string): void => {
-    setSelectedOptions((prev: string[]) => {
+
+  const handleOptionChange = (value: number): void => {
+    setSelectedOptions((prev: number[]) => {
       // 이전 값이 배열인지 확인
       if (!Array.isArray(prev)) {
         return [value]; // 상태가 비정상일 경우 배열로 초기화
@@ -73,13 +71,33 @@ export default function Upload(): ReactElement {
   };
 
   const submit = (): void => {
+    event?.preventDefault();// 기본동작(페이지 리로드)막기
     void handleSubmit();
   };
 
   async function handleSubmit(): Promise<void> {
+    if(images.length == 0){
+      alert("이미지를 선택해 주세요")
+      return;
+    }
+    if(!title) {
+      alert("제목을 입력해 주세요")
+      return;
+    }
+    if(!price) {
+      alert("가격을 입력해 주세요")
+      return;
+    }
+    if(!text) {
+      alert("내용을 입력해 주세요")
+      return;
+    }
+
+
     console.log("submit");
     const formData = new FormData();
     images.forEach((image) => {
+      console.log("file",image.file);
       formData.append("imageList", image.file);
     });
 
@@ -87,7 +105,7 @@ export default function Upload(): ReactElement {
     formData.append("price", price);
     formData.append("buyStatus", selectedStatus);
     formData.append("usePeriod", selectedPeriod);
-    selectedOptions.forEach((option: string) => {
+    selectedOptions.forEach((option: number) => {
       formData.append("options", option);
     });
     formData.append("content", text);
@@ -98,23 +116,21 @@ export default function Upload(): ReactElement {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/product/register",
-        formData, // formData를 두 번째 인자로 직접 전달
-        {
-          headers: {
-            "Content-Type": "multipart/form-data", // 파일 업로드를 위해 Content-Type을 설정
-          },
+      const response = await apiClient.post("product/register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-      );
+      });
       if (response.status === 200) {
-        console.log("Upload successful!");
+        console.log("register successful!");
+        console.log(response.data);
+        window.location.href = "/product/" + String(response.data);
         // 성공 처리
       } else {
-        console.error("Upload failed");
+        alert(response.data.message || "An error occurred")
       }
     } catch (error) {
-      console.error("Error uploading files:", error);
+      console.error("Error Register files:", error);
     }
   }
 
@@ -178,8 +194,8 @@ export default function Upload(): ReactElement {
                     className={uploadCss.input_radio}
                     type="radio" // 라디오 버튼 타입
                     name="period"
-                    value="1" // value에 큰따옴표 추가
-                    checked={selectedPeriod === "1"}
+                    value={1} // value에 큰따옴표 추가
+                    checked={selectedPeriod === 1}
                     onChange={handlePeriodChange}
                   />
                   1년이하
@@ -189,8 +205,8 @@ export default function Upload(): ReactElement {
                     className={uploadCss.input_radio}
                     type="radio" // 라디오 버튼 타입
                     name="period"
-                    value="2" // value에 큰따옴표 추가
-                    checked={selectedPeriod === "2"}
+                    value={2} // value에 큰따옴표 추가
+                    checked={selectedPeriod === 2}
                     onChange={handlePeriodChange}
                   />
                   2년이하
@@ -200,8 +216,8 @@ export default function Upload(): ReactElement {
                     className={uploadCss.input_radio}
                     type="radio" // 라디오 버튼 타입
                     name="period"
-                    value="3" // value에 큰따옴표 추가
-                    checked={selectedPeriod === "3"}
+                    value={3} // value에 큰따옴표 추가
+                    checked={selectedPeriod === 3}
                     onChange={handlePeriodChange}
                   />
                   3년이하
@@ -211,8 +227,8 @@ export default function Upload(): ReactElement {
                     className={uploadCss.input_radio}
                     type="radio" // 라디오 버튼 타입
                     name="period"
-                    value="4" // value에 큰따옴표 추가
-                    checked={selectedPeriod === "4"}
+                    value={4} // value에 큰따옴표 추가
+                    checked={selectedPeriod === 4}
                     onChange={handlePeriodChange}
                   />
                   3년이상
@@ -227,22 +243,22 @@ export default function Upload(): ReactElement {
                 <div className={uploadCss.option}>
                   <input
                     type="checkbox"
-                    value="cupholder"
+                    value={1}
                     className={uploadCss.checkbox}
                     onChange={() => {
-                      handleOptionChange("cupholder");
+                      handleOptionChange(1);
                     }}
-                    checked={selectedOptions.includes("cupholder")}
+                    checked={selectedOptions.includes(1)}
                   />
                   <Image
                     src={
-                      selectedOptions.includes("cupholder")
+                      selectedOptions.includes(1)
                         ? "/images/cupholder_on.svg"
                         : "/images/cupholder_off.svg"
                     }
                     className={uploadCss.image}
                     onClick={() => {
-                      handleOptionChange("cupholder");
+                      handleOptionChange(1);
                     }}
                     alt={"컵홀더"}
                     width={50}
@@ -253,22 +269,22 @@ export default function Upload(): ReactElement {
                 <div className={uploadCss.option}>
                   <input
                     type="checkbox"
-                    value="bassinet"
+                    value={2}
                     className={uploadCss.checkbox}
                     onChange={() => {
-                      handleOptionChange("bassinet");
+                      handleOptionChange(2);
                     }}
-                    checked={selectedOptions.includes("bassinet")}
+                    checked={selectedOptions.includes(2)}
                   />
                   <Image
                     src={
-                      selectedOptions.includes("bassinet")
+                      selectedOptions.includes(2)
                         ? "/images/bassinet_on.svg"
                         : "/images/bassinet_off.svg"
                     }
                     className={uploadCss.image}
                     onClick={() => {
-                      handleOptionChange("bassinet");
+                      handleOptionChange(2);
                     }}
                     alt={"베시넷"}
                     width={50}
@@ -279,22 +295,22 @@ export default function Upload(): ReactElement {
                 <div className={uploadCss.option}>
                   <input
                     type="checkbox"
-                    value="footmuff"
+                    value={3}
                     className={uploadCss.checkbox}
                     onChange={() => {
-                      handleOptionChange("footmuff");
+                      handleOptionChange(3);
                     }}
-                    checked={selectedOptions.includes("footmuff")}
+                    checked={selectedOptions.includes(3)}
                   />
                   <Image
                     src={
-                      selectedOptions.includes("footmuff")
+                      selectedOptions.includes(3)
                         ? "/images/footmuff_on.svg"
                         : "/images/footmuff_off.svg"
                     }
                     className={uploadCss.image}
                     onClick={() => {
-                      handleOptionChange("footmuff");
+                      handleOptionChange(3);
                     }}
                     alt={"풋머프"}
                     width={50}
@@ -305,22 +321,22 @@ export default function Upload(): ReactElement {
                 <div className={uploadCss.option}>
                   <input
                     type="checkbox"
-                    value="moskito"
+                    value={4}
                     className={uploadCss.checkbox}
                     onChange={() => {
-                      handleOptionChange("moskito");
+                      handleOptionChange(4);
                     }}
-                    checked={selectedOptions.includes("moskito")}
+                    checked={selectedOptions.includes(4)}
                   />
                   <Image
                     src={
-                      selectedOptions.includes("moskito")
+                      selectedOptions.includes(4)
                         ? "/images/moskito_on.svg"
                         : "/images/moskito_off.svg"
                     }
                     className={uploadCss.image}
                     onClick={() => {
-                      handleOptionChange("moskito");
+                      handleOptionChange(4);
                     }}
                     alt={"모기장"}
                     width={50}
@@ -331,22 +347,22 @@ export default function Upload(): ReactElement {
                 <div className={uploadCss.option}>
                   <input
                     type="checkbox"
-                    value="raincover"
+                    value={5}
                     className={uploadCss.checkbox}
                     onChange={() => {
-                      handleOptionChange("raincover");
+                      handleOptionChange(5);
                     }}
-                    checked={selectedOptions.includes("raincover")}
+                    checked={selectedOptions.includes(5)}
                   />
                   <Image
                     src={
-                      selectedOptions.includes("raincover")
+                      selectedOptions.includes(5)
                         ? "/images/raincover_on.svg"
                         : "/images/raincover_off.svg"
                     }
                     className={uploadCss.image}
                     onClick={() => {
-                      handleOptionChange("raincover");
+                      handleOptionChange(5);
                     }}
                     alt={"레인커버"}
                     width={50}
@@ -357,22 +373,22 @@ export default function Upload(): ReactElement {
                 <div className={uploadCss.option}>
                   <input
                     type="checkbox"
-                    value="windcover"
+                    value={6}
                     className={uploadCss.checkbox}
                     onChange={() => {
-                      handleOptionChange("windcover");
+                      handleOptionChange(6);
                     }}
-                    checked={selectedOptions.includes("windcover")}
+                    checked={selectedOptions.includes(6)}
                   />
                   <Image
                     src={
-                      selectedOptions.includes("windcover")
+                      selectedOptions.includes(6)
                         ? "/images/windcover_on.svg"
                         : "/images/windcover_off.svg"
                     }
                     className={uploadCss.image}
                     onClick={() => {
-                      handleOptionChange("windcover");
+                      handleOptionChange(6);
                     }}
                     alt={"방풍커버"}
                     width={50}

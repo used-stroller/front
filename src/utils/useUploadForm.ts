@@ -3,14 +3,14 @@ import { create } from "zustand";
 
 interface FormState {
   selectedStatus: string;
-  selectedPeriod: string;
+  selectedPeriod: number;
   selectedOptions: number[];
   text: string;
   images: image[];
   deleted: number[];
 
   setSelectedStatus: (value: string) => void;
-  setSelectedPeriod: (value: string) => void;
+  setSelectedPeriod: (value: number) => void;
   setSelectedOptions: (updater: (prev: number[]) => number[]) => void; // 함수형 업데이트를 지원하도록 타입 정의
   setText: (value: string) => void;
   setImages: (value: image[]) => void;
@@ -20,7 +20,7 @@ interface FormState {
 
 export const useUploadForm = create<FormState>((set) => ({
   selectedStatus: "새상품",
-  selectedPeriod: "1",
+  selectedPeriod: 1,
   selectedOptions: [],
   text: "",
   images: [],

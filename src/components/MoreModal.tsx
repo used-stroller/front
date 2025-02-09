@@ -1,3 +1,4 @@
+import apiClient from '@/utils/apiClient';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from "react";
 
@@ -43,19 +44,14 @@ const MoreModal = ({ isOpen , onClose ,id}) => {
     router.push("/product/modify/"+ id);
   }
 
-  const handleDelete = (id) => {
+  const handleDelete = (id): void => {
+    void deleteProduct(id);
+  };
+
+  async function deleteProduct(id: number): Promise<void> {
     if (confirm("정말 삭제하시겠습니까?")) {
       // 삭제 API 호출 (예: fetch 또는 axios 사용)
-      fetch(`/api/product/delete/${id}`, { method: "PUT" })
-        .then((res) => {
-          if (res.ok) {
-            alert("삭제되었습니다.");
-            router.push("/product"); // 삭제 후 목록 페이지로 이동
-          } else {
-            alert("삭제 실패");
-          }
-        })
-        .catch((err) => alert("오류 발생: " + err));
+      const response = await apiClient.post("product/delete?id=" + id);
     }
   };
 

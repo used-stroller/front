@@ -140,11 +140,12 @@ export default function Modify({ params }: number): ReactElement {
       // );
       const response = await apiClient.post("product/modify", formData, {
         headers: {
-          "Content-Type":"multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
       });
       if (response.status === 200) {
         console.log("Modify successful!");
+        window.location.href = "/product/" + id;
         // 성공 처리
       } else {
         console.error("Modify failed");
