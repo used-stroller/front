@@ -13,7 +13,7 @@ function MyDropzone(): ReactElement {
   // const [images, setImages] = useState<image[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  console.log("imagesdropzone",images)
+  console.log("imagesdropzone", images);
 
   useEffect(() => {
     if (containerRef.current !== null) {
@@ -50,10 +50,10 @@ function MyDropzone(): ReactElement {
 
     const updatedImages = images.filter((_, i) => i !== index);
     setImages(updatedImages); // 배열을 직접 할당
-    if(imageToDelete.id !== null && imageToDelete.id !== undefined){
-      setDeleted((prev)=>[...prev,imageToDelete.id])
+    if (imageToDelete.id !== null && imageToDelete.id !== undefined) {
+      setDeleted((prev) => [...prev, imageToDelete.id]);
     }
-    console.log("deleted",deleted)
+    console.log("deleted", deleted);
   }
 
   return (

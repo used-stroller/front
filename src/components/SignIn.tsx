@@ -14,17 +14,16 @@ export const SignIn = (): ReactElement => {
   const [shouldSendToBackend, setShouldSendToBackend] = useState(false); // 백엔드 호출 조건
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 
-
   const handleLogin = async () => {
     try {
       setIsLoading(true); // 로딩 상태 활성화
       const result = await signIn("kakao", { redirect: false });
     } catch (error) {
-      alert('로그인 중 문제가 발생했습니다.');
+      alert("로그인 중 문제가 발생했습니다.");
     }
   };
 
-    // 세션이 업데이트된 후 shouldSendToBackend 설정
+  // 세션이 업데이트된 후 shouldSendToBackend 설정
   useEffect(() => {
     if (session?.user) {
       // 세션이 인증 상태로 변경되면 실행
@@ -44,17 +43,19 @@ export const SignIn = (): ReactElement => {
   };
 
   function callToServer() {
-    console.log(shouldSendToBackend)
+    console.log(shouldSendToBackend);
     if (!shouldSendToBackend) return; // 조건에 따라 실행
-    console.log("실행됨")
+    console.log("실행됨");
     axios
       .post(
         "http://localhost:8080/user/api/auth/kakao",
         {
           loginResult: session,
-      }, {
+        },
+        {
           withCredentials: true, // 쿠키를 요청에 포함시킴
-      })
+        },
+      )
       .then((response) => {
         console.log("백엔드 응답:", response.data);
         window.location.href = "/";
@@ -74,7 +75,7 @@ export const SignIn = (): ReactElement => {
 
   return (
     <>
-      <div className={styles.blank} ></div>
+      <div className={styles.blank}></div>
       <div className={styles.imageContainer}>
         <Image
           src="/images/kakao_login_medium_wide.png"

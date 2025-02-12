@@ -57,7 +57,7 @@ const useFilter = (): FilterContextType => {
   };
 
   const resetAllFilters = (): void => {
-    setFilter({   
+    setFilter({
       keyword: "",
       sourceType: [],
       minPrice: "",
@@ -69,7 +69,8 @@ const useFilter = (): FilterContextType => {
       brand: [],
       page: 0,
       size: 20, // 기본 페이지 크기 (필요에 따라 조정)
-      sort: "",}); // 필터 초기 상태로 리셋
+      sort: "",
+    }); // 필터 초기 상태로 리셋
   };
 
   return { filter, handleFilter, minMaxPrice, reset, resetAllFilters };

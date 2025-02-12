@@ -9,7 +9,7 @@ export const authOptions = {
     }),
   ],
   session: {
-    strategy : "jwt",
+    strategy: "jwt",
     maxAge: 60 * 60, // 세션만료시간 (60분)
     updateAge: 30 * 60, // 세션 갱신 추가 (10분)
   },

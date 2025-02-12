@@ -3,12 +3,18 @@ import styles from "@/styles/page.module.css";
 import uploadCss from "@/styles/upload.module.css";
 import Logo from "@/components/Logo";
 import MyDropzone from "@/components/MyDropzone";
-import { type ReactElement, useState, type ChangeEvent, useRef, useEffect } from "react";
+import {
+  type ReactElement,
+  useState,
+  type ChangeEvent,
+  useRef,
+  useEffect,
+} from "react";
 import Image from "next/image";
 import { useUploadForm } from "@/utils/useUploadForm";
 import axios from "axios";
-import apiClient from '@/utils/apiClient';
-import { Content } from '@/types';
+import apiClient from "@/utils/apiClient";
+import { Content } from "@/types";
 
 export default function Modify({ params }: number): ReactElement {
   const {
@@ -27,7 +33,7 @@ export default function Modify({ params }: number): ReactElement {
 
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
-  const [usePeriod , setUsePeriod] = useState<number>(0);
+  const [usePeriod, setUsePeriod] = useState<number>(0);
   const [productData, setProductData] = useState<Content | null>(null);
   const { id } = params; // 동적 URL 파라미터 가져오기
 
@@ -36,12 +42,12 @@ export default function Modify({ params }: number): ReactElement {
       try {
         const response = await apiClient.get("product/get/" + id);
         const selectedOptions = response.data.options;
-        setTitle(response.data.title)
-        setPrice(response.data.price)
+        setTitle(response.data.title);
+        setPrice(response.data.price);
         setSelectedStatus(response.data.buyStatus);
-        setSelectedPeriod(response.data.usePeriod)
+        setSelectedPeriod(response.data.usePeriod);
         setImages(response.data.imageList);
-        setSelectedOptions(()=> selectedOptions);
+        setSelectedOptions(() => selectedOptions);
         setUsePeriod(response.data.usePeriod);
         setText(response.data.content);
       } catch (err: any) {
@@ -50,7 +56,6 @@ export default function Modify({ params }: number): ReactElement {
     };
     fetchProductData();
   }, []);
-
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const handlePeriodChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -96,27 +101,27 @@ export default function Modify({ params }: number): ReactElement {
   };
 
   const submit = (): void => {
-    event?.preventDefault();// 기본동작(페이지 리로드)막기
+    event?.preventDefault(); // 기본동작(페이지 리로드)막기
     void handleSubmit();
   };
 
   async function handleSubmit(): Promise<void> {
     console.log("submit실행");
     const formData = new FormData();
-    images.forEach((image,index) => {
+    images.forEach((image, index) => {
       if (!image?.file) {
         console.warn(`이미지 ${index}가 비어 있음 또는 유효하지 않음`, image);
         return; // `undefined`인 값은 추가하지 않음
       }
       formData.append("imageList", image.file);
     });
-    formData.append("id",id);
+    formData.append("id", id);
     formData.append("title", title);
     formData.append("price", price);
     formData.append("buyStatus", selectedStatus);
     formData.append("usePeriod", selectedPeriod);
     selectedOptions.forEach((option: number) => {
-    formData.append("options", option);
+      formData.append("options", option);
     });
     formData.append("content", text);
     deleted.forEach((d: number) => {
@@ -162,7 +167,7 @@ export default function Modify({ params }: number): ReactElement {
           <Logo />
         </div>
         <div className={uploadCss.container}>
-          <MyDropzone imageList={images}/>
+          <MyDropzone imageList={images} />
           <div className={uploadCss.product_detail_container}>
             <p className={uploadCss.title_p}>제목</p>
             <div className={uploadCss.title_div}>

@@ -15,7 +15,6 @@ interface FormState {
   setText: (value: string) => void;
   setImages: (value: image[]) => void;
   setDeleted: (updater: (prev: number[]) => number[]) => void; // 함수형 업데이트를 지원하도록 타입 정의
-  
 }
 
 export const useUploadForm = create<FormState>((set) => ({

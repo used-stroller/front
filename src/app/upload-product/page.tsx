@@ -42,7 +42,6 @@ export default function Upload(): ReactElement {
     setSelectedStatus(event.target.value);
   };
 
-
   const handleOptionChange = (value: number): void => {
     setSelectedOptions((prev: number[]) => {
       // 이전 값이 배열인지 확인
@@ -71,33 +70,32 @@ export default function Upload(): ReactElement {
   };
 
   const submit = (): void => {
-    event?.preventDefault();// 기본동작(페이지 리로드)막기
+    event?.preventDefault(); // 기본동작(페이지 리로드)막기
     void handleSubmit();
   };
 
   async function handleSubmit(): Promise<void> {
-    if(images.length == 0){
-      alert("이미지를 선택해 주세요")
+    if (images.length == 0) {
+      alert("이미지를 선택해 주세요");
       return;
     }
-    if(!title) {
-      alert("제목을 입력해 주세요")
+    if (!title) {
+      alert("제목을 입력해 주세요");
       return;
     }
-    if(!price) {
-      alert("가격을 입력해 주세요")
+    if (!price) {
+      alert("가격을 입력해 주세요");
       return;
     }
-    if(!text) {
-      alert("내용을 입력해 주세요")
+    if (!text) {
+      alert("내용을 입력해 주세요");
       return;
     }
-
 
     console.log("submit");
     const formData = new FormData();
     images.forEach((image) => {
-      console.log("file",image.file);
+      console.log("file", image.file);
       formData.append("imageList", image.file);
     });
 
@@ -127,7 +125,7 @@ export default function Upload(): ReactElement {
         window.location.href = "/product/" + String(response.data);
         // 성공 처리
       } else {
-        alert(response.data.message || "An error occurred")
+        alert(response.data.message || "An error occurred");
       }
     } catch (error) {
       console.error("Error Register files:", error);

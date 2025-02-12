@@ -1,11 +1,10 @@
-'use client';
+"use client";
 import React from "react";
 
 const FloatingButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
-
-    const moveToUpload = () => {
-        window.location.href = "/upload-product";
-    };
+  const moveToUpload = () => {
+    window.location.href = "/upload-product";
+  };
 
   return (
     <button
@@ -32,4 +31,3 @@ const FloatingButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
 };
 
 export default FloatingButton;
-
