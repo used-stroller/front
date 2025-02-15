@@ -23,7 +23,7 @@ export default function Product({
         <Link
           href={content.link}
           className={styles.product_link}
-          target={"_blank"}
+          target={content.link.includes("product") ? "_self" : "_blank"}
         >
           <ProductImage content={content} />
         </Link>

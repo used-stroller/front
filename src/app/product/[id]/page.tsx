@@ -38,20 +38,22 @@ export default function ProductDetail({ params }: number) {
     router.push("/");
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await apiClient.get("user/mypage");
-        setUserData(response.data.data);
-      } catch (err: any) {
-        console.log("데이터 가져오기 실패");
-      }
-    };
-    fetchUserData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     console.log(document.cookie);
+  //     try {
+  //       const response = await apiClient.get("user/mypage");
+  //       setUserData(response.data.data);
+  //     } catch (err: any) {
+  //       console.log("데이터 가져오기 실패");
+  //     }
+  //   };
+  //   fetchUserData();
+  // }, []);
 
   useEffect(() => {
     const fetchProductData = async () => {
+      console.log(document.cookie)
       try {
         const response = await apiClient.get("product/get/" + id);
         const imageList = response.data.imageList;
@@ -62,6 +64,7 @@ export default function ProductDetail({ params }: number) {
         setSelectedOptions(selectedOptions);
         setBuyStatus(response.data.buyStatus);
         setUsePeriod(response.data.usePeriod);
+        setUserData(response.data.myPageDto);
       } catch (err: any) {
         console.log("데이터 가져오기 실패");
       }
