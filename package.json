@@ -34,7 +34,9 @@
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1",
     "zod": "^3.23.8",
-    "zustand": "^5.0.0"
+    "zustand": "^5.0.0",
+    "lucide-react": "^0.475.0",
+    "socket.io-client": "^4.6.0"
   },
   "devDependencies": {
     "@next/third-parties": "^14.2.1",
