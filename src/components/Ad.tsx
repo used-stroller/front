@@ -35,9 +35,13 @@ const Ad = (): ReactElement | boolean => {
             최저가 검색, 브랜드별 검색, 사이트별 검색 기능 등 손쉽게 원하는
             상품을 찾아보세요.
           </p>
-          <p>제휴 및 문의사항이 있으신 분은 아래 메일로 연락주세요.</p>
-          <p>hoonyhoeny@gmail.com</p>
+          <p>
+            건의사항이나 문의사항이 있으신 분은 중모차 오픈채팅으로 연락 주세요.
+          </p>
           <Link href={"/"}>홈으로</Link>
+          <Link href={"https://open.kakao.com/o/sBPnvn2g"}>
+            중모차 오픈채팅방
+          </Link>
         </div>
       )}
     </div>

@@ -101,7 +101,7 @@ export const Mypage = (): ReactElement => {
               height={30}
               className={styles.item_img}
             />
-            <span>관심목록(작업중..헤헤)</span>
+            <span>관심목록(Coming soon)</span>
             <Image
               src="../images/arrow_right.png"
               alt="right_arrow"
@@ -118,7 +118,7 @@ export const Mypage = (): ReactElement => {
               height={30}
               className={styles.item_img}
             />
-            <span>판매내역(조금만)</span>
+            <span>판매내역(Coming soon)</span>
             <Image
               src="../images/arrow_right.png"
               alt="right_arrow"
@@ -135,7 +135,7 @@ export const Mypage = (): ReactElement => {
               height={30}
               className={styles.item_img}
             />
-            <span>구매내역(기다려주세영)</span>
+            <span>구매내역(Coming soon)</span>
             <Image
               src="../images/arrow_right.png" // 실제 이미지 경로로 변경
               alt="right_arrow"

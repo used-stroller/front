@@ -180,6 +180,7 @@ export default function Modify({ params }: number): ReactElement {
             <div className={uploadCss.price_div}>
               <span className={uploadCss.fixed_char}>₩</span>
               <input
+                type="number"
                 className={`${uploadCss.input_field} ${uploadCss.input_price}`}
                 placeholder="가격을 입력해 주세요"
                 onChange={handlePriceChange}

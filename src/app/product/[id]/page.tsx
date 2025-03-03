@@ -10,6 +10,7 @@ import FormattedPrice from "@/components/FormattedPrice";
 import { useRouter } from "next/navigation";
 import MoreModal from "@/components/MoreModal";
 import uploadCss from "@/styles/upload.module.css";
+import { set } from 'zod';
 
 export default function ProductDetail({ params }: number) {
   const [selectedValue, setSelectedValue] = useState<string>("거래완료");
@@ -24,7 +25,7 @@ export default function ProductDetail({ params }: number) {
   const [productImages, setProductImages] = useState<string[]>([
     process.env.NEXT_PUBLIC_BASE_URL + "/images/default_thumbnail.svg",
   ]);
-  // const [favorite, setFavorite] = useState(false);
+  const [favorite, setFavorite] = useState(false);
   const { id } = params; // 동적 URL 파라미터 가져오기
 
   const sliderSettings = {
@@ -38,33 +39,22 @@ export default function ProductDetail({ params }: number) {
     router.push("/");
   };
 
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     console.log(document.cookie);
-  //     try {
-  //       const response = await apiClient.get("user/mypage");
-  //       setUserData(response.data.data);
-  //     } catch (err: any) {
-  //       console.log("데이터 가져오기 실패");
-  //     }
-  //   };
-  //   fetchUserData();
-  // }, []);
-
   useEffect(() => {
     const fetchProductData = async () => {
-      console.log(document.cookie)
+      console.log(document.cookie);
       try {
         const response = await apiClient.get("product/get/" + id);
         const imageList = response.data.imageList;
         const imageArray = imageList.map((image) => image.src);
         const selectedOptions = response.data.options;
+        console.log(response.data)
         setProductData(response.data);
         setProductImages(imageArray);
         setSelectedOptions(selectedOptions);
         setBuyStatus(response.data.buyStatus);
         setUsePeriod(response.data.usePeriod);
         setUserData(response.data.myPageDto);
+        setFavorite(response.data.favorite)
       } catch (err: any) {
         console.log("데이터 가져오기 실패");
       }
@@ -95,6 +85,26 @@ export default function ProductDetail({ params }: number) {
   const buyStatusLabels: Record<string, string> = {
     새상품: "#신품구매",
     중고: "#중고구매",
+  };
+
+  const changeFavorite = () => {
+    console.log("changeFavorite시행됨");
+    setFavorite(!favorite);
+
+    if (!favorite) {
+      void apiClient.post(
+        "product/favorite/add",
+        { productId: Number(id) }, // JSON 형식으로 전송
+        { headers: { "Content-Type": "application/json" } } // JSON 명시
+      );
+    }
+    else {
+      void apiClient.post(
+        "product/favorite/delete",
+        { productId: Number(id) }, // JSON 형식으로 전송
+        { headers: { "Content-Type": "application/json" } } // JSON 명시
+      );
+    }
   };
 
   return (
@@ -257,16 +267,16 @@ export default function ProductDetail({ params }: number) {
 
       <div className={styles.fixed_bottom_bar}>
         <Image
-          src="../images/favorite.png"
-          // src={
-          //     favorite == false
-          //     ? "../images/favorite.png"
-          //     : "../images/heart_with_border"
-          // } // 실제 이미지 경로로 변경
+          src={
+              favorite == false
+              ? "../images/favorite.png"
+              : "../images/heart_with_border.svg"
+          } // 실제 이미지 경로로 변경
           alt="favorite"
           width={30}
           height={30}
           className={styles.favorite_blank}
+          onClick={changeFavorite}
         />
         <div style={{ fontSize: 20 }}>
           <FormattedPrice value={Number(productData?.price || 0)} />
