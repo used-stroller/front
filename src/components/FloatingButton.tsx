@@ -3,23 +3,20 @@ import React from "react";
 
 const FloatingButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   const moveToUpload = () => {
-
     const jwtToken = getCookie("jwt");
-    if(jwtToken != null) {
-    window.location.href = "/upload-product";
+    if (jwtToken != null) {
+      window.location.href = "/upload-product";
     } else {
-    window.location.href = "/signin";
+      window.location.href = "/signin";
     }
-    
   };
 
-  // 토큰확인 
+  // 토큰확인
   const getCookie = (name) => {
     const cookies = document.cookie.split("; ");
     const cookie = cookies.find((row) => row.startsWith(`${name}=`));
     return cookie ? cookie.split("=")[1] : null;
   };
-  
 
   return (
     <button

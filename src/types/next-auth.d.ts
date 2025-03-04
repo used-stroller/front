@@ -1,6 +1,19 @@
-import { type JWT as NextAuthJWT } from "next-auth/jwt";
+// next-auth.d.ts
 
-export declare module "next-auth" {
+import { Session as NextAuthSession } from "next-auth";
+import { JWT as NextAuthJWT } from "next-auth/jwt";
+
+declare module "next-auth" {
+  interface Session extends NextAuthSession {
+    user: {
+      id: string;
+      kakaoId: string;
+      name: string;
+      email: string;
+      profileImage: string;
+    };
+  }
+
   interface User {
     email: string;
     name: string;
@@ -8,29 +21,16 @@ export declare module "next-auth" {
     accessToken: string;
     refreshToken: string;
     exp: number;
-  }
-  interface Session {
-    name: string;
-    email: string;
-    accessToken: string;
-    refreshToken: string;
-    role: string;
-    expires: Date;
-    exp: number;
-    error?: string | null;
-    errorCode?: string | null;
+    kakaoId?: string;
+    profileImage?: string;
   }
 }
 
-export declare module "next-auth/jwt" {
+declare module "next-auth/jwt" {
   interface JWT extends NextAuthJWT {
+    kakaoId: string;
     name: string;
     email: string;
-    accessToken: string;
-    refreshToken: string;
-    exp: number;
-    role: string;
-    error?: string | null;
-    errorCode?: string | null;
+    profileImage: string;
   }
 }

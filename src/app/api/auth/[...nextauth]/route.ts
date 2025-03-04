@@ -1,43 +1,84 @@
 import NextAuth from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
+import { NextAuthOptions } from "next-auth";
+import { Session as NextAuthSession, Profile } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
-export const authOptions = {
+// 카카오 프로필 타입 정의
+interface KakaoProfile extends Profile {
+  id: string;
+  properties: {
+    nickname: string;
+    profile_image: string;
+  };
+  kakao_account: {
+    email: string;
+  };
+}
+
+// JWT 타입 정의
+interface CustomJWT extends JWT {
+  kakaoId: string;
+  name: string;
+  email: string;
+  profileImage: string;
+}
+
+// 세션 타입 정의
+interface CustomSession extends NextAuthSession {
+  user: {
+    id: string;
+    kakaoId: string;
+    name: string;
+    email: string;
+    profileImage: string;
+  };
+}
+
+export const authOptions: NextAuthOptions = {
   providers: [
     KakaoProvider({
-      clientId: process.env.KAKAO_CLIENT_ID?.replace(/=/g, "").trim(),
-      clientSecret: process.env.KAKAO_CLIENT_SECRET,
+      clientId: process.env.KAKAO_CLIENT_ID!,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET!,
     }),
   ],
   session: {
     strategy: "jwt",
-    maxAge: 60 * 60, // 세션만료시간 (60분)
-    updateAge: 30 * 60, // 세션 갱신 추가 (10분)
+    maxAge: 60 * 60, // 세션 만료시간 (60분)
+    updateAge: 30 * 60, // 세션 갱신 추가 (30분)
   },
   callbacks: {
-    // 세션 콜백: 세션에 사용자 정보를 추가
-    async session({ session, token }) {
-      if (token) {
-        // 카카오 로그인 후 사용자 정보 추가
-        session.user.id = token.id;
-        session.user.kakaoId = token.kakaoId; // 카카오 ID 추가
-        session.user.name = token.name; // 이름 추가
-        session.user.email = token.email; // 이메일 추가
-        session.user.profileImage = token.profileImage; // 프로필 이미지 추가
+    async session({ session, token }: { session: CustomSession; token: CustomJWT }) {
+      if (token && session.user) {
+        // JWT에서 정보를 가져와 세션에 설정
+        session.user.id = token.kakaoId;
+        session.user.kakaoId = token.kakaoId;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.profileImage = token.profileImage;
       }
       return session;
     },
-    async jwt({ token, account, profile }) {
-      if (account && profile) {
+    async jwt({
+      token,
+      profile,
+    }: {
+      token: CustomJWT;
+
+      profile?: KakaoProfile; // KakaoProfile 타입으로 지정
+    }) {
+      if (profile) {
         // 카카오 로그인 시 추가적인 정보를 JWT에 저장
-        token.kakaoId = profile.id; // 카카오 ID
-        token.name = profile.properties.nickname; // 이름
-        token.email = profile.kakao_account.email; // 이메일
-        token.profileImage = profile.properties.profile_image; // 프로필 이미지
+        token.kakaoId = profile.id;
+        token.name = profile.properties.nickname;
+        token.email = profile.kakao_account.email;
+        token.profileImage = profile.properties.profile_image;
       }
       return token;
     },
   },
   debug: true,
 };
+
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

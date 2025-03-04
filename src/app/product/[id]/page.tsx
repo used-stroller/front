@@ -10,7 +10,7 @@ import FormattedPrice from "@/components/FormattedPrice";
 import { useRouter } from "next/navigation";
 import MoreModal from "@/components/MoreModal";
 import uploadCss from "@/styles/upload.module.css";
-import { set } from 'zod';
+import { set } from "zod";
 
 export default function ProductDetail({ params }: number) {
   const [selectedValue, setSelectedValue] = useState<string>("거래완료");
@@ -47,14 +47,14 @@ export default function ProductDetail({ params }: number) {
         const imageList = response.data.imageList;
         const imageArray = imageList.map((image) => image.src);
         const selectedOptions = response.data.options;
-        console.log(response.data)
+        console.log(response.data);
         setProductData(response.data);
         setProductImages(imageArray);
         setSelectedOptions(selectedOptions);
         setBuyStatus(response.data.buyStatus);
         setUsePeriod(response.data.usePeriod);
         setUserData(response.data.myPageDto);
-        setFavorite(response.data.favorite)
+        setFavorite(response.data.favorite);
       } catch (err: any) {
         console.log("데이터 가져오기 실패");
       }
@@ -95,14 +95,13 @@ export default function ProductDetail({ params }: number) {
       void apiClient.post(
         "product/favorite/add",
         { productId: Number(id) }, // JSON 형식으로 전송
-        { headers: { "Content-Type": "application/json" } } // JSON 명시
+        { headers: { "Content-Type": "application/json" } }, // JSON 명시
       );
-    }
-    else {
+    } else {
       void apiClient.post(
         "product/favorite/delete",
         { productId: Number(id) }, // JSON 형식으로 전송
-        { headers: { "Content-Type": "application/json" } } // JSON 명시
+        { headers: { "Content-Type": "application/json" } }, // JSON 명시
       );
     }
   };
@@ -268,7 +267,7 @@ export default function ProductDetail({ params }: number) {
       <div className={styles.fixed_bottom_bar}>
         <Image
           src={
-              favorite == false
+            favorite == false
               ? "../images/favorite.png"
               : "../images/heart_with_border.svg"
           } // 실제 이미지 경로로 변경
