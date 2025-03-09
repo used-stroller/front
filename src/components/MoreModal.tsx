@@ -1,6 +1,7 @@
+"use client";
 import apiClient from "@/utils/apiClient";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, type CSSProperties } from "react";
 
 const ContainerStyle = {
   position: "fixed",
@@ -13,14 +14,20 @@ const ContainerStyle = {
   borderRadius: "5px", // 수정됨
 };
 
-const MoreModal = ({ isOpen, onClose, id }) => {
+interface MoreModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  id: number;
+}
+
+const MoreModal: React.FC<MoreModalProps> = ({ isOpen, onClose, id }) => {
   const router = useRouter();
   const modalRef = useRef(null);
   // 항상 useEffect를 호출하게 하고, 조건문으로 효과를 제어합니다
   useEffect(() => {
     // 모달이 열렸을 때만 실행되도록 조건을 추가
     if (isOpen) {
-      const handleOutsideClick = (e) => {
+      const handleOutsideClick = (e): void => {
         // modalRef가 존재하고, 클릭된 위치가 모달 내부가 아니면
         if (modalRef.current && !modalRef.current.contains(e.target)) {
           // onClose를 호출하여 부모 컴포넌트로 모달을 닫도록 요청
@@ -40,23 +47,23 @@ const MoreModal = ({ isOpen, onClose, id }) => {
 
   if (!isOpen) return null; // 모달이 열리지 않으면 아무것도 렌더링하지 않음
 
-  const goModifyPage = (id) => {
+  const goModifyPage = (id): void => {
     router.push("/product/modify/" + id);
   };
 
-  const handleDelete = (id): void => {
+  const handleDelete = async (id: number): Promise<void> => {
     void deleteProduct(id);
   };
 
   async function deleteProduct(id: number): Promise<void> {
     if (confirm("정말 삭제하시겠습니까?")) {
       // 삭제 API 호출 (예: fetch 또는 axios 사용)
-      const response = await apiClient.post("product/delete?id=" + id);
+      await apiClient.post("product/delete?id=" + id);
     }
   }
 
   return (
-    <div style={ContainerStyle} ref={modalRef}>
+    <div style={ContainerStyle as CSSProperties} ref={modalRef}>
       <div
         style={{
           display: "flex",
@@ -64,18 +71,65 @@ const MoreModal = ({ isOpen, onClose, id }) => {
           justifyContent: "space-between",
         }}
       >
-        <p
+        <button
+          style={{
+            marginTop: "10px",
+            marginLeft: "10px",
+            cursor: "pointer",
+            background: "none",
+            border: "none",
+            textAlign: "left",
+            fontSize: "16px",
+          }}
+          onClick={() => {
+            typeof id === "number" && goModifyPage(id);
+          }}
+          onKeyDown={(e) => {
+            (e.key === "Enter" || e.key === " ") &&
+              typeof id === "number" &&
+              goModifyPage(id);
+          }}
+        >
+          수정하기
+        </button>
+
+        <button
+          style={{
+            marginTop: "10px",
+            marginLeft: "10px",
+            cursor: "pointer",
+            background: "none",
+            border: "none",
+            textAlign: "left",
+            fontSize: "16px",
+          }}
+          onClick={() => {
+            void (typeof id === "number" && handleDelete(id));
+          }}
+          onKeyDown={(e) => {
+            void (
+              (e.key === "Enter" || e.key === " ") &&
+              typeof id === "number" &&
+              handleDelete(id)
+            );
+          }}
+        >
+          삭제하기
+        </button>
+
+        {/* <p
           style={{ marginTop: "10px", marginLeft: "10px" }}
-          onClick={() => goModifyPage(id)}
+          onClick={() => typeof id === "number" && goModifyPage(id)}
         >
           수정하기
         </p>
         <p
-          style={{ marginTop: "10px", marginLeft: "10px" }}
+          style={{ marginTop: "10px", marginLeft: "10px" 
+          }}
           onClick={() => handleDelete(id)}
         >
           삭제하기
-        </p>
+        </p> */}
       </div>
     </div>
   );

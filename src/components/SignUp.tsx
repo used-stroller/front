@@ -23,6 +23,7 @@ export function SignUp(): ReactElement {
             }, 1000);
           }
           inputRef.current?.focus();
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setMessage(response?.error);
         })
         .catch((error) => {

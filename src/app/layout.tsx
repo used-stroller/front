@@ -5,7 +5,6 @@ import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import { FilterProvider } from "@/context/FilterContext";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
-import { SessionProvider } from "next-auth/react";
 import ClientSessionProvider from "@/components/ClientSessionProvider"; // 클라이언트 컴포넌트로 SessionProvider 처리
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";

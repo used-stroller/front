@@ -10,14 +10,15 @@ const socket = io("http://localhost:9092", {
   reconnection: false,
 }); // 백엔드 서버 주소
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function Chat() {
   const { id } = useParams();
-  const userIdList = id ? id.split("_").map(String) : [];
+  const userIdList = typeof id === "string" ? id.split("_").map(String) : [];
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [sender, setSender] = useState("1");
-  const [receiver, setReceiver] = useState("3");
+  const [setIsConnected] = useState(socket.connected);
+  const [sender] = useState("1");
+  const [receiver] = useState("3");
   const roomId = id;
   const messageContainerRef = useRef(null); // 🔥 스크롤을 위한 Ref 추가
 
@@ -59,9 +60,11 @@ export default function Chat() {
   useEffect(() => {
     if (!roomId) return; // roomId가 없으면 실행하지 않음
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const fetchData = async () => {
       try {
         const response = await fetch(
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `http://localhost:8080/api/chat/history/${roomId}`,
         );
 
@@ -71,15 +74,17 @@ export default function Chat() {
 
         const data = await response.json();
         console.log("response data:", data);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setMessages(data); // 상태 업데이트
       } catch (error) {
         console.error("Fetch error:", error);
       }
     };
 
-    fetchData();
+    void fetchData();
 
     // 실시간 메시지 수신
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const handleNewMessage = (message) => {
       setMessages((prev) => [...prev, message]); // 새로운 메시지를 배열에 추가
     };
@@ -91,6 +96,7 @@ export default function Chat() {
     };
   }, [roomId]); // roomId가 변경될 때마다 실행
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const sendMessage = () => {
     if (message.trim()) {
       const msgData = {
@@ -133,7 +139,9 @@ export default function Chat() {
         <input
           type="text"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => {
+            setMessage(e.target.value);
+          }}
           placeholder="메시지를 입력하세요"
           className="message-input"
         />

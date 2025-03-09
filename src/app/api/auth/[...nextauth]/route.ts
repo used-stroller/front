@@ -1,8 +1,12 @@
 import NextAuth from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
-import { NextAuthOptions } from "next-auth";
-import { Session as NextAuthSession, Profile } from "next-auth";
-import { JWT } from "next-auth/jwt";
+import {
+  type NextAuthOptions,
+  type Session as NextAuthSession,
+  type Profile,
+} from "next-auth";
+
+import { type JWT } from "next-auth/jwt";
 
 // 카카오 프로필 타입 정의
 interface KakaoProfile extends Profile {
@@ -38,8 +42,8 @@ interface CustomSession extends NextAuthSession {
 export const authOptions: NextAuthOptions = {
   providers: [
     KakaoProvider({
-      clientId: process.env.KAKAO_CLIENT_ID!,
-      clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+      clientId: process.env.KAKAO_CLIENT_ID,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET,
     }),
   ],
   session: {
@@ -48,7 +52,13 @@ export const authOptions: NextAuthOptions = {
     updateAge: 30 * 60, // 세션 갱신 추가 (30분)
   },
   callbacks: {
-    async session({ session, token }: { session: CustomSession; token: CustomJWT }) {
+    async session({
+      session,
+      token,
+    }: {
+      session: CustomSession;
+      token: CustomJWT;
+    }) {
       if (token && session.user) {
         // JWT에서 정보를 가져와 세션에 설정
         session.user.id = token.kakaoId;
@@ -63,18 +73,17 @@ export const authOptions: NextAuthOptions = {
       token,
       profile,
     }: {
-      token: CustomJWT;
-
+      token: JWT;
       profile?: KakaoProfile; // KakaoProfile 타입으로 지정
     }) {
-      if (profile) {
+      if (profile != null) {
         // 카카오 로그인 시 추가적인 정보를 JWT에 저장
         token.kakaoId = profile.id;
         token.name = profile.properties.nickname;
         token.email = profile.kakao_account.email;
         token.profileImage = profile.properties.profile_image;
       }
-      return token;
+      return token as CustomJWT;
     },
   },
   debug: true,

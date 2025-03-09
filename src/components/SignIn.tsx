@@ -14,10 +14,10 @@ export const SignIn = (): ReactElement => {
   const [shouldSendToBackend, setShouldSendToBackend] = useState(false); // 백엔드 호출 조건
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 
-  const handleLogin = async () => {
+  const handleLogin = async (): Promise<void> => {
     try {
       setIsLoading(true); // 로딩 상태 활성화
-      const result = await signIn("kakao", { redirect: false });
+      await signIn("kakao", { redirect: false });
     } catch (error) {
       alert("로그인 중 문제가 발생했습니다.");
     }
@@ -42,7 +42,7 @@ export const SignIn = (): ReactElement => {
     router.push("/");
   };
 
-  function callToServer() {
+  function callToServer(): void {
     console.log(shouldSendToBackend);
     if (!shouldSendToBackend) return; // 조건에 따라 실행
     console.log("실행됨");
@@ -82,7 +82,7 @@ export const SignIn = (): ReactElement => {
           alt="카카오로그인"
           fill
           className={styles.kakao_image}
-          onClick={handleLogin}
+          onClick={() => handleLogin}
         />
       </div>
 

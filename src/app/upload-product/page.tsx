@@ -75,7 +75,7 @@ export default function Upload(): ReactElement {
   };
 
   async function handleSubmit(): Promise<void> {
-    if (images.length == 0) {
+    if (images.length === 0) {
       alert("이미지를 선택해 주세요");
       return;
     }

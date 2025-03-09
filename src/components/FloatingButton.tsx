@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 
-const FloatingButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
-  const moveToUpload = () => {
+const FloatingButton: React.FC = () => {
+  const moveToUpload = (): void => {
     const jwtToken = getCookie("jwt");
     if (jwtToken != null) {
       window.location.href = "/upload-product";
@@ -12,7 +12,7 @@ const FloatingButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   };
 
   // 토큰확인
-  const getCookie = (name) => {
+  const getCookie = (name: string): string | null => {
     const cookies = document.cookie.split("; ");
     const cookie = cookies.find((row) => row.startsWith(`${name}=`));
     return cookie ? cookie.split("=")[1] : null;

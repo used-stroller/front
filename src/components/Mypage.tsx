@@ -3,24 +3,22 @@
 import { type ReactElement, useEffect, useState } from "react";
 import styles from "@/styles/user.module.css";
 import { useRouter } from "next/navigation";
-import { userData, type MyUserType } from "@/types";
+import { type UserData } from "@/types";
 import Image from "next/image";
 import apiClient from "@/utils/apiClient";
 import Loading from "@/app/loading";
 
 export const Mypage = (): ReactElement => {
   const router = useRouter();
-  const [isSubmit, setIsSubmit] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
-  const [myInfo, setMyInfo] = useState<MyUserType | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserData = async (): Promise<void> => {
       try {
         setLoading(true);
         const response = await apiClient.get("user/mypage");
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setUserData(response.data.data);
         console.log("userdata", userData);
       } catch (err: any) {
@@ -29,10 +27,10 @@ export const Mypage = (): ReactElement => {
         setLoading(false);
       }
     };
-    fetchUserData();
+    void fetchUserData();
   }, []);
 
-  const handleNavigation = (url) => {
+  const handleNavigation = (url: string): void => {
     router.push(url);
   };
 
@@ -40,35 +38,35 @@ export const Mypage = (): ReactElement => {
     router.push("/");
   };
 
-  const validForm = (formData: FormData): boolean => {
-    const nickname = formData.get("nickname");
-    const address = formData.get("address");
-    return nickname === myInfo?.nickname && address === myInfo.address;
-  };
+  // const validForm = (formData: FormData): boolean => {
+  //   const nickname = formData.get("nickname");
+  //   const address = formData.get("address");
+  //   return nickname === myInfo?.nickname && address === myInfo.address;
+  // };
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+  // const handleSubmit = async (
+  //   event: React.FormEvent<HTMLFormElement>,
+  // ): Promise<void> => {
+  //   event.preventDefault();
+  //   const formData = new FormData(event.currentTarget);
 
-    if (validForm(formData)) {
-      setResult("변경된 내용이 없습니다.");
-      return;
-    }
+  //   if (validForm(formData)) {
+  //     setResult("변경된 내용이 없습니다.");
+  //     return;
+  //   }
 
-    setIsSubmit(true);
+  //   setIsSubmit(true);
 
-    try {
-      const { message } = await updateMyInfo(formData);
-      setResult(message);
-    } catch (error) {
-      console.error("Error during form submission:", error);
-      setResult("현재 업데이트 할 수 없습니다. 관리자에게 문의하세요.");
-    } finally {
-      setIsSubmit(false);
-    }
-  };
+  //   try {
+  //     const { message } = await updateMyInfo(formData);
+  //     setResult(message);
+  //   } catch (error) {
+  //     console.error("Error during form submission:", error);
+  //     setResult("현재 업데이트 할 수 없습니다. 관리자에게 문의하세요.");
+  //   } finally {
+  //     setIsSubmit(false);
+  //   }
+  // };
 
   if (loading) {
     return <Loading />;
@@ -152,9 +150,11 @@ export const Mypage = (): ReactElement => {
       <div className={styles.community_div}>
         <h3 className={styles.community_h3}>커뮤니티</h3>
         <ul className={styles.list}>
-          <li
+          <button
             className={styles.listItem}
-            onClick={() => handleNavigation("https://band.us/band/97192384")}
+            onClick={(): void => {
+              handleNavigation("https://band.us/band/97192384");
+            }}
           >
             <Image
               src="../images/naverband.png"
@@ -164,12 +164,12 @@ export const Mypage = (): ReactElement => {
               className={styles.community_img}
             />
             <span>중모차</span>
-          </li>
-          <li
+          </button>
+          <button
             className={styles.listItem}
-            onClick={() =>
-              handleNavigation("https://open.kakao.com/o/sBPnvn2g")
-            }
+            onClick={() => {
+              handleNavigation("https://open.kakao.com/o/sBPnvn2g");
+            }}
           >
             <Image
               src="../images/openchat.png"
@@ -179,7 +179,7 @@ export const Mypage = (): ReactElement => {
               className={styles.community_img}
             />
             <span>중모차 오픈채팅</span>
-          </li>
+          </button>
         </ul>
       </div>
       <div className={styles.gap}></div>

@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
 
 const apiClient = axios.create({
   baseURL: "http://localhost:8080/",
@@ -23,8 +23,8 @@ apiClient.interceptors.request.use(
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
+  async (error): Promise<never> => {
+    return await Promise.reject(error);
   },
 );
 
@@ -33,7 +33,7 @@ apiClient.interceptors.response.use(
     // 정상적인 응답 처리
     return response;
   },
-  (error) => {
+  async (error) => {
     // 에러 응답 처리
     if (error.response) {
       const { status } = error.response;
@@ -44,7 +44,7 @@ apiClient.interceptors.response.use(
       }
     }
     // 에러를 계속 throw하여 호출한 쪽에서 추가 처리 가능
-    return Promise.reject(error);
+    return await Promise.reject(error);
   },
 );
 

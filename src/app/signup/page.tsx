@@ -1,3 +1,4 @@
+"use client";
 import type { ReactElement } from "react";
 import styles from "@/styles/user.module.css";
 import SubPageLogo from "@/components/SubPageLogo";

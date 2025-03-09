@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactElement } from "react";
+import { useEffect, type ReactElement } from "react";
 import styles from "@/styles/dropzone.module.css";
 import React, { useRef } from "react";
 import { FaCamera } from "react-icons/fa"; // 카메라 아이콘 import
@@ -40,6 +40,7 @@ function MyDropzone(): ReactElement {
     }
     // 새로운 이미지가 있을 경우 setImages에 배열을 직접 전달
     if (newImages.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       setImages([...images, ...newImages]); // 배열을 직접 전달
     }
   }

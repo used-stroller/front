@@ -146,6 +146,7 @@ interface image {
 }
 
 interface userData {
+  data: any;
   accountId: string;
   favorites: Content[];
   image: string;
@@ -157,6 +158,15 @@ interface imageObj {
   id: number;
   src: string;
   orderSeq: number;
+}
+
+interface UserData {
+  data: any;
+  // 유저 데이터의 구조 정의
+  accountId: number;
+  name: string;
+  image: string;
+  kakaoId: string;
 }
 
 export type {
@@ -186,4 +196,5 @@ export type {
   image,
   userData,
   imageObj,
+  UserData,
 };

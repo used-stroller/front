@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { getImageUrl } from "@/utils/productUtils";
 import React, { type ReactElement } from "react";

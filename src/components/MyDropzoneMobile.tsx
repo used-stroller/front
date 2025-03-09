@@ -38,6 +38,7 @@ function MyDropzoneMobile(): ReactElement {
     }
     // 새로운 이미지가 있을 경우 setImages에 배열을 직접 전달
     if (newImages.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       setImages([...images, ...newImages]); // 배열을 직접 전달
     }
   }

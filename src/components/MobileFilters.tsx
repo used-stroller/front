@@ -1,3 +1,4 @@
+"use client";
 import React, { type ReactElement, useCallback, useState } from "react";
 import styles from "@/styles/page.module.css";
 import ModalRegion from "./ModalRegion";

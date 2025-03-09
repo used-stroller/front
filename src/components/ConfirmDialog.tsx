@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel }) => {
   if (!isOpen) return null;
 

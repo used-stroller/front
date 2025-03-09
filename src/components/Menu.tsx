@@ -19,12 +19,12 @@ export default function Menu(): ReactElement {
     }
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-  };
+  // // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  //   event.preventDefault();
+  //   const formData = new FormData(event.currentTarget);
+  //   // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+  // };
 
   return (
     <div className={styles.menu}>

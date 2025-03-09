@@ -5,23 +5,48 @@ import ImageSlider from "@/components/ImageSlider";
 import { useEffect, useState } from "react";
 import apiClient from "@/utils/apiClient";
 import Image from "next/image";
-import { imageObj, type Content } from "@/types";
 import FormattedPrice from "@/components/FormattedPrice";
 import { useRouter } from "next/navigation";
 import MoreModal from "@/components/MoreModal";
 import uploadCss from "@/styles/upload.module.css";
-import { set } from "zod";
+import { type UserData } from "@/types";
 
-export default function ProductDetail({ params }: number) {
+interface ProductDetailProps {
+  params: {
+    id: number; // `params.id`가 number라고 가정
+  };
+}
+
+interface ProductData {
+  id: number;
+  title: string;
+  content: string;
+  price: number;
+  buyStatus: string;
+  usePeriod: number;
+  myPageDto: UserData;
+  favorite: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface ImageData {
+  src: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export default function ProductDetail({ params }: ProductDetailProps) {
   const [selectedValue, setSelectedValue] = useState<string>("거래완료");
   const [userData, setUserData] = useState<UserData | null>(null);
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
+  const openModal = (): void => {
+    setIsModalOpen(true);
+  };
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
   const [buyStatus, setBuyStatus] = useState<string>("");
   const [usePeriod, setUsePeriod] = useState<number>(0);
-  const [productData, setProductData] = useState<Content | null>(null);
+  const [productData, setProductData] = useState<ProductData | null>(null);
   const [productImages, setProductImages] = useState<string[]>([
     process.env.NEXT_PUBLIC_BASE_URL + "/images/default_thumbnail.svg",
   ]);
@@ -32,37 +57,38 @@ export default function ProductDetail({ params }: number) {
     arrows: true, // 이전/다음 화살표 표시
   };
 
-  const handleGoBack = () => {
+  const handleGoBack = (): void => {
     router.back();
   };
-  const handleGoHome = () => {
+  const handleGoHome = (): void => {
     router.push("/");
   };
 
   useEffect(() => {
-    const fetchProductData = async () => {
+    const fetchProductData = async (): Promise<void> => {
       console.log(document.cookie);
       try {
         const response = await apiClient.get("product/get/" + id);
-        const imageList = response.data.imageList;
+        const imageList: ImageData[] = response.data.imageList;
         const imageArray = imageList.map((image) => image.src);
         const selectedOptions = response.data.options;
         console.log(response.data);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setProductData(response.data);
         setProductImages(imageArray);
-        setSelectedOptions(selectedOptions);
-        setBuyStatus(response.data.buyStatus);
-        setUsePeriod(response.data.usePeriod);
-        setUserData(response.data.myPageDto);
-        setFavorite(response.data.favorite);
+        setSelectedOptions([...selectedOptions]);
+        setBuyStatus(productData.buyStatus);
+        setUsePeriod(productData.usePeriod);
+        setUserData(productData.myPageDto);
+        setFavorite(productData.favorite);
       } catch (err: any) {
         console.log("데이터 가져오기 실패");
       }
     };
-    fetchProductData();
+    void fetchProductData();
   }, []);
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelectedValue(event.target.value);
   };
 
@@ -71,7 +97,7 @@ export default function ProductDetail({ params }: number) {
   }
 
   // 모달 닫기 핸들러
-  const handleCloseModal = () => {
+  const handleCloseModal = (): void => {
     setIsModalOpen(false); // 모달 닫기
   };
 
@@ -87,7 +113,7 @@ export default function ProductDetail({ params }: number) {
     중고: "#중고구매",
   };
 
-  const changeFavorite = () => {
+  const changeFavorite = (): void => {
     console.log("changeFavorite시행됨");
     setFavorite(!favorite);
 
@@ -267,7 +293,7 @@ export default function ProductDetail({ params }: number) {
       <div className={styles.fixed_bottom_bar}>
         <Image
           src={
-            favorite == false
+            !favorite
               ? "../images/favorite.png"
               : "../images/heart_with_border.svg"
           } // 실제 이미지 경로로 변경

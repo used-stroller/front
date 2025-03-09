@@ -12,11 +12,10 @@ import {
 } from "react";
 import Image from "next/image";
 import { useUploadForm } from "@/utils/useUploadForm";
-import axios from "axios";
 import apiClient from "@/utils/apiClient";
-import { Content } from "@/types";
+import { type image } from "@/types";
 
-export default function Modify({ params }: number): ReactElement {
+export default function Modify({ params }: any): ReactElement {
   const {
     images,
     selectedStatus,
@@ -33,14 +32,25 @@ export default function Modify({ params }: number): ReactElement {
 
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
-  const [usePeriod, setUsePeriod] = useState<number>(0);
-  const [productData, setProductData] = useState<Content | null>(null);
+  const [, setUsePeriod] = useState<number>(0);
   const { id } = params; // 동적 URL 파라미터 가져오기
 
+  interface ProductResponse {
+    title: string;
+    price: string;
+    buyStatus: string;
+    usePeriod: number;
+    imageList: image[];
+    options: any; // 정확한 타입으로 변경하면 좋음
+    content: string;
+  }
+
   useEffect(() => {
-    const fetchProductData = async () => {
+    const fetchProductData = async (): Promise<void> => {
       try {
-        const response = await apiClient.get("product/get/" + id);
+        const response = await apiClient.get<ProductResponse>(
+          "product/get/" + id,
+        );
         const selectedOptions = response.data.options;
         setTitle(response.data.title);
         setPrice(response.data.price);
@@ -54,7 +64,7 @@ export default function Modify({ params }: number): ReactElement {
         console.log("데이터 가져오기 실패");
       }
     };
-    fetchProductData();
+    void fetchProductData();
   }, []);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -115,17 +125,17 @@ export default function Modify({ params }: number): ReactElement {
       }
       formData.append("imageList", image.file);
     });
-    formData.append("id", id);
+    formData.append("id", String(id));
     formData.append("title", title);
     formData.append("price", price);
     formData.append("buyStatus", selectedStatus);
-    formData.append("usePeriod", selectedPeriod);
+    formData.append("usePeriod", String(selectedPeriod));
     selectedOptions.forEach((option: number) => {
-      formData.append("options", option);
+      formData.append("options", String(option));
     });
     formData.append("content", text);
     deleted.forEach((d: number) => {
-      formData.append("deleted", d);
+      formData.append("deleted", String(d));
     });
 
     // FormData 로그 출력
@@ -167,7 +177,8 @@ export default function Modify({ params }: number): ReactElement {
           <Logo />
         </div>
         <div className={uploadCss.container}>
-          <MyDropzone imageList={images} />
+          {/* <MyDropzone imageList={images} /> */}
+          <MyDropzone />
           <div className={uploadCss.product_detail_container}>
             <p className={uploadCss.title_p}>제목</p>
             <div className={uploadCss.title_div}>
