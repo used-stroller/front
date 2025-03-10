@@ -1,3 +1,4 @@
+"use client";
 import styles from "@/styles/page.module.css";
 import Image from "next/image";
 import type { ReactElement } from "react";

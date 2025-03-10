@@ -1,4 +1,4 @@
-// dragScroll.ts
+"use client";
 export function enableDragScroll(container: HTMLElement): void {
   let isDown: boolean = false;
   let startY: number;

@@ -1,3 +1,4 @@
+"use client";
 import axios, { type InternalAxiosRequestConfig } from "axios";
 
 const apiClient = axios.create({
