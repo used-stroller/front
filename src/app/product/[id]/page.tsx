@@ -2,19 +2,18 @@
 
 import styles from "@/styles/productDetail.module.css";
 import ImageSlider from "@/components/ImageSlider";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import apiClient from "@/utils/apiClient";
 import Image from "next/image";
 import FormattedPrice from "@/components/FormattedPrice";
 import { useRouter } from "next/navigation";
 import MoreModal from "@/components/MoreModal";
 import uploadCss from "@/styles/upload.module.css";
-import { type UserData } from "@/types";
+import { type userData } from "@/types";
 
-interface ProductDetailProps {
-  params: {
-    id: number; // `params.id`가 number라고 가정
-  };
+// params의 타입을 정의
+interface Params {
+  id: string; // URL 파라미터로 id를 받는다고 가정
 }
 
 interface ProductData {
@@ -24,7 +23,7 @@ interface ProductData {
   price: number;
   buyStatus: string;
   usePeriod: number;
-  myPageDto: UserData;
+  myPageDto: userData;
   favorite: boolean;
   createdAt: string;
   updatedAt: string;
@@ -35,9 +34,9 @@ interface ImageData {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export default function ProductDetail({ params }: ProductDetailProps) {
+export default function ProductDetail({ params }: { params: Params }) {
   const [selectedValue, setSelectedValue] = useState<string>("거래완료");
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState(null);
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = (): void => {
@@ -51,7 +50,7 @@ export default function ProductDetail({ params }: ProductDetailProps) {
     process.env.NEXT_PUBLIC_BASE_URL + "/images/default_thumbnail.svg",
   ]);
   const [favorite, setFavorite] = useState(false);
-  const { id } = params; // 동적 URL 파라미터 가져오기
+  const { id } = use(params); // 동적 URL 파라미터 가져오기
 
   const sliderSettings = {
     arrows: true, // 이전/다음 화살표 표시
@@ -77,10 +76,14 @@ export default function ProductDetail({ params }: ProductDetailProps) {
         setProductData(response.data);
         setProductImages(imageArray);
         setSelectedOptions([...selectedOptions]);
-        setBuyStatus(productData.buyStatus);
-        setUsePeriod(productData.usePeriod);
-        setUserData(productData.myPageDto);
-        setFavorite(productData.favorite);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setBuyStatus(response.data.buyStatus); // ✅ productData가 아니라 response.data 사용
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setUsePeriod(response.data.usePeriod);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setUserData(response.data.myPageDto);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setFavorite(response.data.favorite); // ✅ productData.favorite이 아니라 response.data.favorite 사용
       } catch (err: any) {
         console.log("데이터 가져오기 실패");
       }
@@ -164,13 +167,15 @@ export default function ProductDetail({ params }: ProductDetailProps) {
       <ImageSlider images={productImages} settings={sliderSettings} />
       <div className={styles.profile_nick_div}>
         <div>
-          <Image
-            src={userData?.image} // 실제 이미지 경로로 변경
-            alt="Profile"
-            width={50}
-            height={50}
-            className={styles.profile_img}
-          />
+          {userData?.image ? (
+            <Image
+              src={userData?.image} // 실제 이미지 경로로 변경
+              alt="Profile"
+              width={50}
+              height={50}
+              className={styles.profile_img}
+            />
+          ) : null}
         </div>
         <div className={styles.nickname}>{userData?.name}</div>
       </div>

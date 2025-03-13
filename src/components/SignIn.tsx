@@ -14,7 +14,9 @@ export const SignIn = (): ReactElement => {
   const [shouldSendToBackend, setShouldSendToBackend] = useState(false); // 백엔드 호출 조건
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 
-  const handleLogin = async (): Promise<void> => {
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleLogin = async () => {
+    console.log("로그인시도");
     try {
       setIsLoading(true); // 로딩 상태 활성화
       await signIn("kakao", { redirect: false });
@@ -82,7 +84,9 @@ export const SignIn = (): ReactElement => {
           alt="카카오로그인"
           fill
           className={styles.kakao_image}
-          onClick={() => handleLogin}
+          onClick={() => {
+            void handleLogin();
+          }} // void 키워드로 Promise 반환 무시
         />
       </div>
 

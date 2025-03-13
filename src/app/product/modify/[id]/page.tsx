@@ -14,6 +14,7 @@ import Image from "next/image";
 import { useUploadForm } from "@/utils/useUploadForm";
 import apiClient from "@/utils/apiClient";
 import { type image } from "@/types";
+import { useSearchParams } from "next/navigation";
 
 export default function Modify({ params }: any): ReactElement {
   const {
@@ -33,7 +34,8 @@ export default function Modify({ params }: any): ReactElement {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [, setUsePeriod] = useState<number>(0);
-  const { id } = params; // 동적 URL 파라미터 가져오기
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id") || params?.id; // 동적 URL 파라미터 가져오기
 
   interface ProductResponse {
     title: string;

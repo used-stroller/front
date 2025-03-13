@@ -1,12 +1,6 @@
 "use client";
 import axios from "axios";
-import type {
-  DefaultRegionType,
-  FilterReq,
-  ProductRes,
-  ResultType,
-} from "@/types";
-import { cleansedLevel1 } from "@/types/constants";
+import type { DefaultRegionType, FilterReq, ProductRes } from "@/types";
 
 const axiosClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -65,10 +59,6 @@ export const createQueryParams = (filter: FilterReq): string => {
   return `?${params.toString()}`;
 };
 
-const VWORLD_API_URL = process.env.NEXT_PUBLIC_VWORLD_API_URL;
-const VWORLD_API_KEY = process.env.NEXT_PUBLIC_VWORLD_API_KEY;
-const VWORLD_API_PARAMS: string = `?service=address&request=getAddress&version=2.0&crs=epsg:4326&type=both&zipcode=true&simple=true&key=${VWORLD_API_KEY}&point=`;
-
 export const getLocation = async (
   longitude: number | null,
   latitude: number | null,
@@ -78,7 +68,6 @@ export const getLocation = async (
   }
   const fixed = new Set<string>();
   const detail = new Set<string>();
-  let url = "";
   const nearGeoNum = [];
   const nearNum = [-0.01, 0, 0.01];
   for (const num1 of nearNum) {
@@ -88,32 +77,32 @@ export const getLocation = async (
       nearGeoNum.push({ nearLongitude, nearLatitude });
     }
   }
-  for (const { nearLongitude, nearLatitude } of nearGeoNum) {
-    url = `${VWORLD_API_URL}${VWORLD_API_PARAMS}${nearLongitude},${nearLatitude}`;
-    try {
-      const result: ResultType[] = await axios
-        .get(url)
-        .then((r) => r.data.response.result);
-      result.forEach((r) => {
-        if (r.structure.level1.length > 0) {
-          const cleansed =
-            cleansedLevel1[r.structure.level1] ?? r.structure.level1;
-          fixed.add(cleansed);
-        }
-        if (r.structure.level3.length > 0) {
-          detail.add(r.structure.level3);
-        }
-        if (r.structure.level4A.length > 0) {
-          detail.add(r.structure.level4A);
-        }
-        if (r.structure.level4L.length > 0) {
-          detail.add(r.structure.level4L);
-        }
-      });
-    } catch (error) {
-      console.error("Error fetching location data: ", error);
-    }
-  }
+  // for (const { nearLongitude, nearLatitude } of nearGeoNum) {
+  //   url = `${VWORLD_API_URL}${VWORLD_API_PARAMS}${nearLongitude},${nearLatitude}`;
+  //   try {
+  //     const result: ResultType[] = await axios
+  //       .get(url)
+  //       .then((r) => r.data.response.result);
+  //     result.forEach((r) => {
+  //       if (r.structure.level1.length > 0) {
+  //         const cleansed =
+  //           cleansedLevel1[r.structure.level1] ?? r.structure.level1;
+  //         fixed.add(cleansed);
+  //       }
+  //       if (r.structure.level3.length > 0) {
+  //         detail.add(r.structure.level3);
+  //       }
+  //       if (r.structure.level4A.length > 0) {
+  //         detail.add(r.structure.level4A);
+  //       }
+  //       if (r.structure.level4L.length > 0) {
+  //         detail.add(r.structure.level4L);
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.error("Error fetching location data: ", error);
+  //   }
+  // }
   return {
     fixedAddress: [...fixed].join(","),
     detailAddress: [...detail].join(","),

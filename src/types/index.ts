@@ -160,15 +160,6 @@ interface imageObj {
   orderSeq: number;
 }
 
-interface UserData {
-  data: any;
-  // 유저 데이터의 구조 정의
-  accountId: number;
-  name: string;
-  image: string;
-  kakaoId: string;
-}
-
 export type {
   UserResponse,
   MyUserType,
@@ -194,7 +185,6 @@ export type {
   ResultType,
   DefaultRegionType,
   image,
-  userData,
   imageObj,
-  UserData,
+  userData,
 };

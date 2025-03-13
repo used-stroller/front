@@ -82,11 +82,11 @@ const MoreModal: React.FC<MoreModalProps> = ({ isOpen, onClose, id }) => {
             fontSize: "16px",
           }}
           onClick={() => {
-            typeof id === "number" && goModifyPage(id);
+            typeof id === "string" && goModifyPage(id);
           }}
           onKeyDown={(e) => {
             (e.key === "Enter" || e.key === " ") &&
-              typeof id === "number" &&
+              typeof id === "string" &&
               goModifyPage(id);
           }}
         >
@@ -104,12 +104,12 @@ const MoreModal: React.FC<MoreModalProps> = ({ isOpen, onClose, id }) => {
             fontSize: "16px",
           }}
           onClick={() => {
-            void (typeof id === "number" && handleDelete(id));
+            void (typeof id === "string" && handleDelete(id));
           }}
           onKeyDown={(e) => {
             void (
               (e.key === "Enter" || e.key === " ") &&
-              typeof id === "number" &&
+              typeof id === "string" &&
               handleDelete(id)
             );
           }}

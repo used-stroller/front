@@ -2,7 +2,7 @@ import SearchBarFilter from "@/components/SearchBarFilter";
 import ProductList from "@/components/ProductList";
 import { type ReactElement } from "react";
 import Header from "@/components/Header";
-import FloatingButton from "@/components/FloatingButton";
+// import FloatingButton from "@/components/FloatingButton";
 
 export default async function Home(): Promise<ReactElement> {
   return (
@@ -10,7 +10,7 @@ export default async function Home(): Promise<ReactElement> {
       <Header />
       <SearchBarFilter />
       <ProductList />
-      <FloatingButton />
+      {/* <FloatingButton /> */}
     </>
   );
 }

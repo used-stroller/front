@@ -153,6 +153,21 @@ export const Mypage = (): ReactElement => {
           <button
             className={styles.listItem}
             onClick={(): void => {
+              handleNavigation("https://blog.naver.com/joyfool1007");
+            }}
+          >
+            <Image
+              src="../images/blog.svg"
+              alt="네이버블로그"
+              width={24}
+              height={24}
+              className={styles.community_img}
+            />
+            <span>네이버 블로그</span>
+          </button>
+          <button
+            className={styles.listItem}
+            onClick={(): void => {
               handleNavigation("https://band.us/band/97192384");
             }}
           >
