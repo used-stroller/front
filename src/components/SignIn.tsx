@@ -50,7 +50,7 @@ export const SignIn = (): ReactElement => {
     console.log("실행됨");
     axios
       .post(
-        "http://localhost:8080/user/api/auth/kakao",
+        "https://jungmocha.co.kr/user/api/auth/kakao",
         {
           loginResult: session,
         },
