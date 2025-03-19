@@ -143,10 +143,16 @@
 }
 
 .imageContainer {
+  max-width: 500px;
   position: relative;
   width: 100%;
   height: 50px;
   pointer-events: none;
+
+  /* ✅ 중앙 정렬 추가 */
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
 }
 
 .kakao_image {

@@ -9,14 +9,22 @@ import {
   type ChangeEvent,
   useRef,
   useEffect,
+  use,
 } from "react";
 import Image from "next/image";
 import { useUploadForm } from "@/utils/useUploadForm";
 import apiClient from "@/utils/apiClient";
 import { type image } from "@/types";
-import { useSearchParams } from "next/navigation";
 
-export default function Modify({ params }: any): ReactElement {
+// params의 타입을 정의
+interface Params {
+  id: string; // URL 파라미터로 id를 받는다고 가정
+}
+export default function Modify({
+  params,
+}: {
+  params: Promise<Params>;
+}): ReactElement {
   const {
     images,
     selectedStatus,
@@ -34,8 +42,7 @@ export default function Modify({ params }: any): ReactElement {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [, setUsePeriod] = useState<number>(0);
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id") || params?.id; // 동적 URL 파라미터 가져오기
+  const { id } = use(params);
 
   interface ProductResponse {
     title: string;

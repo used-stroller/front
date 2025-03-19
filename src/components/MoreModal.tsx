@@ -17,7 +17,7 @@ const ContainerStyle = {
 interface MoreModalProps {
   isOpen: boolean;
   onClose: () => void;
-  id: number;
+  id: string;
 }
 
 const MoreModal: React.FC<MoreModalProps> = ({ isOpen, onClose, id }) => {

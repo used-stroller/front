@@ -27,6 +27,7 @@ interface ProductData {
   favorite: boolean;
   createdAt: string;
   updatedAt: string;
+  sellerId: number;
 }
 
 interface ImageData {
@@ -34,7 +35,7 @@ interface ImageData {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export default function ProductDetail({ params }: { params: Params }) {
+export default function ProductDetail({ params }: { params: Promise<Params> }) {
   const [selectedValue, setSelectedValue] = useState<string>("거래완료");
   const [userData, setUserData] = useState(null);
   const router = useRouter();
@@ -45,12 +46,15 @@ export default function ProductDetail({ params }: { params: Params }) {
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
   const [buyStatus, setBuyStatus] = useState<string>("");
   const [usePeriod, setUsePeriod] = useState<number>(0);
+  const [sellerId, setSellerId] = useState<number>(0);
   const [productData, setProductData] = useState<ProductData | null>(null);
   const [productImages, setProductImages] = useState<string[]>([
-    process.env.NEXT_PUBLIC_BASE_URL + "/images/default_thumbnail.svg",
+    process.env.NEXT_PUBLIC_BACKEND_URL + "/images/default_thumbnail.svg",
   ]);
   const [favorite, setFavorite] = useState(false);
-  const { id } = use(params); // 동적 URL 파라미터 가져오기
+  const { id } = use(params);
+  // const searchParams = useSearchParams();
+  // const id = searchParams.get("id") || params?.id; // 동적 URL 파라미터 가져오기
 
   const sliderSettings = {
     arrows: true, // 이전/다음 화살표 표시
@@ -84,6 +88,8 @@ export default function ProductDetail({ params }: { params: Params }) {
         setUserData(response.data.myPageDto);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setFavorite(response.data.favorite); // ✅ productData.favorite이 아니라 response.data.favorite 사용
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setSellerId(response.data.sellerId);
       } catch (err: any) {
         console.log("데이터 가져오기 실패");
       }
@@ -154,14 +160,16 @@ export default function ProductDetail({ params }: { params: Params }) {
           className={styles.home}
           onClick={handleGoHome}
         />
-        <Image
-          src="/images/more_vert.svg"
-          alt="더보기"
-          width={30}
-          height={30}
-          className={styles.more_vert}
-          onClick={openModal}
-        />
+        {userData?.accountId === sellerId ? (
+          <Image
+            src="/images/more_vert.svg"
+            alt="더보기"
+            width={30}
+            height={30}
+            className={styles.more_vert}
+            onClick={openModal}
+          />
+        ) : null}
         <MoreModal isOpen={isModalOpen} onClose={handleCloseModal} id={id} />
       </div>
       <ImageSlider images={productImages} settings={sliderSettings} />

@@ -3,7 +3,7 @@ import axios from "axios";
 import type { DefaultRegionType, FilterReq, ProductRes } from "@/types";
 
 const axiosClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -25,7 +25,7 @@ export const getProductList = async (
   // }
 
   // queryParams가 빈 문자열인지 명확하게 확인
-  const url = `/product/list${queryParams !== "" ? queryParams : ""}`;
+  const url = `/api/product/list${queryParams !== "" ? queryParams : ""}`;
   return await axiosClient.get(url).then((r) => r.data);
 };
 
@@ -34,7 +34,7 @@ export const getRecommendProductList = async (
   size = 20,
 ): Promise<ProductRes> => {
   return await axiosClient
-    .get(`/product/list/recommend?page=${page}&size=${size}`)
+    .get(`/api/product/list/recommend?page=${page}&size=${size}`)
     .then((r) => r.data);
 };
 

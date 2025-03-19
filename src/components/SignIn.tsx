@@ -50,7 +50,7 @@ export const SignIn = (): ReactElement => {
     console.log("실행됨");
     axios
       .post(
-        "https://jungmocha.co.kr/user/api/auth/kakao",
+        process.env.NEXT_PUBLIC_BACKEND_API_URL + "/api/auth/kakao",
         {
           loginResult: session,
         },
@@ -90,7 +90,15 @@ export const SignIn = (): ReactElement => {
         />
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", margin: "20px 0" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          maxWidth: "500px",
+          justifyContent: "center",
+          margin: "20px auto",
+        }}
+      >
         <div style={{ flex: 1, height: "1px", backgroundColor: "black" }} />
         <span style={{ margin: "0 10px", whiteSpace: "nowrap" }}>또는</span>
         <div style={{ flex: 1, height: "1px", backgroundColor: "black" }} />
