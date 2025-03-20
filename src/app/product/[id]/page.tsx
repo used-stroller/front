@@ -71,7 +71,7 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
     const fetchProductData = async (): Promise<void> => {
       console.log(document.cookie);
       try {
-        const response = await apiClient.get("product/get/" + id);
+        const response = await apiClient.get("/api/product/get/" + id);
         const imageList: ImageData[] = response.data.imageList;
         const imageArray = imageList.map((image) => image.src);
         const selectedOptions = response.data.options;

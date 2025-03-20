@@ -114,7 +114,7 @@ export default function Upload(): ReactElement {
     }
 
     try {
-      const response = await apiClient.post("product/register", formData, {
+      const response = await apiClient.post("/api/product/register", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

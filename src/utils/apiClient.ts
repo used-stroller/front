@@ -2,7 +2,7 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:8080/api/",
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://jungmocha.co.kr",
   // baseURL: "https://jungmocha.co.kr/api/",
   withCredentials: true, // 쿠키를 요청에 포함하기 위해 설정
   headers: {

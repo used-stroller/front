@@ -58,7 +58,7 @@ export default function Modify({
     const fetchProductData = async (): Promise<void> => {
       try {
         const response = await apiClient.get<ProductResponse>(
-          "product/get/" + id,
+          "/api/product/get/" + id,
         );
         const selectedOptions = response.data.options;
         setTitle(response.data.title);
@@ -162,7 +162,7 @@ export default function Modify({
       //     },
       //   },
       // );
-      const response = await apiClient.post("product/modify", formData, {
+      const response = await apiClient.post("/api/product/modify", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
