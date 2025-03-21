@@ -51,7 +51,7 @@ export const SignIn = (): ReactElement => {
     console.log("실행됨");
     axios
       .post(
-        process.env.NEXT_PUBLIC_BACKEND_API_URL + "/api/auth/kakao",
+        process.env.NEXT_PUBLIC_BACKEND_API_URL + "/api/backend/auth/kakao",
         {
           loginResult: session,
         },
