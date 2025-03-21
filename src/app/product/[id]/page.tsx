@@ -24,6 +24,7 @@ interface ProductData {
   buyStatus: string;
   usePeriod: number;
   myPageDto: userData;
+  seller: userData;
   favorite: boolean;
   createdAt: string;
   updatedAt: string;
@@ -38,6 +39,7 @@ interface ImageData {
 export default function ProductDetail({ params }: { params: Promise<Params> }) {
   const [selectedValue, setSelectedValue] = useState<string>("거래완료");
   const [userData, setUserData] = useState(null);
+  const [sellerData, setSellerData] = useState(null);
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = (): void => {
@@ -86,6 +88,7 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
         setUsePeriod(response.data.usePeriod);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setUserData(response.data.myPageDto);
+        setSellerData(response.data.seller);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setFavorite(response.data.favorite); // ✅ productData.favorite이 아니라 response.data.favorite 사용
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -128,13 +131,13 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
 
     if (!favorite) {
       void apiClient.post(
-        "product/favorite/add",
+        "/api/product/favorite/add",
         { productId: Number(id) }, // JSON 형식으로 전송
         { headers: { "Content-Type": "application/json" } }, // JSON 명시
       );
     } else {
       void apiClient.post(
-        "product/favorite/delete",
+        "/api/product/favorite/delete",
         { productId: Number(id) }, // JSON 형식으로 전송
         { headers: { "Content-Type": "application/json" } }, // JSON 명시
       );
@@ -175,9 +178,9 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
       <ImageSlider images={productImages} settings={sliderSettings} />
       <div className={styles.profile_nick_div}>
         <div>
-          {userData?.image ? (
+          {sellerData?.image ? (
             <Image
-              src={userData?.image} // 실제 이미지 경로로 변경
+              src={sellerData?.image} // 실제 이미지 경로로 변경
               alt="Profile"
               width={50}
               height={50}
@@ -185,7 +188,7 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
             />
           ) : null}
         </div>
-        <div className={styles.nickname}>{userData?.name}</div>
+        <div className={styles.nickname}>{sellerData?.name}</div>
       </div>
       <div className={styles.gap}></div>
       <div className={styles.customSelectContainer}>
@@ -319,7 +322,7 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
         <div style={{ fontSize: 20 }}>
           <FormattedPrice value={Number(productData?.price || 0)} />
         </div>
-        <button className={styles.chat_button}>채팅하기</button>
+        {/* <button className={styles.chat_button}>채팅하기</button> */}
       </div>
     </div>
   );

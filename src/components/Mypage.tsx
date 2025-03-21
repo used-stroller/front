@@ -17,7 +17,7 @@ export const Mypage = (): ReactElement => {
     const fetchUserData = async (): Promise<void> => {
       try {
         setLoading(true);
-        const response = await apiClient.get("user/mypage");
+        const response = await apiClient.get("/api/user/mypage");
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setUserData(response.data.data);
         console.log("userdata", userData);

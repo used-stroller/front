@@ -46,6 +46,7 @@ export const SignIn = (): ReactElement => {
 
   function callToServer(): void {
     console.log(shouldSendToBackend);
+    console.log("백엔드 URL:", process.env.NEXT_PUBLIC_BACKEND_API_URL);
     if (!shouldSendToBackend) return; // 조건에 따라 실행
     console.log("실행됨");
     axios
