@@ -2,7 +2,7 @@
 
 import styles from "@/styles/user.module.css";
 import { type ReactElement, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import axios from "axios";
 import Image from "next/image";
@@ -13,15 +13,23 @@ export const SignIn = (): ReactElement => {
   const { data: session } = useSession();
   const [shouldSendToBackend, setShouldSendToBackend] = useState(false); // 백엔드 호출 조건
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleLogin = async () => {
     console.log("로그인시도");
     try {
       setIsLoading(true); // 로딩 상태 활성화
-      await signIn("kakao", { redirect: false });
+      const res = await signIn("kakao", {
+        prompt: "none",
+        redirect: false,
+      });
+      if (!res.ok) {
+        await signIn("kakao", { redirect: false });
+      }
     } catch (error) {
-      alert("로그인 중 문제가 발생했습니다.");
+      console.log("자동 로그인 실패, 수동 로그인 필요");
     }
   };
 
@@ -61,7 +69,7 @@ export const SignIn = (): ReactElement => {
       )
       .then((response) => {
         console.log("백엔드 응답:", response.data);
-        window.location.href = "/";
+        window.location.href = callbackUrl;
       })
       .catch((error) => {
         console.error("백엔드 요청 실패:", error);

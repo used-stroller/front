@@ -27,7 +27,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, settings }) => {
         {images.map((src, index) => (
           <div key={index}>
             <img
-              src={src}
+              src={process.env.NEXT_PUBLIC_BASE_URL + src}
               alt={`Slide ${index + 1}`}
               style={{
                 width: "100%",

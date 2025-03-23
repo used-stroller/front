@@ -13,8 +13,8 @@ const FloatingButton: React.FC = () => {
 
   // 토큰확인
   const getCookie = (name: string): string | null => {
-    const cookies = document.cookie.split("; ");
-    const cookie = cookies.find((row) => row.startsWith(`${name}=`));
+    const cookieList = document.cookie.split("; ");
+    const cookie = cookieList.find((row) => row.startsWith(`${name}=`));
     return cookie ? cookie.split("=")[1] : null;
   };
 

@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, type ReactElement } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import styles from "@/styles/dropzone.module.css";
 import React, { useRef } from "react";
 import { FaCamera } from "react-icons/fa"; // 카메라 아이콘 import
 import { enableDragScroll } from "@/utils/enableDragScroll";
 import { useUploadForm } from "@/utils/useUploadForm";
+import imageCompression from "browser-image-compression";
+import Loading from "@/app/loading";
 
 function MyDropzone(): ReactElement {
   const { images, setImages } = useUploadForm();
@@ -13,6 +15,7 @@ function MyDropzone(): ReactElement {
   // const [images, setImages] = useState<image[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   console.log("imagesdropzone", images);
 
   useEffect(() => {
@@ -24,17 +27,42 @@ function MyDropzone(): ReactElement {
   function selectFiles(): void {
     fileInputRef.current?.click();
   }
-  function onFileSelect(event: React.ChangeEvent<HTMLInputElement>): void {
+  async function onFileSelect(
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): Promise<void> {
     const files = event.target.files;
+    const MAX_IMAGES = 10; // ✅ 최대 이미지 수
     if (files == null || files.length === 0) return;
+    setIsLoading(true); // ✅ 로딩 시작
     const newImages = []; // 새로운 이미지 배열 생성
+
     for (let i = 0; i < files.length; i++) {
-      if (files[i].type.split("/")[0] !== "image") continue;
-      if (!images.some((e) => e.name === files[i].name)) {
+      const file = files[i];
+      if (file.type.split("/")[0] !== "image") continue;
+
+      // ✅ 갯수 제한 체크
+      const totalImageCount = images.length + newImages.length;
+      if (totalImageCount >= MAX_IMAGES) {
+        alert(`이미지는 최대 ${MAX_IMAGES}장까지 업로드할 수 있어요.`);
+        break;
+      }
+
+      if (!images.some((e) => e.name === file.name)) {
+        const compressedBlob = await imageCompression(file, {
+          maxSizeMB: 1, // 최대 1M
+          maxWidthOrHeight: 1000, // 최대 가로 세로
+          useWebWorker: true,
+        });
+
+        // ✅ Blob → File로 변환하면서 원본 이름 유지
+        const compressedFile = new File([compressedBlob], file.name, {
+          type: compressedBlob.type,
+        });
+
         newImages.push({
           name: files[i].name,
           src: URL.createObjectURL(files[i]),
-          file: files[i],
+          file: compressedFile,
         });
       }
     }
@@ -43,6 +71,7 @@ function MyDropzone(): ReactElement {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       setImages([...images, ...newImages]); // 배열을 직접 전달
     }
+    setIsLoading(false); // ✅ 로딩 끝
   }
 
   function deleteImage(index: number): void {
@@ -55,6 +84,10 @@ function MyDropzone(): ReactElement {
       setDeleted((prev) => [...prev, imageToDelete.id]);
     }
     console.log("deleted", deleted);
+  }
+
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (
@@ -84,6 +117,7 @@ function MyDropzone(): ReactElement {
           className="file"
           multiple
           ref={fileInputRef}
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onChange={onFileSelect}
         ></input>
       </div>

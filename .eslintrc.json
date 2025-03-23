@@ -37,8 +37,8 @@
     }
   },
   "rules": {
-    "@typescript-eslint/prefer-nullish-coalescing": "off",  // 규칙 비활성화
-    "@typescript-eslint/strict-boolean-expressions": "off",  // 규칙 비활성화
+    "@typescript-eslint/prefer-nullish-coalescing": "off", // 규칙 비활성화
+    "@typescript-eslint/strict-boolean-expressions": "off", // 규칙 비활성화
     // rules에 다음과 같이 추가
     "prettier/prettier": [
       "error",

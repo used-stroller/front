@@ -58,7 +58,8 @@ const MoreModal: React.FC<MoreModalProps> = ({ isOpen, onClose, id }) => {
   async function deleteProduct(id: number): Promise<void> {
     if (confirm("정말 삭제하시겠습니까?")) {
       // 삭제 API 호출 (예: fetch 또는 axios 사용)
-      await apiClient.post("product/delete?id=" + id);
+      await apiClient.post("/api/product/delete?id=" + id);
+      window.location.href = "/";
     }
   }
 
