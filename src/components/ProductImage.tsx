@@ -8,7 +8,10 @@ const ProductImage = ({ content }: { content: Content }): ReactElement => {
   const originalImage = getImageUrl(content.imgSrc);
   const [image, setImage] = React.useState(() => {
     // https로 시작하면 그대로, 아니면 jungmocha.co.kr 붙이기
-    if (originalImage.startsWith("http://") || originalImage.startsWith("https://")) {
+    if (
+      originalImage.startsWith("http://") ||
+      originalImage.startsWith("https://")
+    ) {
       return originalImage;
     }
     return `https://jungmocha.co.kr${originalImage.startsWith("/") ? "" : "/"}${originalImage}`;

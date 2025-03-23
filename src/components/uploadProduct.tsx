@@ -71,11 +71,11 @@ export default function Upload(): ReactElement {
     console.log("text", text);
   };
 
-  const submit = (): void => {
-    event?.preventDefault(); // 기본동작(페이지 리로드)막기
+  const submit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault(); // ✅ 여기서 정확하게 이벤트 참조
+    console.log("📤 SUBMIT TRIGGERED"); // 확인용
     void handleSubmit();
   };
-
   async function handleSubmit(): Promise<void> {
     if (images.length === 0) {
       alert("이미지를 선택해 주세요");
