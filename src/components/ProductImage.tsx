@@ -1,11 +1,10 @@
 "use client";
 import Image from "next/image";
-import { getImageUrl } from "@/utils/productUtils";
 import React, { type ReactElement } from "react";
 import { type Content } from "@/types";
 
 const ProductImage = ({ content }: { content: Content }): ReactElement => {
-  const originalImage = getImageUrl(content.imgSrc);
+  const originalImage = content.imgSrc;
   const [image, setImage] = React.useState(() => {
     // https로 시작하면 그대로, 아니면 jungmocha.co.kr 붙이기
     if (
