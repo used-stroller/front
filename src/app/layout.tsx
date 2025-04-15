@@ -8,6 +8,7 @@ import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import ClientSessionProvider from "@/components/ClientSessionProvider"; // 클라이언트 컴포넌트로 SessionProvider 처리
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
+import KakaoInitializer from "@/components/KakaoInitializer";
 
 export const metadata: Metadata = {
   verification: {
@@ -58,6 +59,7 @@ export default async function RootLayout({
           <GoogleAnalytics gaId={gaId} />
           <FilterProvider>
             <div className="main">
+              <KakaoInitializer />
               {children}
               <Footer />
             </div>

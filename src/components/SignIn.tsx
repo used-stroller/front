@@ -8,6 +8,12 @@ import axios from "axios";
 import Image from "next/image";
 import Loading from "@/app/loading";
 
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+
 export const SignIn = (): ReactElement => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -15,6 +21,27 @@ export const SignIn = (): ReactElement => {
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
+
+  // 카카오 sdk 로드 및 초기화
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.kakao && window.Kakao.isInitialized()) return;
+
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    script.onload = () => {
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        window.Kakao.init(process.env.KAKAO_CLIENT_ID);
+        console.log("kakao sdk초기화 완료");
+      }
+    };
+    document.head.appendChild(script);
+  }, []);
+
+  const handleKakaoSdkLogin = () => {
+    
+  }
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleLogin = async () => {
