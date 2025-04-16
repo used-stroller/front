@@ -40,11 +40,61 @@ export const SignIn = (): ReactElement => {
   }, []);
 
   const handleKakaoSdkLogin = () => {
-    
-  }
+    if (!window.Kakao || !window.Kakao.Auth) {
+      console.warn("Kakao SDK 로드 실패");
+      handleNextAuthLogin(); // fallback
+      return;
+    }
+
+    window.Kakao.Auth.login({
+      throughTalk: true,
+      scope: "profile_nickname, account_email",
+      success: function (authObj: any) {
+        window.Kakao.API.request({
+          url: "/v2/user/me",
+          success: function (res: any) {
+            const kakaoId = res.id;
+            const email = res.kakao_account?.email;
+
+            setIsLoading(true);
+            axios
+              .post(
+                process.env.NEXT_PUBLIC_BACKEND_API_URL +
+                  "/api/backend/auth/kakao",
+                {
+                  kakaoId,
+                  email,
+                  accessToken: authObj.access_token,
+                },
+                {
+                  withCredentials: true,
+                }
+              )
+              .then((response) => {
+                console.log("백엔드 응답:", response.data);
+                window.location.href = callbackUrl;
+              })
+              .catch((error) => {
+                console.error("백엔드 요청 실패:", error);
+                alert("서버와의 통신 중 문제가 발생했습니다.");
+                handleNextAuthLogin(); // fallback
+              });
+          },
+          fail: function (error: any) {
+            console.error("사용자 정보 요청 실패:", error);
+            handleNextAuthLogin(); // fallback
+          },
+        });
+      },
+      fail: function (err: any) {
+        console.warn("SDK 로그인 실패:", err);
+        handleNextAuthLogin(); // fallback
+      },
+    });
+  };
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleLogin = async () => {
+  const handleNextAuthLogin = async () => {
     console.log("로그인시도");
     try {
       setIsLoading(true); // 로딩 상태 활성화
@@ -121,7 +171,7 @@ export const SignIn = (): ReactElement => {
           fill
           className={styles.kakao_image}
           onClick={() => {
-            void handleLogin();
+            void handleKakaoSdkLogin();
           }} // void 키워드로 Promise 반환 무시
         />
       </div>
