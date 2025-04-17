@@ -41,11 +41,11 @@ export const SignIn = (): ReactElement => {
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleKakaoSdkLogin = async () => {
-    if (!window.Kakao?.Auth) {
-      console.warn("Kakao SDK 로드 실패");
-      await handleNextAuthLogin(); // fallback
-      return;
-    }
+    // if (!window.Kakao?.Auth) {
+    //   console.warn("Kakao SDK 로드 실패");
+    //   await handleNextAuthLogin(); // fallback
+    //   return;
+    // }
 
     window.Kakao.Auth.login({
       throughTalk: true,

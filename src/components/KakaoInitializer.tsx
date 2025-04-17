@@ -17,9 +17,7 @@ export default function KakaoInitializer() {
     // 스크립트 로드 완료 후 실행되는 콜백
     script.onload = () => {
       // kakao 객체가 존재하고 아직 초기화되지 않았다면 초기화 실행
-      const KAKAO_CLIENT_ID = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
       if (window.Kakao && !window.Kakao.isInitialized()) {
-        console.log("✅ Kakao Key:", KAKAO_CLIENT_ID);
         window.Kakao.init("6902a4c27f23f4cc2ac78a342d499418");
         console.log("Kakao SDK 초기화 완료");
       }
