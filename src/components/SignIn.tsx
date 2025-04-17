@@ -32,7 +32,7 @@ export const SignIn = (): ReactElement => {
     script.async = true;
     script.onload = () => {
       if (window.Kakao && !window.Kakao.isInitialized()) {
-        window.Kakao.init(process.env.KAKAO_CLIENT_ID);
+        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID);
         console.log("kakao sdk초기화 완료");
       }
     };
