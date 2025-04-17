@@ -20,7 +20,7 @@ export default function KakaoInitializer() {
       const KAKAO_CLIENT_ID = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
       if (window.Kakao && !window.Kakao.isInitialized()) {
         console.log("✅ Kakao Key:", KAKAO_CLIENT_ID);
-        window.Kakao.init(KAKAO_CLIENT_ID);
+        window.Kakao.init("6902a4c27f23f4cc2ac78a342d499418");
         console.log("Kakao SDK 초기화 완료");
       }
     };
