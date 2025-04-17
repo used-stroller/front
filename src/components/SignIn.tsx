@@ -39,10 +39,11 @@ export const SignIn = (): ReactElement => {
     document.head.appendChild(script);
   }, []);
 
-  const handleKakaoSdkLogin = () => {
-    if (!window.Kakao || !window.Kakao.Auth) {
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleKakaoSdkLogin = async () => {
+    if (!window.Kakao?.Auth) {
       console.warn("Kakao SDK 로드 실패");
-      handleNextAuthLogin(); // fallback
+      await handleNextAuthLogin(); // fallback
       return;
     }
 
@@ -68,33 +69,32 @@ export const SignIn = (): ReactElement => {
                 },
                 {
                   withCredentials: true,
-                }
+                },
               )
               .then((response) => {
                 console.log("백엔드 응답:", response.data);
                 window.location.href = callbackUrl;
               })
-              .catch((error) => {
+              .catch(async (error) => {
                 console.error("백엔드 요청 실패:", error);
                 alert("서버와의 통신 중 문제가 발생했습니다.");
-                handleNextAuthLogin(); // fallback
+                await handleNextAuthLogin(); // fallback
               });
           },
-          fail: function (error: any) {
+          fail: async function (error: any) {
             console.error("사용자 정보 요청 실패:", error);
-            handleNextAuthLogin(); // fallback
+            await handleNextAuthLogin(); // fallback
           },
         });
       },
-      fail: function (err: any) {
+      fail: async function (err: any) {
         console.warn("SDK 로그인 실패:", err);
-        handleNextAuthLogin(); // fallback
+        await handleNextAuthLogin(); // fallback
       },
     });
   };
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleNextAuthLogin = async () => {
+  const handleNextAuthLogin = async (): Promise<void> => {
     console.log("로그인시도");
     try {
       setIsLoading(true); // 로딩 상태 활성화
@@ -171,6 +171,7 @@ export const SignIn = (): ReactElement => {
           fill
           className={styles.kakao_image}
           onClick={() => {
+            // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
             void handleKakaoSdkLogin();
           }} // void 키워드로 Promise 반환 무시
         />
