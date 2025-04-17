@@ -40,7 +40,7 @@ export const SignIn = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    console.log("KAKAO KEY from ENV:", process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID);
+    console.log("🔥 ENV check -", process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID);
   }, []);
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
