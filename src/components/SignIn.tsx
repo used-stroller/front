@@ -32,15 +32,11 @@ export const SignIn = (): ReactElement => {
     script.async = true;
     script.onload = () => {
       if (window.Kakao && !window.Kakao.isInitialized()) {
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID);
+        window.Kakao.init("6902a4c27f23f4cc2ac78a342d499418");
         console.log("kakao sdk초기화 완료");
       }
     };
     document.head.appendChild(script);
-  }, []);
-
-  useEffect(() => {
-    console.log("🔥 ENV check -", process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID);
   }, []);
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
