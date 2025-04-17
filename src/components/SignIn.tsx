@@ -39,6 +39,10 @@ export const SignIn = (): ReactElement => {
     document.head.appendChild(script);
   }, []);
 
+  useEffect(() => {
+    console.log("KAKAO KEY from ENV:", process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID);
+  }, []);
+
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleKakaoSdkLogin = async () => {
     if (!window.Kakao?.Auth) {
