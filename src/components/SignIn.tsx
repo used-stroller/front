@@ -58,19 +58,18 @@ export const SignIn = (): ReactElement => {
             const name = res.kakao_account.profile.nickname;
             const image = res.kakao_account.profile.profile_image_url;
             setIsLoading(true);
+            console.log("보내는 데이터", { kakaoId, name, image });
             axios
-              .post(
-                process.env.NEXT_PUBLIC_BACKEND_API_URL +
-                  "/api/backend/auth/kakao",
-                {
-                  kakaoId: kakaoId,
-                  name: name,
-                  image: image,
+              .post("/api/backend/auth/kakao", {
+                loginResult: {
+                  user: {
+                    kakaoId,
+                    name,
+                    image,
+                  },
+                  expires: "", // 임의 값
                 },
-                {
-                  withCredentials: true,
-                },
-              )
+              })
               .then((response) => {
                 console.log("백엔드 응답:", response.data);
                 window.location.href = callbackUrl;
