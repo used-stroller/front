@@ -123,7 +123,7 @@ export const SignIn = (): ReactElement => {
 
   // 상태 변경을 감지하여 callToServer 호출
   useEffect(() => {
-    if (shouldSendToBackend) {
+    if (shouldSendToBackend && !session?.user?.kakaoId) {
       callToServer();
     }
   }, [shouldSendToBackend]);
