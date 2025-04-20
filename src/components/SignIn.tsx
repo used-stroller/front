@@ -53,18 +53,18 @@ export const SignIn = (): ReactElement => {
       success: function (authObj: any) {
         window.Kakao.API.request({
           url: "/v2/user/me",
-          // success: function (res: any) {
-          //   const kakaoId = res.id;
-          //   const name = res.kakao_account.profile.nickname;
-          //   const image = res.kakao_account.profile.profile_image_url;
-          //   setIsLoading(true);
-          //   console.log("보내는 데이터", { kakaoId, name, image });
-          //   callToServer();
-          // },
-          // fail: async function (error: any) {
-          //   console.error("사용자 정보 요청 실패:", error);
-          //   await handleNextAuthLogin(); // fallback
-          // },
+          success: function (res: any) {
+            const kakaoId = res.id;
+            const name = res.kakao_account.profile.nickname;
+            const image = res.kakao_account.profile.profile_image_url;
+            setIsLoading(true);
+            console.log(" 보낼 데이터:", { kakaoId, name, image });
+            callToServer();
+          },
+          fail: async function (error: any) {
+            console.error("사용자 정보 요청 실패:", error);
+            await handleNextAuthLogin(); // fallback
+          },
         });
       },
       fail: async function (err: any) {
