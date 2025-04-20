@@ -66,7 +66,6 @@ export const SignIn = (): ReactElement => {
                   kakaoId,
                   name,
                   image,
-                  accessToken: authObj.access_token,
                 },
                 {
                   withCredentials: true,
