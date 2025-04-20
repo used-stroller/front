@@ -49,14 +49,14 @@ export const SignIn = (): ReactElement => {
 
     window.Kakao.Auth.login({
       throughTalk: true,
-      scope: "profile_nickname, account_email",
+      scope: "profile_nickname, profile_image",
       success: function (authObj: any) {
         window.Kakao.API.request({
           url: "/v2/user/me",
           success: function (res: any) {
             const kakaoId = res.id;
-            const email = res.kakao_account?.email;
-
+            const name = res.kakao_account.profile.nickname;
+            const image = res.kakao_account.profile.profile_image_url;
             setIsLoading(true);
             axios
               .post(
@@ -64,7 +64,8 @@ export const SignIn = (): ReactElement => {
                   "/api/backend/auth/kakao",
                 {
                   kakaoId,
-                  email,
+                  name,
+                  image,
                   accessToken: authObj.access_token,
                 },
                 {
