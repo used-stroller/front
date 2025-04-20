@@ -3,7 +3,7 @@
 import styles from "@/styles/user.module.css";
 import { type ReactElement, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import axios from "axios";
 import Image from "next/image";
 import Loading from "@/app/loading";
@@ -16,7 +16,6 @@ declare global {
 
 export const SignIn = (): ReactElement => {
   const router = useRouter();
-  const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -58,6 +57,7 @@ export const SignIn = (): ReactElement => {
             const image = res.kakao_account.profile.profile_image_url;
             setIsLoading(true);
             console.log(" 보낼 데이터:", { kakaoId, name, image });
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             callToServer(kakaoId, name, image); // ✅ 값 넘겨줌
           },
           fail: async function (error: any) {
@@ -88,14 +88,6 @@ export const SignIn = (): ReactElement => {
       console.log("자동 로그인 실패, 수동 로그인 필요");
     }
   };
-
-  // 세션이 업데이트된 후 shouldSendToBackend 설정
-  useEffect(() => {
-    if (session?.user) {
-      // 세션이 인증 상태로 변경되면 실행
-      setShouldSendToBackend(true);
-    }
-  }, [session]); // status가 변경될 때마다 실행
 
   const goHome = (): void => {
     router.push("/");
