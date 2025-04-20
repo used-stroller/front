@@ -53,41 +53,18 @@ export const SignIn = (): ReactElement => {
       success: function (authObj: any) {
         window.Kakao.API.request({
           url: "/v2/user/me",
-          success: function (res: any) {
-            const kakaoId = res.id;
-            const name = res.kakao_account.profile.nickname;
-            const image = res.kakao_account.profile.profile_image_url;
-            setIsLoading(true);
-            console.log("보내는 데이터", { kakaoId, name, image });
-            axios
-              .post(
-                process.env.NEXT_PUBLIC_BACKEND_API_URL +
-                  "/api/backend/auth/kakao",
-                {
-                  loginResult: {
-                    user: {
-                      kakaoId,
-                      name,
-                      image,
-                    },
-                    expires: "", // 임의 값
-                  },
-                },
-              )
-              .then((response) => {
-                console.log("백엔드 응답:", response.data);
-                window.location.href = callbackUrl;
-              })
-              .catch(async (error) => {
-                console.error("백엔드 요청 실패:", error);
-                alert("서버와의 통신 중 문제가 발생했습니다.");
-                await handleNextAuthLogin(); // fallback
-              });
-          },
-          fail: async function (error: any) {
-            console.error("사용자 정보 요청 실패:", error);
-            await handleNextAuthLogin(); // fallback
-          },
+          // success: function (res: any) {
+          //   const kakaoId = res.id;
+          //   const name = res.kakao_account.profile.nickname;
+          //   const image = res.kakao_account.profile.profile_image_url;
+          //   setIsLoading(true);
+          //   console.log("보내는 데이터", { kakaoId, name, image });
+          //   callToServer();
+          // },
+          // fail: async function (error: any) {
+          //   console.error("사용자 정보 요청 실패:", error);
+          //   await handleNextAuthLogin(); // fallback
+          // },
         });
       },
       fail: async function (err: any) {
