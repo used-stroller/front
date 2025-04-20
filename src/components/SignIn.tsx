@@ -63,9 +63,9 @@ export const SignIn = (): ReactElement => {
                 process.env.NEXT_PUBLIC_BACKEND_API_URL +
                   "/api/backend/auth/kakao",
                 {
-                  kakaoId,
-                  name,
-                  image,
+                  kakaoId: kakaoId,
+                  name: name,
+                  image: image,
                 },
                 {
                   withCredentials: true,
