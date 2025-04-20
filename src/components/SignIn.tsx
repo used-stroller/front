@@ -17,7 +17,6 @@ declare global {
 export const SignIn = (): ReactElement => {
   const router = useRouter();
   const { data: session } = useSession();
-  const [shouldSendToBackend, setShouldSendToBackend] = useState(false); // 백엔드 호출 조건
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -59,7 +58,7 @@ export const SignIn = (): ReactElement => {
             const image = res.kakao_account.profile.profile_image_url;
             setIsLoading(true);
             console.log(" 보낼 데이터:", { kakaoId, name, image });
-            callToServer();
+            callToServer(kakaoId, name, image); // ✅ 값 넘겨줌
           },
           fail: async function (error: any) {
             console.error("사용자 정보 요청 실패:", error);
@@ -98,42 +97,41 @@ export const SignIn = (): ReactElement => {
     }
   }, [session]); // status가 변경될 때마다 실행
 
-  // 상태 변경을 감지하여 callToServer 호출
-  useEffect(() => {
-    if (shouldSendToBackend && !session?.user?.kakaoId) {
-      callToServer();
-    }
-  }, [shouldSendToBackend]);
-
   const goHome = (): void => {
     router.push("/");
   };
 
-  function callToServer(): void {
-    console.log(shouldSendToBackend);
+  function callToServer(kakaoId: string, name: string, image: string): void {
+    console.log("📡 callToServer 실행됨");
     console.log("백엔드 URL:", process.env.NEXT_PUBLIC_BACKEND_API_URL);
-    if (!shouldSendToBackend) return; // 조건에 따라 실행
-    console.log("실행됨");
+    console.log("전송할 유저 정보:", { kakaoId, name, image });
     axios
       .post(
         process.env.NEXT_PUBLIC_BACKEND_API_URL + "/api/backend/auth/kakao",
         {
-          loginResult: session,
+          loginResult: {
+            user: {
+              kakaoId,
+              name,
+              image,
+            },
+            expires: "",
+          },
         },
         {
-          withCredentials: true, // 쿠키를 요청에 포함시킴
+          withCredentials: true,
         },
       )
       .then((response) => {
-        console.log("백엔드 응답:", response.data);
+        console.log("✅ 백엔드 응답:", response.data);
         window.location.href = callbackUrl;
       })
       .catch((error) => {
-        console.error("백엔드 요청 실패:", error);
+        console.error("❌ 백엔드 요청 실패:", error);
         alert("서버와의 통신 중 문제가 발생했습니다.");
       })
       .finally(() => {
-        setShouldSendToBackend(false); // 요청 완료 후 상태 초기화
+        setIsLoading(false);
       });
   }
 
