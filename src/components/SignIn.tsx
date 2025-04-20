@@ -60,16 +60,20 @@ export const SignIn = (): ReactElement => {
             setIsLoading(true);
             console.log("보내는 데이터", { kakaoId, name, image });
             axios
-              .post("/api/backend/auth/kakao", {
-                loginResult: {
-                  user: {
-                    kakaoId,
-                    name,
-                    image,
+              .post(
+                process.env.NEXT_PUBLIC_BACKEND_API_URL +
+                  "/api/backend/auth/kakao",
+                {
+                  loginResult: {
+                    user: {
+                      kakaoId,
+                      name,
+                      image,
+                    },
+                    expires: "", // 임의 값
                   },
-                  expires: "", // 임의 값
                 },
-              })
+              )
               .then((response) => {
                 console.log("백엔드 응답:", response.data);
                 window.location.href = callbackUrl;
