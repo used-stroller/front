@@ -1,0 +1,96 @@
+/* styles/recommend.module.css */
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: sans-serif;
+}
+
+.stepHeader {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: white; /* 기본 배경 고정 */
+  color: black;
+}
+
+.buttonSelected {
+  background-color: #534a78 !important;
+  color: white !important;
+  border-color: #534a78 !important;
+}
+
+.buttonPrimary {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #534a78;
+  color: white;
+  font-weight: bold;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.buttonPrimary:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.resultBox {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.markdownWrapper {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+}
+
+.markdownWrapper p {
+  margin-bottom: 20px;
+  line-height: 1.9;
+  white-space: pre-line;
+  word-break: keep-all;
+}
+
+.markdownWrapper img {
+  display: block;
+  max-width: 100%;
+  margin: 32px auto 16px;
+  border-radius: 16px;
+}
+
+.markdownWrapper h1,
+.markdownWrapper h2,
+.markdownWrapper h3 {
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+}
