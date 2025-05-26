@@ -15,11 +15,11 @@ export default function RecommendPage() {
   const [step, setStep] = useState(1); // 현재 진행 단계 (1~4)
   const [twin, setTwin] = useState("no"); // 쌍둥이 여부 (라디오 버튼용)
 
-  
+
   // 사용자 입력 폼 상태
   const [form, setForm] = useState({
-    ageCode: "", 
-    twin: false, 
+    ageCode: "",
+    twin: false,
     maxPriceNew: 0,
     maxPriceUsed: 0,
     weightKeywordList: [] as number[], // 중요 요소 최대 3개
@@ -28,7 +28,7 @@ export default function RecommendPage() {
   });
 
   useEffect(() => {
-  console.log("form 값이 변경되었습니다:", form);
+    console.log("form 값이 변경되었습니다:", form);
   }, [form]);
 
   // 우선순위 토글 (최대 3개 선택)
@@ -68,8 +68,11 @@ export default function RecommendPage() {
     //     }),
     //   });
 
-        try {
-      const res = await apiClient.post("http://localhost:8080/api/gpt/recommend/test",form, {
+    try {
+      const randomId = crypto.randomUUID();
+      setForm({ ...form, sessionId: randomId })
+
+      const res = await apiClient.post("http://localhost:8080/api/gpt/recommend/test", form, {
         headers: {
           "Content-Type": "application/json",
           Accept: "text/event-stream",
@@ -139,13 +142,13 @@ export default function RecommendPage() {
   ];
 
   const priorityOptions = [
-  { label: "안정성", desc:"프레임이 견고하고, 흔들리지 않음", value: 1 },
-  { label: "주행감", desc:"부드럽고 잘 굴러가는 느낌", value: 2 },
-  { label: "브랜드 인지도",desc:"신뢰할 수 있는 인기 브랜드", value: 3 },
-  { label: "가성비", desc:"상태 대비 합리적인 가격", value: 4 },
-  { label: "가벼운 무게", desc:"가볍고 휴대하기 좋은 무게", value: 5 },
-  { label: "기내반입", desc:"국내,해외 여행에 적합", value: 6 },
-];
+    { label: "안정성", desc: "프레임이 견고하고, 흔들리지 않음", value: 1 },
+    { label: "주행감", desc: "부드럽고 잘 굴러가는 느낌", value: 2 },
+    { label: "브랜드 인지도", desc: "신뢰할 수 있는 인기 브랜드", value: 3 },
+    { label: "가성비", desc: "상태 대비 합리적인 가격", value: 4 },
+    { label: "가벼운 무게", desc: "가볍고 휴대하기 좋은 무게", value: 5 },
+    { label: "기내반입", desc: "국내,해외 여행에 적합", value: 6 },
+  ];
 
   // 쌍둥이 여부 변경 핸들러
   const handleTwinChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -213,7 +216,7 @@ export default function RecommendPage() {
           <button
             className={styles.buttonPrimary}
             onClick={() => setStep(2)}
-            disabled={form.ageCode ==null || form.maxPriceNew == 0 || form.maxPriceUsed == 0}
+            disabled={form.ageCode == null || form.maxPriceNew == 0 || form.maxPriceUsed == 0}
           >
             다음
           </button>
