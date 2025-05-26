@@ -2,7 +2,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import styles from "@/styles/recommend.module.css";
 import Image from "next/image";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -14,6 +14,7 @@ export default function RecommendPage() {
   const [loading, setLoading] = useState(false); // 추천 로딩 여부
   const [step, setStep] = useState(1); // 현재 진행 단계 (1~4)
   const [twin, setTwin] = useState("no"); // 쌍둥이 여부 (라디오 버튼용)
+  const [selected, setSelected] = useState<number[]>([]);
 
 
   // 사용자 입력 폼 상태
@@ -207,11 +208,21 @@ export default function RecommendPage() {
           </div>
           <div>
             <span>신제품 기준 최대 예산</span>
-            <input type="number" />원
+            <input type="number" 
+                   value={form.maxPriceNew}
+                   onChange={(e) =>
+                    setForm({...form, maxPriceNew: Number(e.target.value)})
+                   }
+            />원
           </div>
           <div>
             <span>중고제품 기준 최대 예산</span>
-            <input type="number" />원
+            <input type="number" 
+                  value={form.maxPriceUsed}
+                   onChange={(e) =>
+                    setForm({...form, maxPriceUsed: Number(e.target.value)})
+                   }
+            />원
           </div>
           <button
             className={styles.buttonPrimary}
@@ -225,24 +236,34 @@ export default function RecommendPage() {
 
       {/* Step 2: 중요 기준 선택 */}
       {step === 2 && (
-        <div>
+      <div>
           <PrevButton onClick={() => setStep(1)} />
           <h2 className={styles.stepHeader}>
             Step 2 of 4: 중요 기준 선택 (3개)
           </h2>
-          {["무게", "전이 편의성", "디자인", "가격", "A/S"].map((label) => (
-            <button
-              key={label}
-              onClick={() => togglePriority(value)}
-              className={`${styles.button} ${form.priorities.includes(label) ? styles.buttonSelected : ""}`}
-            >
-              {label}
-            </button>
-          ))}
+
+          <div className={styles.grid}>
+            {priorityOptions.map(({ label, desc, value }) => (
+              <button
+                key={value}
+                onClick={() => togglePriority(value)}
+                className={`${styles.card} ${
+                  form.weightKeywordList.includes(value) ? styles.selected : ""
+                }`}
+              >
+                 {form.weightKeywordList.includes(value) && (
+                  <FaCheckCircle className={styles.checkIcon} />
+                  )}
+                <strong>{label}</strong>
+                <p>{desc}</p>
+              </button>
+            ))}
+          </div>
+
           <button
             className={styles.buttonPrimary}
             onClick={() => setStep(3)}
-            disabled={form.priorities.length !== 3}
+            disabled={form.weightKeywordList.length !== 3}
           >
             다음
           </button>

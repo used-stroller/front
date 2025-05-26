@@ -94,3 +94,40 @@
   font-weight: 600;
   line-height: 1.4;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.card {
+  padding: 12px;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  background-color: #fff;
+  text-align: left;
+  color: #333;
+  transition: all 0.2s ease-in-out;
+}
+
+.card strong {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.card.selected {
+  background-color: #0066ff;
+  border-color: #0066ff;
+  color: white;
+}
+
+.checkIcon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  color: white; /* 선택된 배경이 파란색일 경우 가독성 ↑ */
+}
