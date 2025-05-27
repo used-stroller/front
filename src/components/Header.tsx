@@ -4,11 +4,11 @@ import styles from "@/styles/page.module.css";
 import Logo from "@/components/Logo";
 import Image from "next/image";
 import Menu from "@/components/Menu";
-import React, { type ChangeEvent, useState } from "react";
+import React, { type ChangeEvent, useEffect, useState } from "react";
 import { useFilter } from "@/context/FilterContext";
 
 const Header: React.FC = () => {
-  const { handleFilter } = useFilter();
+  const { filter, handleFilter } = useFilter();
   const [keyword, setKeyword] = useState("");
 
   const handleKeyword = (ev: ChangeEvent<HTMLInputElement>): void => {
@@ -23,6 +23,14 @@ const Header: React.FC = () => {
       },
     });
   };
+
+  // URL에서 온 keyword가 있으면 input 초기값으로 반영
+  useEffect(() => {
+    if (filter.keyword && filter.keyword !== keyword) {
+      setKeyword(filter.keyword);
+    }
+  }, [filter.keyword]);
+
 
   return (
     <div className={styles.header_wrapper}>

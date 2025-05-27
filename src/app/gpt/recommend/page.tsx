@@ -7,6 +7,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import apiClient from '@/utils/apiClient';
+import router from "next/router";
 
 export default function RecommendPage() {
   // 상태 정의
@@ -15,12 +16,14 @@ export default function RecommendPage() {
   const [step, setStep] = useState(1); // 현재 진행 단계 (1~4)
   const [twin, setTwin] = useState("no"); // 쌍둥이 여부 (라디오 버튼용)
   const [selected, setSelected] = useState<number[]>([]);
+  const origin = window.location.origin;
+  const [model, setModel] = useState("");
 
 
   // 사용자 입력 폼 상태
   const [form, setForm] = useState({
     ageCode: "",
-    twin: false,
+    twin: "no",
     maxPriceNew: 0,
     maxPriceUsed: 0,
     weightKeywordList: [] as number[], // 중요 요소 최대 3개
@@ -45,7 +48,6 @@ export default function RecommendPage() {
 
   // 최종 제출 처리
   const handleSubmit = () => {
-    setForm((prev) => ({ ...prev, twin }));
     setStep(4);
     handleRecommend();
   };
@@ -71,9 +73,10 @@ export default function RecommendPage() {
 
     try {
       const randomId = crypto.randomUUID();
-      setForm({ ...form, sessionId: randomId })
+      const updatedForm = { ...form, sessionId: randomId };
+      setForm(updatedForm)
 
-      const res = await apiClient.post("http://localhost:8080/api/gpt/recommend/test", form, {
+      const res = await apiClient.post(origin + "/api/gpt/recommend/test", updatedForm, {
         headers: {
           "Content-Type": "application/json",
           Accept: "text/event-stream",
@@ -119,6 +122,7 @@ export default function RecommendPage() {
         setResult(fullText);
 
         buffer = ""; // 버퍼 초기화 (SSE는 매번 완성된 줄이 오기 때문)
+        getModelInfo(randomId);
       }
     } catch (error) {
       console.error(error);
@@ -127,6 +131,12 @@ export default function RecommendPage() {
       setLoading(false);
     }
   };
+
+  const getModelInfo = async (sessionId: string) => {
+    const response = await apiClient.get(origin + "/api/gpt/get/model?sessionId=" + sessionId);
+    const modelName = response.data.modelName;
+    setModel(modelName);
+  }
 
   // 이전 단계로 가는 버튼
   const PrevButton = ({ onClick }: { onClick: () => void }) => (
@@ -153,13 +163,22 @@ export default function RecommendPage() {
 
   // 쌍둥이 여부 변경 핸들러
   const handleTwinChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setTwin(event.target.value);
+    const value = event.target.value;
+    setTwin(value);
+    setForm((prev) => ({ ...prev, twin: value }));
   };
 
   // step 변경 시 스크롤 상단 이동
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
+
+  const handleViewProducts = () => {
+    const encoded = encodeURIComponent(model);
+    router.push(`/list?keyword=${encoded}`);
+  };
+
+
 
   // 컴포넌트 렌더링
   return (
@@ -208,20 +227,20 @@ export default function RecommendPage() {
           </div>
           <div>
             <span>신제품 기준 최대 예산</span>
-            <input type="number" 
-                   value={form.maxPriceNew}
-                   onChange={(e) =>
-                    setForm({...form, maxPriceNew: Number(e.target.value)})
-                   }
+            <input type="number"
+              value={form.maxPriceNew}
+              onChange={(e) =>
+                setForm({ ...form, maxPriceNew: Number(e.target.value) })
+              }
             />원
           </div>
           <div>
             <span>중고제품 기준 최대 예산</span>
-            <input type="number" 
-                  value={form.maxPriceUsed}
-                   onChange={(e) =>
-                    setForm({...form, maxPriceUsed: Number(e.target.value)})
-                   }
+            <input type="number"
+              value={form.maxPriceUsed}
+              onChange={(e) =>
+                setForm({ ...form, maxPriceUsed: Number(e.target.value) })
+              }
             />원
           </div>
           <button
@@ -235,58 +254,61 @@ export default function RecommendPage() {
       )}
 
       {/* Step 2: 중요 기준 선택 */}
-      {step === 2 && (
-      <div>
+      {step === 2 && ( // 현재 스텝이 2일 때만 이 섹션을 렌더링
+        <div>
+          {/* 이전 단계로 돌아가는 버튼 */}
           <PrevButton onClick={() => setStep(1)} />
+
+          {/* 현재 단계 헤더 */}
           <h2 className={styles.stepHeader}>
             Step 2 of 4: 중요 기준 선택 (3개)
           </h2>
 
+          {/* 선택 가능한 기준 리스트를 그리드 형태로 표시 */}
           <div className={styles.grid}>
             {priorityOptions.map(({ label, desc, value }) => (
               <button
-                key={value}
-                onClick={() => togglePriority(value)}
-                className={`${styles.card} ${
-                  form.weightKeywordList.includes(value) ? styles.selected : ""
-                }`}
+                key={value} // 리액트 리스트 렌더링을 위한 고유 key
+                onClick={() => togglePriority(value)} // 클릭 시 선택 토글
+                className={`${styles.card} ${form.weightKeywordList.includes(value) ? styles.selected : ""
+                  }`} // 선택된 항목에 selected 스타일 적용
               >
-                 {form.weightKeywordList.includes(value) && (
+                {/* 선택된 항목에는 체크 아이콘 표시 */}
+                {form.weightKeywordList.includes(value) && (
                   <FaCheckCircle className={styles.checkIcon} />
-                  )}
+                )}
+
+                {/* 항목 이름 */}
                 <strong>{label}</strong>
+
+                {/* 항목 설명 (desc가 빈 문자열일 경우에도 렌더링됨) */}
                 <p>{desc}</p>
               </button>
             ))}
           </div>
 
+          {/* 다음 단계로 진행하는 버튼 (3개 선택되어야만 활성화됨) */}
           <button
             className={styles.buttonPrimary}
             onClick={() => setStep(3)}
-            disabled={form.weightKeywordList.length !== 3}
+            disabled={form.weightKeywordList.length !== 3}  // 선택이 정확히 3개일 때만 활성화
           >
             다음
           </button>
         </div>
       )}
 
-      {/* Step 3: 예산 및 기타 요청 입력 */}
+
+      {/* Step 3:기타 요청 입력 */}
       {step === 3 && (
         <div>
           <PrevButton onClick={() => setStep(2)} />
-          <h2 className={styles.stepHeader}>Step 3 of 4: 예산과 기타 요청</h2>
-          <input
-            type="text"
-            placeholder="예산 (예: 200000)"
-            className={styles.input}
-            value={form.budget}
-            onChange={(e) => setForm({ ...form, budget: e.target.value })}
-          />
+          <h2 className={styles.stepHeader}>Step 3 of 4:고객 특별 요청</h2>
           <textarea
-            placeholder="기타 요청사항 (예: 디자인이 예뻤으면)"
+            placeholder="기타 요청사항 (예: 디자인이 예뻤으면 좋겠어요!)"
             className={styles.textarea}
-            value={form.request}
-            onChange={(e) => setForm({ ...form, request: e.target.value })}
+            value={form.userText}
+            onChange={(e) => setForm({ ...form, userText: e.target.value })}
           />
           <button className={styles.buttonPrimary} onClick={handleSubmit}>
             추천받기
@@ -295,9 +317,12 @@ export default function RecommendPage() {
       )}
 
       {/* Step 4: 추천 결과 */}
-      {step === 4 && (
+      {step === 4 && ( // Step 4: 추천 결과 화면 렌더링 조건
         <div>
+          {/* 추천 결과 단계 헤더 */}
           <h2 className={styles.stepHeader}>Step 4 of 4: 추천 결과</h2>
+
+          {/* 추천 다시 받기 버튼 (로딩 중이면 비활성화) */}
           <button
             onClick={handleRecommend}
             disabled={loading}
@@ -305,10 +330,26 @@ export default function RecommendPage() {
           >
             {loading ? "추천 중..." : "AI 추천 다시 받기"}
           </button>
+
+          {/* 결과가 있고 로딩 중이 아닐 때만 '매물 보러가기' 버튼 표시 */}
+          {
+            !loading && result && (
+              <button
+                onClick={() => handleViewProducts(model)} // model 값을 명시적으로 넘김
+                className={styles.buttonSecondary}
+              >
+                {model} 매물 보러가기
+              </button>
+            )
+          }
+
+          {/* GPT 추천 결과를 표시하는 영역 */}
           <div className={styles.resultBox}>
             {loading ? (
-              <pre style={{ whiteSpace: "pre-wrap" }}>{result}</pre> // 실시간 출력
+              // 로딩 중이면 실시간 텍스트 출력용 <pre> 표시
+              <pre style={{ whiteSpace: "pre-wrap" }}>{result}</pre>
             ) : result ? (
+              // 결과가 있을 경우 Markdown 형태로 렌더링
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw]}
@@ -343,6 +384,7 @@ export default function RecommendPage() {
                 {result}
               </ReactMarkdown>
             ) : (
+              // 결과가 아예 없을 경우 출력
               "아직 추천 결과가 없습니다."
             )}
           </div>
