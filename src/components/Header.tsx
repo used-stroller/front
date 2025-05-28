@@ -31,7 +31,6 @@ const Header: React.FC = () => {
     }
   }, [filter.keyword]);
 
-
   return (
     <div className={styles.header_wrapper}>
       <Logo />

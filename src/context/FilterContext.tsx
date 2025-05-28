@@ -12,7 +12,7 @@ import { sendGAEvent, sendGTMEvent } from "@next/third-parties/google";
 
 const FilterContext = React.createContext<[FilterReq, FilterAction]>([
   {},
-  () => { },
+  () => {},
 ]);
 
 const FilterProvider: React.FC<FilterProviderProps> = ({
@@ -96,9 +96,8 @@ const resetAllFilters = (): void => {
     size: 20, // 기본 페이지 크기 (필요에 따라 조정)
     sort: "",
   }); // 필터 초기 상태로 리셋
-};
 
-return { filter, handleFilter, minMaxPrice, reset, resetAllFilters };
+  return { filter, handleFilter, minMaxPrice, reset, resetAllFilters };
 };
 
 export { FilterProvider, useFilter };

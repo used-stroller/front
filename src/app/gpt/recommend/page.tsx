@@ -6,8 +6,8 @@ import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import apiClient from '@/utils/apiClient';
-import router from "next/router";
+import apiClient from "@/utils/apiClient";
+import { useRouter } from "next/navigation"; // ✅ App Router 전용
 
 export default function RecommendPage() {
   // 상태 정의
@@ -16,9 +16,9 @@ export default function RecommendPage() {
   const [step, setStep] = useState(1); // 현재 진행 단계 (1~4)
   const [twin, setTwin] = useState("no"); // 쌍둥이 여부 (라디오 버튼용)
   const [selected, setSelected] = useState<number[]>([]);
-  const origin = window.location.origin;
   const [model, setModel] = useState("");
-
+  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+  const router = useRouter();
 
   // 사용자 입력 폼 상태
   const [form, setForm] = useState({
@@ -74,56 +74,65 @@ export default function RecommendPage() {
     try {
       const randomId = crypto.randomUUID();
       const updatedForm = { ...form, sessionId: randomId };
-      setForm(updatedForm)
+      setForm(updatedForm);
 
-      const res = await apiClient.post(origin + "/api/gpt/recommend/test", updatedForm, {
+      const res = await fetch(apiUrl + "/api/gpt/recommend/test", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "text/event-stream",
         },
+        body: JSON.stringify(updatedForm),
       });
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder(); // 🔥 stream: true 제거
-
       let fullText = "";
-      let buffer = "";
+      let partial = "";
 
       while (true) {
         const { value, done } = await reader!.read();
         if (done) break;
 
-        // 🔥 stream: true 제거 — 조각 깨짐 방지
-        buffer += decoder.decode(value);
+        partial += decoder.decode(value, { stream: true });
 
-        // 🔥 buffer 전체에서 data: 제거
-        buffer = buffer.replace(/(^|\n) *data:\s?/g, "$1");
+        // 줄 단위로 쪼개기 (SSE 기본은 한 줄 단위로 data: ... 이 전송됨)
+        const lines = partial.split("\n");
 
-        buffer = buffer
-          .replace(/\\n/g, "\n") // \n 복원
-          .replace(/\s{2,}/g, " ") // 공백 정리
-          .replace(
-            /(https?:\/\/[^\s)]+)[\n\r]+\s*([a-zA-Z0-9-]+\.[^\s)]+)/g,
-            "$1$2"
-          ) // 🔥 줄바꿈 포함한 링크 복원
-          .replace(
-            /(https?:\/\/[^\s)]+)\.\s*([a-zA-Z0-9-]+\.[^\s)]+)/g,
-            "$1.$2"
-          ) // 🔧 마침표 + 공백 포함한 링크 복원
-          .replace(/!\[(.*?)\]\(\s*(https?:\/\/[^\s]+?)\s*\)/g, "![$1]($2)")
-          .replace(/(\.(png|jpg|jpeg|webp))\d+/gi, ".$2")
-          .replace(/([^\n])\n([^\n])/g, "$1<br />$2")
-          .replace(/([가-힣a-zA-Z0-9)\]])\. ?(?=[^\n])/g, "$1.\n\n");
+        // 마지막 줄은 다음 데이터 조각과 이어질 수 있으므로 따로 보관
+        partial = lines.pop()!;
 
+        for (let line of lines) {
+          if (!line.trim()) continue;
 
+          line = line.replace(/^data:\s*/, "");
+          line = line
+            .replace(/\\n/g, "\n")
+            .replace(/\s{2,}/g, " ")
+            .replace(
+              /(https?:\/\/[^\s)]+)\s*\n\s*([a-zA-Z0-9-]+\.[^\s)]+)/g,
+              "$1$2",
+            )
+            .replace(
+              /(https?:\/\/[^\s)]+)\.\s*([a-zA-Z0-9-]+\.[^\s)]+)/g,
+              "$1.$2",
+            )
+            .replace(/!\[(.*?)\]\(\s*(https?:\/\/[^\s]+?)\s*\)/g, "![$1]($2)")
+            .replace(/(\.(png|jpg|jpeg|webp))\d+/gi, ".$2");
 
-        // 🔥 결과 누적 및 UI 업데이트
-        fullText += buffer;
+          fullText += line + "\n";
+          setResult(fullText); // ✅ 여기서 매번 전체 텍스트로 업데이트
+        }
+      }
+
+      // 남은 partial도 마지막에 처리
+      if (partial.trim()) {
+        fullText += partial.replace(/^data:\s*/, "") + "\n";
         setResult(fullText);
 
         buffer = ""; // 버퍼 초기화 (SSE는 매번 완성된 줄이 오기 때문)
-        getModelInfo(randomId);
       }
+      getModelInfo(randomId);
     } catch (error) {
       console.error(error);
       setResult("추천 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -133,10 +142,24 @@ export default function RecommendPage() {
   };
 
   const getModelInfo = async (sessionId: string) => {
-    const response = await apiClient.get(origin + "/api/gpt/get/model?sessionId=" + sessionId);
-    const modelName = response.data.modelName;
-    setModel(modelName);
-  }
+    try {
+      const response = await fetch(
+        `${apiUrl}/api/gpt/get/model?sessionId=${encodeURIComponent(sessionId)}`,
+      );
+
+      if (!response.ok) {
+        throw new Error("모델 정보를 불러오지 못했습니다.");
+      }
+
+      const data = await response.json();
+      console.log("data", data);
+      const modelName = data.name;
+      setModel(modelName);
+    } catch (error) {
+      console.error("모델 정보 가져오기 실패:", error);
+      setModel("모델명을 불러올 수 없습니다.");
+    }
+  };
 
   // 이전 단계로 가는 버튼
   const PrevButton = ({ onClick }: { onClick: () => void }) => (
@@ -175,10 +198,25 @@ export default function RecommendPage() {
 
   const handleViewProducts = () => {
     const encoded = encodeURIComponent(model);
-    router.push(`/list?keyword=${encoded}`);
+    router.push(`/?keyword=${encoded}`);
   };
 
-
+  const handleRestart = () => {
+    setForm({
+      ageCode: "",
+      twin: "no",
+      maxPriceNew: 0,
+      maxPriceUsed: 0,
+      weightKeywordList: [],
+      userText: "",
+      sessionId: "",
+    });
+    setResult("");
+    setModel("");
+    setSelected([]);
+    setTwin("no");
+    setStep(1);
+  };
 
   // 컴포넌트 렌더링
   return (
@@ -227,26 +265,34 @@ export default function RecommendPage() {
           </div>
           <div>
             <span>신제품 기준 최대 예산</span>
-            <input type="number"
+            <input
+              type="number"
               value={form.maxPriceNew}
               onChange={(e) =>
                 setForm({ ...form, maxPriceNew: Number(e.target.value) })
               }
-            />원
+            />
+            원
           </div>
           <div>
             <span>중고제품 기준 최대 예산</span>
-            <input type="number"
+            <input
+              type="number"
               value={form.maxPriceUsed}
               onChange={(e) =>
                 setForm({ ...form, maxPriceUsed: Number(e.target.value) })
               }
-            />원
+            />
+            원
           </div>
           <button
             className={styles.buttonPrimary}
             onClick={() => setStep(2)}
-            disabled={form.ageCode == null || form.maxPriceNew == 0 || form.maxPriceUsed == 0}
+            disabled={
+              form.ageCode == null ||
+              form.maxPriceNew == 0 ||
+              form.maxPriceUsed == 0
+            }
           >
             다음
           </button>
@@ -270,8 +316,9 @@ export default function RecommendPage() {
               <button
                 key={value} // 리액트 리스트 렌더링을 위한 고유 key
                 onClick={() => togglePriority(value)} // 클릭 시 선택 토글
-                className={`${styles.card} ${form.weightKeywordList.includes(value) ? styles.selected : ""
-                  }`} // 선택된 항목에 selected 스타일 적용
+                className={`${styles.card} ${
+                  form.weightKeywordList.includes(value) ? styles.selected : ""
+                }`} // 선택된 항목에 selected 스타일 적용
               >
                 {/* 선택된 항목에는 체크 아이콘 표시 */}
                 {form.weightKeywordList.includes(value) && (
@@ -291,21 +338,27 @@ export default function RecommendPage() {
           <button
             className={styles.buttonPrimary}
             onClick={() => setStep(3)}
-            disabled={form.weightKeywordList.length !== 3}  // 선택이 정확히 3개일 때만 활성화
+            disabled={form.weightKeywordList.length !== 3} // 선택이 정확히 3개일 때만 활성화
           >
             다음
           </button>
         </div>
       )}
 
-
       {/* Step 3:기타 요청 입력 */}
       {step === 3 && (
         <div>
           <PrevButton onClick={() => setStep(2)} />
           <h2 className={styles.stepHeader}>Step 3 of 4:고객 특별 요청</h2>
+<div className={styles.tipBox}>
+  <div className={styles.tipTitle}>💡 이런 걸 알려주시면 추천이 더 정확해요</div>
+  <ul className={styles.tipList}>
+    <li>1. 디자인이 예뻤으면 좋겠어요</li>
+    <li>2. 차 트렁크에 자주 넣고 꺼내야 해서 작고 가벼웠으면 좋겠어요</li>
+  </ul>
+</div>
           <textarea
-            placeholder="기타 요청사항 (예: 디자인이 예뻤으면 좋겠어요!)"
+            placeholder="예: 혼자서 접기 쉬웠으면 좋겠어요"
             className={styles.textarea}
             value={form.userText}
             onChange={(e) => setForm({ ...form, userText: e.target.value })}
@@ -324,7 +377,7 @@ export default function RecommendPage() {
 
           {/* 추천 다시 받기 버튼 (로딩 중이면 비활성화) */}
           <button
-            onClick={handleRecommend}
+            onClick={handleRestart}
             disabled={loading}
             className={styles.buttonPrimary}
           >
@@ -332,16 +385,14 @@ export default function RecommendPage() {
           </button>
 
           {/* 결과가 있고 로딩 중이 아닐 때만 '매물 보러가기' 버튼 표시 */}
-          {
-            !loading && result && (
-              <button
-                onClick={() => handleViewProducts(model)} // model 값을 명시적으로 넘김
-                className={styles.buttonSecondary}
-              >
-                {model} 매물 보러가기
-              </button>
-            )
-          }
+          {!loading && result && (
+            <button
+              onClick={() => handleViewProducts(model)} // model 값을 명시적으로 넘김
+              className={styles.buttonSecondary}
+            >
+              {model} 매물 보러가기
+            </button>
+          )}
 
           {/* GPT 추천 결과를 표시하는 영역 */}
           <div className={styles.resultBox}>

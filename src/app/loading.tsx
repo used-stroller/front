@@ -12,7 +12,7 @@ export default function Loading(): ReactElement {
         height: "100vh",
       }}
     >
-      <Image src="./images/loading.svg" alt="loading" width={50} height={50} />
+      <Image src="/images/loading.svg" alt="loading" width={50} height={50} />
     </div>
   );
 }

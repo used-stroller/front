@@ -55,6 +55,7 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   margin-bottom: 1rem;
+  min-height: 200px;
 }
 
 .resultBox {
@@ -130,4 +131,36 @@
   right: 10px;
   font-size: 20px;
   color: white; /* 선택된 배경이 파란색일 경우 가독성 ↑ */
+}
+
+.stepHeader {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.tipBox {
+  background-color: #ebe7ff;
+  border: 1px solid #cfc6f1;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  line-height: 1.6;
+}
+
+.tipTitle {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #5a5a5a;
+}
+
+.tipList {
+  list-style-type: "• ";
+  padding-left: 20px;
+  line-height: 1.7;
+  margin: 0;
 }
