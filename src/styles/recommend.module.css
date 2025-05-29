@@ -164,3 +164,56 @@
   line-height: 1.7;
   margin: 0;
 }
+
+/* recommend.module.css */
+
+.toggleGroup {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.toggleButton {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.toggleButton:hover {
+  background-color: #eee;
+}
+
+.toggleButton.selected {
+  border-color: #534a78;
+  background-color: #e0f0ff;
+  color: #534a78;
+}
+
+.inputGroup {
+  margin: 16px 0;
+}
+
+.inputLabel {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.inputField {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: right; /* ✅ 오른쪽 정렬 */
+}
+
+.inputField:focus {
+  border-color: #534a78; /* 원하는 포커스 테두리 색상 */
+  box-shadow: 0 0 0 2px rgba(83, 74, 120, 0.2); /* 부드러운 포커스 링 */
+  outline: none; /* 기본 outline 제거 */
+}

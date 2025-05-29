@@ -1,5 +1,5 @@
 "use client";
-import { type ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "@/styles/recommend.module.css";
 import Image from "next/image";
 import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
@@ -7,6 +7,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { useRouter } from "next/navigation"; //
+import { formatNumberWithComma, parseNumber } from "@/utils/number";
 
 export default function RecommendPage(): JSX.Element {
   // 상태 정의
@@ -172,13 +173,6 @@ export default function RecommendPage(): JSX.Element {
     { label: "기내반입", desc: "국내,해외 여행에 적합", value: 6 },
   ];
 
-  // 쌍둥이 여부 변경 핸들러
-  const handleTwinChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const value = event.target.value;
-    setTwin(value);
-    setForm((prev) => ({ ...prev, twin: value }));
-  };
-
   // step 변경 시 스크롤 상단 이동
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -229,51 +223,61 @@ export default function RecommendPage(): JSX.Element {
           </div>
           <div className={styles.buy_status}>
             <span className={styles.buy_status_p}>쌍둥이 용인가요?</span>
-            <label>
-              <input
-                className={styles.input_radio}
-                type="radio"
-                name="twin"
-                value="no"
-                checked={twin === "no"}
-                onChange={handleTwinChange}
-              />
-              아니오
-            </label>
-            <label>
-              <input
-                className={styles.input_radio}
-                type="radio"
-                name="twin"
-                value="yes"
-                checked={twin === "yes"}
-                onChange={handleTwinChange}
-              />
-              예
-            </label>
+            <div className={styles.toggleGroup}>
+              {["no", "yes"].map((value) => (
+                <button
+                  key={value}
+                  className={`${styles.toggleButton} ${twin === value ? styles.selected : ""}`}
+                  onClick={() => {
+                    setTwin(value);
+                    setForm((prev) => ({ ...prev, twin: value }));
+                  }}
+                >
+                  {value === "yes" ? "예" : "아니오"}
+                </button>
+              ))}
+            </div>
           </div>
-          <div>
-            <span>신제품 기준 최대 예산</span>
+
+          {/* 예산 입력 개선 */}
+          <div className={styles.inputGroup}>
+            <span className={styles.inputLabel}>신제품 기준 최대 예산</span>
             <input
-              type="number"
-              value={form.maxPriceNew}
+              type="text"
+              className={styles.inputField}
+              inputMode="numeric"
+              value={
+                form.maxPriceNew === 0
+                  ? ""
+                  : formatNumberWithComma(form.maxPriceNew.toString())
+              }
               onChange={(e) => {
-                setForm({ ...form, maxPriceNew: Number(e.target.value) });
+                const onlyNum = parseNumber(e.target.value);
+                setForm({ ...form, maxPriceNew: onlyNum });
               }}
+              placeholder="예: 1,500,000"
             />
-            원
           </div>
-          <div>
-            <span>중고제품 기준 최대 예산</span>
+
+          <div className={styles.inputGroup}>
+            <span className={styles.inputLabel}>중고제품 기준 최대 예산</span>
             <input
-              type="number"
-              value={form.maxPriceUsed}
+              type="text"
+              className={styles.inputField}
+              inputMode="numeric"
+              value={
+                form.maxPriceUsed === 0
+                  ? ""
+                  : formatNumberWithComma(form.maxPriceUsed.toString())
+              }
               onChange={(e) => {
-                setForm({ ...form, maxPriceUsed: Number(e.target.value) });
+                const onlyNum = parseNumber(e.target.value);
+                setForm({ ...form, maxPriceUsed: onlyNum });
               }}
+              placeholder="예: 700,000"
             />
-            원
           </div>
+
           <button
             className={styles.buttonPrimary}
             onClick={() => {
