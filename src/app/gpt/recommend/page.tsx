@@ -1,21 +1,19 @@
 "use client";
-import { ChangeEvent, useEffect, useState } from "react";
+import { type ChangeEvent, useEffect, useState } from "react";
 import styles from "@/styles/recommend.module.css";
 import Image from "next/image";
 import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import apiClient from "@/utils/apiClient";
-import { useRouter } from "next/navigation"; // ✅ App Router 전용
+import { useRouter } from "next/navigation"; //
 
-export default function RecommendPage() {
+export default function RecommendPage(): JSX.Element {
   // 상태 정의
   const [result, setResult] = useState(""); // GPT 추천 결과 텍스트
   const [loading, setLoading] = useState(false); // 추천 로딩 여부
   const [step, setStep] = useState(1); // 현재 진행 단계 (1~4)
   const [twin, setTwin] = useState("no"); // 쌍둥이 여부 (라디오 버튼용)
-  const [selected, setSelected] = useState<number[]>([]);
   const [model, setModel] = useState("");
   const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
   const router = useRouter();
@@ -31,12 +29,16 @@ export default function RecommendPage() {
     sessionId: "",
   });
 
+  interface ModelResponse {
+    name?: string;
+  }
+
   useEffect(() => {
     console.log("form 값이 변경되었습니다:", form);
   }, [form]);
 
   // 우선순위 토글 (최대 3개 선택)
-  const togglePriority = (value: number) => {
+  const togglePriority = (value: number): void => {
     setForm((prev) => {
       const exists = prev.weightKeywordList.includes(value);
       const newPriorities = exists
@@ -47,13 +49,13 @@ export default function RecommendPage() {
   };
 
   // 최종 제출 처리
-  const handleSubmit = () => {
+  const handleSubmit = async (): Promise<void> => {
     setStep(4);
-    handleRecommend();
+    await handleRecommend();
   };
 
   // GPT 추천 요청 및 SSE 응답 처리
-  const handleRecommend = async () => {
+  const handleRecommend = async (): Promise<void> => {
     if (loading) return;
 
     setLoading(true);
@@ -86,12 +88,12 @@ export default function RecommendPage() {
       });
 
       const reader = res.body?.getReader();
-      const decoder = new TextDecoder(); // 🔥 stream: true 제거
+      const decoder = new TextDecoder(); // stream: true 제거
       let fullText = "";
       let partial = "";
 
       while (true) {
-        const { value, done } = await reader!.read();
+        const { value, done } = await reader.read();
         if (done) break;
 
         partial += decoder.decode(value, { stream: true });
@@ -100,7 +102,7 @@ export default function RecommendPage() {
         const lines = partial.split("\n");
 
         // 마지막 줄은 다음 데이터 조각과 이어질 수 있으므로 따로 보관
-        partial = lines.pop()!;
+        partial = lines.pop() ?? "";
 
         for (let line of lines) {
           if (!line.trim()) continue;
@@ -129,10 +131,8 @@ export default function RecommendPage() {
       if (partial.trim()) {
         fullText += partial.replace(/^data:\s*/, "") + "\n";
         setResult(fullText);
-
-        buffer = ""; // 버퍼 초기화 (SSE는 매번 완성된 줄이 오기 때문)
       }
-      getModelInfo(randomId);
+      await getModelInfo(randomId);
     } catch (error) {
       console.error(error);
       setResult("추천 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -141,7 +141,7 @@ export default function RecommendPage() {
     }
   };
 
-  const getModelInfo = async (sessionId: string) => {
+  const getModelInfo = async (sessionId: string): Promise<void> => {
     try {
       const response = await fetch(
         `${apiUrl}/api/gpt/get/model?sessionId=${encodeURIComponent(sessionId)}`,
@@ -151,7 +151,7 @@ export default function RecommendPage() {
         throw new Error("모델 정보를 불러오지 못했습니다.");
       }
 
-      const data = await response.json();
+      const data: ModelResponse = await response.json();
       console.log("data", data);
       const modelName = data.name;
       setModel(modelName);
@@ -162,7 +162,7 @@ export default function RecommendPage() {
   };
 
   // 이전 단계로 가는 버튼
-  const PrevButton = ({ onClick }: { onClick: () => void }) => (
+  const PrevButton = ({ onClick }: { onClick: () => void }): JSX.Element => (
     <button className={styles.buttonSecondary} onClick={onClick}>
       <FaArrowLeft style={{ fontSize: 20, marginRight: 6 }} />
     </button>
@@ -196,12 +196,12 @@ export default function RecommendPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
 
-  const handleViewProducts = () => {
+  const handleViewProducts = (model: string): void => {
     const encoded = encodeURIComponent(model);
     router.push(`/?keyword=${encoded}`);
   };
 
-  const handleRestart = () => {
+  const handleRestart = (): void => {
     setForm({
       ageCode: "",
       twin: "no",
@@ -213,7 +213,6 @@ export default function RecommendPage() {
     });
     setResult("");
     setModel("");
-    setSelected([]);
     setTwin("no");
     setStep(1);
   };
@@ -229,7 +228,9 @@ export default function RecommendPage() {
             {ageOptions.map(({ label, image, age, val }) => (
               <button
                 key={val}
-                onClick={() => setForm({ ...form, ageCode: val })}
+                onClick={() => {
+                  setForm({ ...form, ageCode: val });
+                }}
                 className={`${styles.button} ${form.ageCode === val ? styles.buttonSelected : ""}`}
               >
                 <Image src={image} alt={label} width={50} height={50} />
@@ -268,9 +269,9 @@ export default function RecommendPage() {
             <input
               type="number"
               value={form.maxPriceNew}
-              onChange={(e) =>
-                setForm({ ...form, maxPriceNew: Number(e.target.value) })
-              }
+              onChange={(e) => {
+                setForm({ ...form, maxPriceNew: Number(e.target.value) });
+              }}
             />
             원
           </div>
@@ -279,19 +280,21 @@ export default function RecommendPage() {
             <input
               type="number"
               value={form.maxPriceUsed}
-              onChange={(e) =>
-                setForm({ ...form, maxPriceUsed: Number(e.target.value) })
-              }
+              onChange={(e) => {
+                setForm({ ...form, maxPriceUsed: Number(e.target.value) });
+              }}
             />
             원
           </div>
           <button
             className={styles.buttonPrimary}
-            onClick={() => setStep(2)}
+            onClick={() => {
+              setStep(2);
+            }}
             disabled={
-              form.ageCode == null ||
-              form.maxPriceNew == 0 ||
-              form.maxPriceUsed == 0
+              form.ageCode === null ||
+              form.maxPriceNew === 0 ||
+              form.maxPriceUsed === 0
             }
           >
             다음
@@ -303,7 +306,11 @@ export default function RecommendPage() {
       {step === 2 && ( // 현재 스텝이 2일 때만 이 섹션을 렌더링
         <div>
           {/* 이전 단계로 돌아가는 버튼 */}
-          <PrevButton onClick={() => setStep(1)} />
+          <PrevButton
+            onClick={() => {
+              setStep(1);
+            }}
+          />
 
           {/* 현재 단계 헤더 */}
           <h2 className={styles.stepHeader}>
@@ -315,7 +322,9 @@ export default function RecommendPage() {
             {priorityOptions.map(({ label, desc, value }) => (
               <button
                 key={value} // 리액트 리스트 렌더링을 위한 고유 key
-                onClick={() => togglePriority(value)} // 클릭 시 선택 토글
+                onClick={() => {
+                  togglePriority(value);
+                }} // 클릭 시 선택 토글
                 className={`${styles.card} ${
                   form.weightKeywordList.includes(value) ? styles.selected : ""
                 }`} // 선택된 항목에 selected 스타일 적용
@@ -337,7 +346,9 @@ export default function RecommendPage() {
           {/* 다음 단계로 진행하는 버튼 (3개 선택되어야만 활성화됨) */}
           <button
             className={styles.buttonPrimary}
-            onClick={() => setStep(3)}
+            onClick={() => {
+              setStep(3);
+            }}
             disabled={form.weightKeywordList.length !== 3} // 선택이 정확히 3개일 때만 활성화
           >
             다음
@@ -348,22 +359,36 @@ export default function RecommendPage() {
       {/* Step 3:기타 요청 입력 */}
       {step === 3 && (
         <div>
-          <PrevButton onClick={() => setStep(2)} />
+          <PrevButton
+            onClick={() => {
+              setStep(2);
+            }}
+          />
           <h2 className={styles.stepHeader}>Step 3 of 4:고객 특별 요청</h2>
-<div className={styles.tipBox}>
-  <div className={styles.tipTitle}>💡 이런 걸 알려주시면 추천이 더 정확해요</div>
-  <ul className={styles.tipList}>
-    <li>1. 디자인이 예뻤으면 좋겠어요</li>
-    <li>2. 차 트렁크에 자주 넣고 꺼내야 해서 작고 가벼웠으면 좋겠어요</li>
-  </ul>
-</div>
+          <div className={styles.tipBox}>
+            <div className={styles.tipTitle}>
+              💡 이런 걸 알려주시면 추천이 더 정확해요
+            </div>
+            <ul className={styles.tipList}>
+              <li>1. 디자인이 예뻤으면 좋겠어요</li>
+              <li>
+                2. 차 트렁크에 자주 넣고 꺼내야 해서 작고 가벼웠으면 좋겠어요
+              </li>
+            </ul>
+          </div>
           <textarea
             placeholder="예: 혼자서 접기 쉬웠으면 좋겠어요"
             className={styles.textarea}
             value={form.userText}
-            onChange={(e) => setForm({ ...form, userText: e.target.value })}
+            onChange={(e) => {
+              setForm({ ...form, userText: e.target.value });
+            }}
           />
-          <button className={styles.buttonPrimary} onClick={handleSubmit}>
+          <button
+            className={styles.buttonPrimary}
+            // eslint-disable-next-line no-void
+            onClick={() => void handleSubmit()}
+          >
             추천받기
           </button>
         </div>
@@ -387,7 +412,9 @@ export default function RecommendPage() {
           {/* 결과가 있고 로딩 중이 아닐 때만 '매물 보러가기' 버튼 표시 */}
           {!loading && result && (
             <button
-              onClick={() => handleViewProducts(model)} // model 값을 명시적으로 넘김
+              onClick={() => {
+                handleViewProducts(model);
+              }} // model 값을 명시적으로 넘김
               className={styles.buttonSecondary}
             >
               {model} 매물 보러가기
@@ -428,6 +455,7 @@ export default function RecommendPage() {
                       {...props}
                     />
                   ),
+                  // eslint-disable-next-line jsx-a11y/heading-has-content
                   h2: ({ node, ...props }) => <h2 {...props} />,
                   br: () => <br />,
                 }}

@@ -36,12 +36,12 @@ export default function Chat() {
     console.log("채팅방 참여자", userIdList);
 
     socket.on("connect", () => {
-      console.log("✅ 소켓 연결 성공:", socket.id);
+      console.log("소켓 연결 성공:", socket.id);
       setIsConnected(true);
     });
 
     socket.on("disconnect", (reason) => {
-      console.log("❌ 소켓 연결 끊어짐. 이유:", reason);
+      console.log("소켓 연결 끊어짐. 이유:", reason);
     });
 
     return () => {
