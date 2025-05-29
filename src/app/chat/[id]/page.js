@@ -5,6 +5,7 @@ import "@/styles/chat.css";
 import { useParams } from "next/navigation";
 import { Send } from "lucide-react";
 
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 const socket = io("http://localhost:9092", {
   transport: ["websocket"],
   reconnection: false,
@@ -12,17 +13,21 @@ const socket = io("http://localhost:9092", {
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function Chat() {
-  const { id } = useParams();
-  const userIdList = typeof id === "string" ? id.split("_").map(String) : [];
+  const { id } = useParams(); // URL에서 채팅방 ID 추출출
+  const parts = typeof id === "string" ? id.split("_") : [];
+  // const productId = parts[0] ?? null;
+  const userIdList = parts.slice(1);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [setIsConnected] = useState(socket.connected);
-  const [sender] = useState("1");
-  const [receiver] = useState("3");
   const roomId = id;
-  const messageContainerRef = useRef(null); // 🔥 스크롤을 위한 Ref 추가
+  const messageContainerRef = useRef(null); // 스크롤을 위한 Ref 추가
+  const currentUserId =
+    typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  const sender = currentUserId;
+  const receiver = userIdList.find((id) => id !== sender);
 
-  // ✅ 메시지가 변경될 때마다 스크롤을 최하단으로 이동
+  // 메시지가 변경될 때마다 스크롤을 최하단으로 이동
   useEffect(() => {
     if (messageContainerRef.current) {
       messageContainerRef.current.scrollTop =
@@ -49,6 +54,7 @@ export default function Chat() {
     };
   }, []);
 
+  // 채팅방 입장 이벤트 전송
   useEffect(() => {
     socket.emit("joinRoom", roomId);
 
@@ -65,7 +71,7 @@ export default function Chat() {
       try {
         const response = await fetch(
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          `http://localhost:8080/api/chat/history/${roomId}`,
+          `${apiUrl}/api/chat/history/${roomId}`,
         );
 
         if (!response.ok) {
@@ -99,12 +105,15 @@ export default function Chat() {
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const sendMessage = () => {
     if (message.trim()) {
+      const now = new Date();
+      const timestamp =
+        now.toLocaleDateString("sv-SE") + "T" + now.toTimeString().slice(0, 8);
       const msgData = {
-        roomId: roomId,
-        sender: sender, // 현재 사용자 ID
-        receiver: receiver,
-        message: message,
-        // timestamp: new Date().toLocaleTimeString(),  // 현재 시간 추가
+        roomId,
+        sender,
+        receiver,
+        message,
+        timestamp,
       };
       socket.emit("sendMessage", msgData);
       setMessage(""); // 메시지 입력창 초기화

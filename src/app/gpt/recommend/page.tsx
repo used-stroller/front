@@ -61,18 +61,6 @@ export default function RecommendPage(): JSX.Element {
     setLoading(true);
     setResult("");
 
-    // try {
-    //   const res = await apiClient.post("http://localhost:8080/api/gpt/recommend/", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Accept: "text/event-stream",
-    //     },
-    //     body: JSON.stringify({
-    //       ageCode: "m",
-    //     }),
-    //   });
-
     try {
       const randomId = crypto.randomUUID();
       const updatedForm = { ...form, sessionId: randomId };
