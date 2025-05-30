@@ -31,6 +31,9 @@ export default function Menu(): ReactElement {
       <Link href={"/about"}>
         <h3>소개</h3>
       </Link>
+      <Link href={"policy/privacy"}>
+        <h3>개인정보 처리방침</h3>
+      </Link>
       {isSession ? (
         <>
           {/* <form onSubmit={handleSubmit}>

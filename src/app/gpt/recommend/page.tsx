@@ -16,6 +16,8 @@ export default function RecommendPage(): JSX.Element {
   const [step, setStep] = useState(1); // 현재 진행 단계 (1~4)
   const [twin, setTwin] = useState("no"); // 쌍둥이 여부 (라디오 버튼용)
   const [model, setModel] = useState("");
+  const [newPrice, setNewPrice] = useState(0);
+  const [usedPrice, setUsedPrice] = useState(0);
   const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
   const router = useRouter();
 
@@ -32,6 +34,8 @@ export default function RecommendPage(): JSX.Element {
 
   interface ModelResponse {
     name?: string;
+    newPrice?: number;
+    usedPrice?: number;
   }
 
   useEffect(() => {
@@ -143,7 +147,11 @@ export default function RecommendPage(): JSX.Element {
       const data: ModelResponse = await response.json();
       console.log("data", data);
       const modelName = data.name;
+      const newPrice = data.newPrice;
+      const usedPrice = data.usedPrice;
       setModel(modelName);
+      setNewPrice(newPrice);
+      setUsedPrice(usedPrice);
     } catch (error) {
       console.error("모델 정보 가져오기 실패:", error);
       setModel("모델명을 불러올 수 없습니다.");
@@ -403,14 +411,22 @@ export default function RecommendPage(): JSX.Element {
 
           {/* 결과가 있고 로딩 중이 아닐 때만 '매물 보러가기' 버튼 표시 */}
           {!loading && result && (
-            <button
-              onClick={() => {
-                handleViewProducts(model);
-              }} // model 값을 명시적으로 넘김
-              className={styles.buttonSecondary}
-            >
-              {model} 매물 보러가기
-            </button>
+            <div>
+              <span>
+                {model}의 신제품 가격은 {newPrice}원
+              </span>
+              <span>
+                {model}의 현재 중고 시세는 {usedPrice}원
+              </span>
+              <button
+                onClick={() => {
+                  handleViewProducts(model);
+                }} // model 값을 명시적으로 넘김
+                className={styles.buttonSecondary}
+              >
+                {model} 보러가기
+              </button>
+            </div>
           )}
 
           {/* GPT 추천 결과를 표시하는 영역 */}
