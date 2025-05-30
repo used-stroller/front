@@ -1,4 +1,9 @@
 /* styles/recommend.module.css */
+.ageGroup {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .container {
   max-width: 400px;
   margin: 0 auto;
@@ -31,7 +36,11 @@
 }
 
 .buttonPrimary {
+  gap: 8px;
   display: block;
+  display: inline-flex; 
+  justify-content: center;
+  align-items: center; 
   width: 100%;
   padding: 0.75rem;
   border: none;
@@ -216,4 +225,28 @@
   border-color: #534a78; /* 원하는 포커스 테두리 색상 */
   box-shadow: 0 0 0 2px rgba(83, 74, 120, 0.2); /* 부드러운 포커스 링 */
   outline: none; /* 기본 outline 제거 */
+}
+
+.priceBox {
+  background-color: #f7f5ff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-top: 24px;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.priceBox p {
+  margin: 0 0 8px;
+}
+
+.priceLabel {
+  font-weight: 600;
+  color: #534a78;
+  margin-right: 6px;
+}
+
+.priceValue {
+  font-weight: 700;
+  color: #000;
 }

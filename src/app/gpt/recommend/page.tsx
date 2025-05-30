@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import styles from "@/styles/recommend.module.css";
 import Image from "next/image";
-import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
+import { FaArrowLeft, FaCheckCircle, FaSearch } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -71,7 +71,7 @@ export default function RecommendPage(): JSX.Element {
       const updatedForm = { ...form, sessionId: randomId };
       setForm(updatedForm);
 
-      const res = await fetch(apiUrl + "/api/gpt/recommend/test", {
+      const res = await fetch(apiUrl + "/api/gpt/recommend", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -207,6 +207,10 @@ export default function RecommendPage(): JSX.Element {
     setStep(1);
   };
 
+  const goHome = (): void => {
+    router.push("/");
+  };
+
   // 컴포넌트 렌더링
   return (
     <div className={styles.container}>
@@ -249,7 +253,9 @@ export default function RecommendPage(): JSX.Element {
 
           {/* 예산 입력 개선 */}
           <div className={styles.inputGroup}>
-            <span className={styles.inputLabel}>신제품 기준 최대 예산</span>
+            <span className={styles.inputLabel}>
+              신제품이라면 최대 얼마까지 괜찮으세요?
+            </span>
             <input
               type="text"
               className={styles.inputField}
@@ -268,7 +274,9 @@ export default function RecommendPage(): JSX.Element {
           </div>
 
           <div className={styles.inputGroup}>
-            <span className={styles.inputLabel}>중고제품 기준 최대 예산</span>
+            <span className={styles.inputLabel}>
+              중고제품이라면 최대 얼마까지 괜찮으세요?
+            </span>
             <input
               type="text"
               className={styles.inputField}
@@ -298,6 +306,9 @@ export default function RecommendPage(): JSX.Element {
             }
           >
             다음
+          </button>
+          <button onClick={goHome} className={styles.buttonPrimary}>
+            홈으로
           </button>
         </div>
       )}
@@ -410,24 +421,6 @@ export default function RecommendPage(): JSX.Element {
           </button>
 
           {/* 결과가 있고 로딩 중이 아닐 때만 '매물 보러가기' 버튼 표시 */}
-          {!loading && result && (
-            <div>
-              <span>
-                {model}의 신제품 가격은 {newPrice}원
-              </span>
-              <span>
-                {model}의 현재 중고 시세는 {usedPrice}원
-              </span>
-              <button
-                onClick={() => {
-                  handleViewProducts(model);
-                }} // model 값을 명시적으로 넘김
-                className={styles.buttonSecondary}
-              >
-                {model} 보러가기
-              </button>
-            </div>
-          )}
 
           {/* GPT 추천 결과를 표시하는 영역 */}
           <div className={styles.resultBox}>
@@ -475,6 +468,38 @@ export default function RecommendPage(): JSX.Element {
               "아직 추천 결과가 없습니다."
             )}
           </div>
+          {!loading && result && (
+            <div className={styles.priceBox}>
+              <p>
+                <span className={styles.priceLabel}>
+                  {model}의 신제품 가격은
+                </span>
+                <span className={styles.priceValue}>
+                  {newPrice.toLocaleString()}원
+                </span>
+              </p>
+              <p>
+                <span className={styles.priceLabel}>
+                  {model}의 현재 중고 시세는
+                </span>{" "}
+                <span className={styles.priceValue}>
+                  {usedPrice.toLocaleString()}원
+                </span>
+              </p>
+              <button
+                onClick={() => {
+                  handleViewProducts(model);
+                }} // model 값을 명시적으로 넘김
+                className={styles.buttonPrimary}
+              >
+                &quot;{model}&quot; 중고 매물 보러가기
+                <FaSearch />
+              </button>
+            </div>
+          )}
+          {/* <button onClick={goHome} className={styles.buttonPrimary}>
+            홈으로
+          </button> */}
         </div>
       )}
     </div>
