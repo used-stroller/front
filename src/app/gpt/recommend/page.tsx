@@ -20,7 +20,7 @@ export default function RecommendPage(): JSX.Element {
   const [usedPrice, setUsedPrice] = useState(0);
   const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
   const router = useRouter();
-
+  const [token, setToken] = useState<string | null>(null);
   // 사용자 입력 폼 상태
   const [form, setForm] = useState({
     ageCode: "",
@@ -37,6 +37,17 @@ export default function RecommendPage(): JSX.Element {
     newPrice?: number;
     usedPrice?: number;
   }
+
+  useEffect(() => {
+    const raw = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("jwt="))
+      ?.split("=")[1];
+
+    if (raw) {
+      setToken(raw);
+    }
+  }, []);
 
   useEffect(() => {
     console.log("form 값이 변경되었습니다:", form);
@@ -74,6 +85,7 @@ export default function RecommendPage(): JSX.Element {
       const res = await fetch(apiUrl + "/api/gpt/recommend", {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           Accept: "text/event-stream",
         },
@@ -138,6 +150,11 @@ export default function RecommendPage(): JSX.Element {
     try {
       const response = await fetch(
         `${apiUrl}/api/gpt/get/model?sessionId=${encodeURIComponent(sessionId)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
 
       if (!response.ok) {
@@ -492,7 +509,7 @@ export default function RecommendPage(): JSX.Element {
                 }} // model 값을 명시적으로 넘김
                 className={styles.buttonPrimary}
               >
-                &quot;{model}&quot; 중고 매물 보러가기
+                &quot;{model}&quot; 보러가기
                 <FaSearch />
               </button>
             </div>
