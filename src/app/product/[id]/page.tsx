@@ -302,8 +302,14 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
             </div>
           </div>
         </div>
-
-        <p className={styles.contents}>{productData?.content}</p>
+        <div className={styles.contents}>
+          {productData?.content.split("\n").map((line, idx) => (
+            <span key={idx}>
+              {line}
+              <br />
+            </span>
+          ))}
+        </div>
       </div>
 
       <div className={styles.fixed_bottom_bar}>
