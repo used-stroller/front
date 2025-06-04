@@ -25,7 +25,6 @@ export default function RecommendPage(): JSX.Element {
   const [form, setForm] = useState({
     ageCode: "",
     twin: "no",
-    maxPriceNew: 0,
     maxPriceUsed: 0,
     weightKeywordList: [] as number[], // 중요 요소 최대 3개
     userText: "", // 기타 요청사항
@@ -212,7 +211,6 @@ export default function RecommendPage(): JSX.Element {
     setForm({
       ageCode: "",
       twin: "no",
-      maxPriceNew: 0,
       maxPriceUsed: 0,
       weightKeywordList: [],
       userText: "",
@@ -269,7 +267,7 @@ export default function RecommendPage(): JSX.Element {
           </div>
 
           {/* 예산 입력 개선 */}
-          <div className={styles.inputGroup}>
+          {/* <div className={styles.inputGroup}>
             <span className={styles.inputLabel}>
               신제품이라면 최대 얼마까지 괜찮으세요?
             </span>
@@ -288,7 +286,7 @@ export default function RecommendPage(): JSX.Element {
               }}
               placeholder="예: 1,500,000"
             />
-          </div>
+          </div> */}
 
           <div className={styles.inputGroup}>
             <span className={styles.inputLabel}>
@@ -316,11 +314,7 @@ export default function RecommendPage(): JSX.Element {
             onClick={() => {
               setStep(2);
             }}
-            disabled={
-              form.ageCode === null ||
-              form.maxPriceNew === 0 ||
-              form.maxPriceUsed === 0
-            }
+            disabled={form.ageCode === null || form.maxPriceUsed === 0}
           >
             다음
           </button>
