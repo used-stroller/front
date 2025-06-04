@@ -100,8 +100,29 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
     void fetchProductData();
   }, []);
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    setSelectedValue(event.target.value);
+  const handleChange = async (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ): Promise<void> => {
+    const selectedStatus = event.target.value; // 선택된 값
+
+    try {
+      await apiClient.post(
+        "/api/product/change/status",
+        {
+          productId: Number(id),
+          statusType: selectedStatus, // 선택값을 statusType으로 전달
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+
+      setSelectedValue(selectedStatus);
+      alert("변경되었습니다");
+    } catch (error) {
+      console.error("상태 변경 실패:", error);
+      alert("변경에 실패했습니다.");
+    }
   };
 
   function formatDate(date: string): string {
@@ -195,11 +216,14 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
         <select
           className={styles.customSelect}
           value={selectedValue}
-          onChange={handleChange}
+          onChange={(e) => {
+            handleChange(e).catch(console.error);
+          }}
+          disabled={userData?.accountId !== sellerId}
         >
-          <option value="selling">판매중</option>
-          <option value="reserved">예약중</option>
-          <option value="sold">판매완료</option>
+          <option value="Ongoing">판매중</option>
+          <option value="Reserved">예약중</option>
+          <option value="Closed">판매완료</option>
         </select>
       </div>
       <div className={styles.description_container}>
