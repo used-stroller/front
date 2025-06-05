@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 # Project Title
 
-중모차 front
+중모차 front 프로젝트
 
 ## Description
 
