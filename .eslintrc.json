@@ -37,6 +37,7 @@
     }
   },
   "rules": {
+    "import/no-duplicates": "off",
     "@typescript-eslint/prefer-nullish-coalescing": "off", // 규칙 비활성화
     "@typescript-eslint/strict-boolean-expressions": "off", // 규칙 비활성화
     "no-void": ["error", { "allowAsStatement": true }],

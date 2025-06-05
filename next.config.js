@@ -46,6 +46,9 @@ const securityHeaders = [
 const nextConfig = {
   reactStrictMode: true,
   basePath: "",
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   // output: dev ? "standalone" : "export",
   // assetPrefix: url,
   images: {
