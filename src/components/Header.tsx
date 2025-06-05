@@ -6,6 +6,7 @@ import Image from "next/image";
 import Menu from "@/components/Menu";
 import React, { type ChangeEvent, useEffect, useState } from "react";
 import { useFilter } from "@/context/FilterContext";
+import apiClient from "@/utils/apiClient";
 
 const Header: React.FC = () => {
   const { filter, handleFilter } = useFilter();
@@ -14,6 +15,7 @@ const Header: React.FC = () => {
   const handleKeyword = (ev: ChangeEvent<HTMLInputElement>): void => {
     setKeyword(ev.target.value);
   };
+  console.log("✅ baseURL:", apiClient.defaults.baseURL);
 
   const handleSearch = (): void => {
     handleFilter({
