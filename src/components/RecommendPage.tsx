@@ -83,12 +83,7 @@ const RecommendPage = (): ReactElement => {
       ))}
       {hasMore && (
         <div ref={elementRef} style={{ textAlign: "center" }}>
-          <Image
-            src="/images/loading.svg"
-            alt="loading"
-            width={50}
-            height={50}
-          />
+          <img src="/images/loading.svg" alt="loading" width={50} height={50} />
         </div>
       )}
     </>

@@ -123,7 +123,7 @@ const InfinityScroll = ({
       ))}
       {(hasMore || loading) && (
         <div ref={elementRef} style={{ textAlign: "center" }}>
-          <Image
+          <img
             src="./images/loading.svg"
             alt="loading"
             width={50}
