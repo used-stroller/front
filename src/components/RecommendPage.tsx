@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import Product from "@/components/Product";
 import { useFilter } from "@/context/FilterContext";
-import Image from "next/image";
 import { type Content } from "@/types";
 import { getRecommendProductList } from "@/utils/productUtils";
 

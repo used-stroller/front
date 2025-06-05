@@ -1,6 +1,5 @@
 "use client";
 import React, { type ReactElement } from "react";
-import Image from "next/image";
 
 export default function Loading(): ReactElement {
   return (

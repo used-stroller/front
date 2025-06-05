@@ -11,7 +11,6 @@ import React, {
 import Product from "@/components/Product";
 import { getLocation, getProductList } from "@/utils/productUtils";
 import { useFilter } from "@/context/FilterContext";
-import Image from "next/image";
 import { type Content, type DefaultRegionType } from "@/types";
 import useGeolocation from "@/hooks/useGeolocation";
 
