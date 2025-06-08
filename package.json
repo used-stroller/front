@@ -43,7 +43,7 @@
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
     "slick-carousel": "^1.8.1",
-    "socket.io-client": "^4.6.0",
+    "socket.io-client": "^2.4.0",
     "zod": "^3.23.8",
     "zustand": "^5.0.0"
   },

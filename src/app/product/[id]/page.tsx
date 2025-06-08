@@ -69,6 +69,33 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
     router.push("/");
   };
 
+  const handleChatClick = async (): Promise<void> => {
+    if (!userData?.accountId) {
+      alert("로그인 후 이용해주세요.");
+      return;
+    }
+    try {
+      const res = await apiClient.post(
+        "/api/chat/create",
+        {
+          userIds: [sellerId, userData?.accountId],
+          productId: Number(id),
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+      const roomId = res.data.roomId;
+      if (!roomId) {
+        throw new Error("채팅방 생성 실패");
+      }
+      router.push(`/chat/${roomId}?accountId=${userData.accountId}`);
+    } catch (error) {
+      console.error("채팅방 생성 오류", error);
+      alert("채팅방 생성에 실패했습니다.");
+    }
+  };
+
   useEffect(() => {
     const fetchProductData = async (): Promise<void> => {
       console.log(document.cookie);
@@ -352,7 +379,13 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
         <div style={{ fontSize: 20 }}>
           <FormattedPrice value={Number(productData?.price || 0)} />
         </div>
-        {/* <button className={styles.chat_button}>채팅하기</button> */}
+        <button
+          className={styles.chat_button}
+          // eslint-disable-next-line no-void
+          onClick={() => void handleChatClick()}
+        >
+          채팅하기
+        </button>
       </div>
     </div>
   );

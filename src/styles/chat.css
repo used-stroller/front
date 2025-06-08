@@ -30,18 +30,22 @@
 /* 각 메시지 */
 .message {
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  max-width: 70%;
 }
 
-/* 내가 보낸 메시지 */
+/* 내가 보낸 메시지는 오른쪽 정렬 */
 .my-message {
-  justify-content: flex-end; /* 오른쪽에 배치 */
+  align-self: flex-end;
+  text-align: right;
 }
 
-/* 상대방이 보낸 메시지 */
+/* 상대방 메시지는 왼쪽 정렬 */
 .other-message {
-  justify-content: flex-start; /* 왼쪽에 배치 */
+  align-self: flex-start;
+  text-align: left;
 }
+
 
 /* 프로필 사진 */
 .profile-image {
@@ -149,3 +153,4 @@
 .send-button:hover {
   background-color: #0056b3;
 }
+
