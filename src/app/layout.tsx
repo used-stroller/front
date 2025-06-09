@@ -9,6 +9,7 @@ import ClientSessionProvider from "@/components/ClientSessionProvider"; // ÌÅ¥Îù
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import KakaoInitializer from "@/components/KakaoInitializer";
+import BottomNav from "@/components/BottomNav";
 
 export const metadata: Metadata = {
   verification: {
@@ -61,6 +62,7 @@ export default async function RootLayout({
             <div className="main">
               <KakaoInitializer />
               {children}
+              <BottomNav />
               <Footer />
             </div>
           </FilterProvider>
