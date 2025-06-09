@@ -89,7 +89,7 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
       if (!roomId) {
         throw new Error("채팅방 생성 실패");
       }
-      router.push(`/chat/${roomId}?accountId=${userData.accountId}`);
+      router.push(`/chat/${roomId}`);
     } catch (error) {
       console.error("채팅방 생성 오류", error);
       alert("채팅방 생성에 실패했습니다.");

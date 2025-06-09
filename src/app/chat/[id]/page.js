@@ -5,51 +5,37 @@ import "@/styles/chat.css";
 import { useParams } from "next/navigation";
 import { Send } from "lucide-react";
 import apiClient from "@/utils/apiClient";
-import { useSearchParams } from "next/navigation";
 
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
-const socket = io("http://localhost:9092", {
-  transports: ["websocket", "polling"],
-  reconnection: false,
-}); // 백엔드 서버 주소
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function Chat() {
-  const searchParams = useSearchParams();
-  const accountId = searchParams.get("accountId");
-  const { id } = useParams(); // URL에서 채팅방 ID 추출출
-  const parts = typeof id === "string" ? id.split("_") : [];
-  // const productId = parts[0] ?? null;
-  const userIdList = parts.slice(1);
+  const { id } = useParams();
+  const roomId = id;
+
+  const socketRef = useRef(null);
+  const messageContainerRef = useRef(null);
+
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const roomId = id;
-  const messageContainerRef = useRef(null); // 스크롤을 위한 Ref 추가
-  const sender = String(accountId);
-  console.log("sender",sender);
-  const receiver = userIdList.find((id) => id !== sender);
-  console.log("receiver",receiver);
-  // 메시지가 변경될 때마다 스크롤을 최하단으로 이동
-  useEffect(() => {
-    if (messageContainerRef.current) {
-      messageContainerRef.current.scrollTop =
-        messageContainerRef.current.scrollHeight;
-    } else {
-      console.log("⚠️ messageContainerRef가 null입니다!");
-    }
-  }, [messages]);
+  const [sender, setSender] = useState("");
+  const [receiver, setReceiver] = useState("");
 
+  // ✅ 1. 소켓 연결 - 최초 1회
   useEffect(() => {
-    console.log("채팅방 참여자", userIdList);
+    socketRef.current = io("http://localhost:9092", {
+      transports: ["websocket", "polling"],
+      reconnection: false,
+    });
+
+    const socket = socketRef.current;
 
     socket.on("connect", () => {
-      console.log("소켓 연결 성공:", socket.id);
-      setIsConnected(true);
+      console.log("✅ 소켓 연결 성공:", socket.id);
     });
 
     socket.on("disconnect", (reason) => {
-      console.log("소켓 연결 끊어짐. 이유:", reason);
+      console.log("❌ 소켓 연결 해제:", reason);
     });
 
     return () => {
@@ -57,58 +43,74 @@ export default function Chat() {
     };
   }, []);
 
-  // 채팅방 입장 이벤트 전송
+  // ✅ 2. 채팅방 입장
   useEffect(() => {
+    const socket = socketRef.current;
+    if (!socket || !roomId) return;
+
     socket.emit("joinRoom", roomId);
 
     return () => {
-      socket.off("receiveMessage");
+      socket.off("receiveMessage"); // 중복 등록 방지
     };
   }, [roomId]);
 
+  // ✅ 3. 메시지 불러오기 및 실시간 수신
   useEffect(() => {
-    if (!roomId) return; // roomId가 없으면 실행하지 않음
+    if (!roomId) return;
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const fetchData = async () => {
       try {
         const { data } = await apiClient.get(
           `${apiUrl}/api/chat/history/${roomId}`,
         );
-        setMessages(data);
+        setMessages(data.chatMessages);
+        setSender(data.currentUserId);
+        setReceiver(data.receiverId);
       } catch (error) {
-        console.error("Fetch error:", error);
+        console.error("⚠️ 메시지 불러오기 실패:", error);
       }
     };
 
     void fetchData();
 
-    // 실시간 메시지 수신
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    const socket = socketRef.current;
+    if (!socket) return;
+
     const handleNewMessage = (message) => {
-      setMessages((prev) => [...prev, message]); // 새로운 메시지를 배열에 추가
+      setMessages((prev) => [...prev, message]);
     };
 
     socket.on("receiveMessage", handleNewMessage);
 
     return () => {
-      socket.off("receiveMessage");
+      socket.off("receiveMessage", handleNewMessage);
     };
-  }, [roomId]); // roomId가 변경될 때마다 실행
+  }, [roomId]);
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  // ✅ 4. 메시지 전송
   const sendMessage = () => {
-    if (message.trim()) {
-      const msgData = {
-        roomId,
-        senderId: sender, // ✅ 키 이름을 자바 필드에 맞게 수정
-        receiverId: receiver,
-        message,
-      };
-      socket.emit("sendMessage", msgData);
-      setMessage(""); // 메시지 입력창 초기화
-    }
+    const socket = socketRef.current;
+    if (!message.trim() || !socket) return;
+
+    const msgData = {
+      roomId,
+      senderId: sender,
+      receiverId: receiver,
+      message,
+    };
+
+    socket.emit("sendMessage", msgData);
+    setMessage("");
   };
+
+  // ✅ 5. 스크롤 하단 고정
+  useEffect(() => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop =
+        messageContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <div className="chat-container">
@@ -116,24 +118,25 @@ export default function Chat() {
         <h1>채팅방: {roomId}</h1>
       </div>
 
-<div className="message-container" ref={messageContainerRef}>
-  {messages.map((msg, index) => {
-    const isMyMessage = String(msg.senderId) === sender;
+      <div className="message-container" ref={messageContainerRef}>
+        {messages.map((msg, index) => {
+          const isMyMessage = String(msg.senderId) === sender;
 
-    return (
-      <div
-        key={index}
-        className={`message ${isMyMessage ? "my-message" : "other-message"}`}
-      >
-        <div className={`message-bubble ${isMyMessage ? "my-bubble" : "other-bubble"}`}>
-          <div className="message-text">{msg.message}</div>
-        </div>
-        <div className="message-time">{msg.timestamp}</div>
+          return (
+            <div
+              key={index}
+              className={`message ${isMyMessage ? "my-message" : "other-message"}`}
+            >
+              <div
+                className={`message-bubble ${isMyMessage ? "my-bubble" : "other-bubble"}`}
+              >
+                <div className="message-text">{msg.message}</div>
+              </div>
+              <div className="message-time">{msg.timestamp}</div>
+            </div>
+          );
+        })}
       </div>
-    );
-  })}
-</div>
-
 
       <div className="input-container">
         <input
