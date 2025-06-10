@@ -26,6 +26,7 @@ const navItems = [
   { href: "/mypage", label: "나의 당근", icon: <FaRegUser size={22} /> },
 ];
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function BottomNav() {
   const pathname = usePathname();
 

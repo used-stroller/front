@@ -59,13 +59,16 @@ export default function Chat() {
   useEffect(() => {
     if (!roomId) return;
 
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       try {
         const { data } = await apiClient.get(
           `${apiUrl}/api/chat/history/${roomId}`,
         );
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setMessages(data.chatMessages);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setSender(data.currentUserId);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setReceiver(data.receiverId);
       } catch (error) {
         console.error("⚠️ 메시지 불러오기 실패:", error);
@@ -77,6 +80,7 @@ export default function Chat() {
     const socket = socketRef.current;
     if (!socket) return;
 
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const handleNewMessage = (message) => {
       setMessages((prev) => [...prev, message]);
     };
@@ -89,7 +93,7 @@ export default function Chat() {
   }, [roomId]);
 
   // ✅ 4. 메시지 전송
-  const sendMessage = () => {
+  const sendMessage = (): void => {
     const socket = socketRef.current;
     if (!message.trim() || !socket) return;
 

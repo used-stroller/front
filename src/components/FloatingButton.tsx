@@ -23,7 +23,7 @@ const FloatingButton: React.FC = () => {
       onClick={moveToUpload}
       style={{
         position: "fixed",
-        bottom: "50px",
+        bottom: "100px",
         right: "20px",
         backgroundColor: "#665c8a",
         color: "white",
