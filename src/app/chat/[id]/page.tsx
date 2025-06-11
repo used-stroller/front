@@ -7,6 +7,7 @@ import { Send } from "lucide-react";
 import apiClient from "@/utils/apiClient";
 
 const socketUrl = process.env.NEXT_PUBLIC_SOCKET_API_URL;
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function Chat() {
