@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { Send } from "lucide-react";
 import apiClient from "@/utils/apiClient";
 
-const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
+const socketUrl = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function Chat() {
@@ -23,7 +23,7 @@ export default function Chat() {
 
   // ✅ 1. 소켓 연결 - 최초 1회
   useEffect(() => {
-    socketRef.current = io("http://localhost:9092", {
+    socketRef.current = io(socketUrl, {
       transports: ["websocket", "polling"],
       reconnection: false,
     });
