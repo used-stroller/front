@@ -39,6 +39,11 @@ export default function Chat() {
       console.log("❌ 소켓 연결 해제:", reason);
     });
 
+    // ✅ 연결 실패 로그 여기 추가!
+    socket.on("connect_error", (err) => {
+      console.error("❌ 연결 실패:", err.message || err);
+    });
+
     return () => {
       socket.disconnect();
     };
