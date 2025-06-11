@@ -24,7 +24,7 @@ export default function Chat() {
 
   // ✅ 1. 소켓 연결 - 최초 1회
   useEffect(() => {
-    socketRef.current = io(socketUrl, {
+    socketRef.current = io("http://182.228.21.172:9092", {
       transports: ["polling", "websocket"],
       reconnection: false,
     });
