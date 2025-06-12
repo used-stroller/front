@@ -11,8 +11,9 @@ const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function Chat() {
-  const { id } = useParams();
+  const { id, productTitle } = useParams();
   const roomId = id;
+  const title = productTitle;
 
   const socketRef = useRef(null);
   const messageContainerRef = useRef(null);
@@ -120,7 +121,7 @@ export default function Chat() {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <h1>채팅방: {roomId}</h1>
+        <h1>채팅방: {title}</h1>
       </div>
 
       <div className="message-container" ref={messageContainerRef}>
