@@ -34,19 +34,15 @@ export default function Menu(): ReactElement {
       <Link href={"policy/privacy"}>
         <h3>개인정보 처리방침</h3>
       </Link>
-      {isSession ? (
+      {/* {isSession ? (
         <>
-          {/* <form onSubmit={handleSubmit}>
-            <button type="submit">로그아웃</button>
-          </form> */}
           <Link href="/mypage">마이페이지</Link>
         </>
       ) : (
         <>
           <Link href="/signin">로그인</Link>
-          {/* <Link href="/signup">회원가입</Link> */}
         </>
-      )}
+      )} */}
     </div>
   );
 }

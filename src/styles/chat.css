@@ -46,7 +46,6 @@
   text-align: left;
 }
 
-
 /* 프로필 사진 */
 .profile-image {
   width: 40px;
@@ -153,4 +152,3 @@
 .send-button:hover {
   background-color: #0056b3;
 }
-

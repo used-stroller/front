@@ -23,7 +23,7 @@ const navItems = [
     icon: <IoChatbubbleEllipsesOutline size={24} />,
     protected: true, // JWT 검증 필요
   },
-  { href: "/mypage", label: "나의 당근", icon: <FaRegUser size={22} /> },
+  { href: "/mypage", label: "내 정보", icon: <FaRegUser size={22} /> },
 ];
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
