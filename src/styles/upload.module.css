@@ -110,7 +110,7 @@
   width: 100%;
   min-height: 150px;
   resize: none; /* 수동 크기 조절 불가 */
-  overflow: hidden; /* 내용이 넘칠 경우 스크롤바 숨기기 */
+  overflow-y: auto; /* 내용이 넘칠 경우 스크롤바 숨기기 */
   box-sizing: border-box;
   font-size: 16px;
   padding: 8px;

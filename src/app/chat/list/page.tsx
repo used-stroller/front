@@ -13,15 +13,17 @@ interface ChatRoom {
   lastMessage: string;
   lastMessageTime: string;
   unreadCount: number;
+  productTitle: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function ChatList() {
   const router = useRouter();
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
 
-  const handleClick = (id: string): void => {
+  const handleClick = (id: string, productTitle: string): void => {
     console.log("이동할 방 ID:", id);
-    router.push(`/chat/${id}`);
+    router.push(`/chat/${id}?productTitle=${productTitle}`);
   };
 
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function ChatList() {
           tabIndex={0}
           className={styles.chatItem}
           onClick={() => {
-            handleClick(room.roomId);
+            handleClick(room.roomId, room.productTitle);
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {

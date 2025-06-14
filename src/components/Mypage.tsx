@@ -7,6 +7,7 @@ import { type UserData } from "@/types";
 import Image from "next/image";
 import apiClient from "@/utils/apiClient";
 import Loading from "@/app/loading";
+import Link from "next/link";
 
 export const Mypage = (): ReactElement => {
   const router = useRouter();
@@ -91,41 +92,45 @@ export const Mypage = (): ReactElement => {
       <div className={styles.trade_div}>
         <h3 className={styles.trade_h3}>나의 거래</h3>
         <ul className={styles.list}>
-          <li className={styles.listItem}>
-            <Image
-              src="../images/favorite.png" // 실제 이미지 경로로 변경
-              alt="favorite"
-              width={30}
-              height={30}
-              className={styles.item_img}
-            />
-            <span>관심목록(Coming soon)</span>
-            <Image
-              src="../images/arrow_right.png"
-              alt="right_arrow"
-              width={30}
-              height={30}
-              className={styles.arrow_right}
-            />
-          </li>
-          <li className={styles.listItem}>
-            <Image
-              src="../images/receipt.png"
-              alt="favorite"
-              width={30}
-              height={30}
-              className={styles.item_img}
-            />
-            <span>판매내역(Coming soon)</span>
-            <Image
-              src="../images/arrow_right.png"
-              alt="right_arrow"
-              width={30}
-              height={30}
-              className={styles.arrow_right}
-            />
-          </li>
-          <li className={styles.listItem}>
+          <Link href={"/mypage/favorite"}>
+            <li className={styles.listItem}>
+              <Image
+                src="../images/favorite.png" // 실제 이미지 경로로 변경
+                alt="favorite"
+                width={30}
+                height={30}
+                className={styles.item_img}
+              />
+              <span>관심목록</span>
+              <Image
+                src="../images/arrow_right.png"
+                alt="right_arrow"
+                width={30}
+                height={30}
+                className={styles.arrow_right}
+              />
+            </li>
+          </Link>
+          <Link href={"/mypage/sell-list"}>
+            <li className={styles.listItem}>
+              <Image
+                src="../images/receipt.png"
+                alt="favorite"
+                width={30}
+                height={30}
+                className={styles.item_img}
+              />
+              <span>판매내역</span>
+              <Image
+                src="../images/arrow_right.png"
+                alt="right_arrow"
+                width={30}
+                height={30}
+                className={styles.arrow_right}
+              />
+            </li>
+          </Link>
+          {/* <li className={styles.listItem}>
             <Image
               src="../images/local_mall.png" // 실제 이미지 경로로 변경
               alt="favorite"
@@ -141,7 +146,7 @@ export const Mypage = (): ReactElement => {
               height={30}
               className={styles.arrow_right}
             />
-          </li>
+          </li> */}
         </ul>
       </div>
 
@@ -171,7 +176,7 @@ export const Mypage = (): ReactElement => {
               handleNavigation("https://band.us/band/97192384");
             }}
           >
-            <Image
+            {/* <Image
               src="../images/naverband.png"
               alt="네이버밴드"
               width={24}
@@ -179,11 +184,13 @@ export const Mypage = (): ReactElement => {
               className={styles.community_img}
             />
             <span>중모차</span>
+                   */}
           </button>
+
           <button
             className={styles.listItem}
             onClick={() => {
-              handleNavigation("https://open.kakao.com/o/sBPnvn2g");
+              handleNavigation("https://open.kakao.com/o/gERvvn2g");
             }}
           >
             <Image

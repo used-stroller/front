@@ -267,90 +267,82 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
         <div className={uploadCss.option_container}>
           <p className={uploadCss.option_p}>구성품</p>
           <div className={uploadCss.option_table}>
-            <div className={uploadCss.option}>
-              <Image
-                src={
-                  selectedOptions.includes(1)
-                    ? "/images/cupholder_on.svg"
-                    : "/images/cupholder_off.svg"
-                }
-                className={uploadCss.image}
-                alt={"컵홀더"}
-                width={50}
-                height={50}
-              />
-              <p>컵홀더</p>
-            </div>
-            <div className={uploadCss.option}>
-              <Image
-                src={
-                  selectedOptions.includes(2)
-                    ? "/images/bassinet_on.svg"
-                    : "/images/bassinet_off.svg"
-                }
-                className={uploadCss.image}
-                alt={"베시넷"}
-                width={50}
-                height={50}
-              />
-              <p>베시넷</p>
-            </div>
-            <div className={uploadCss.option}>
-              <Image
-                src={
-                  selectedOptions.includes(3)
-                    ? "/images/footmuff_on.svg"
-                    : "/images/footmuff_off.svg"
-                }
-                className={uploadCss.image}
-                alt={"풋머프"}
-                width={50}
-                height={50}
-              />
-              <p>풋머프</p>
-            </div>
-            <div className={uploadCss.option}>
-              <Image
-                src={
-                  selectedOptions.includes(4)
-                    ? "/images/moskito_on.svg"
-                    : "/images/moskito_off.svg"
-                }
-                className={uploadCss.image}
-                alt={"모기장"}
-                width={50}
-                height={50}
-              />
-              <p>모기장</p>
-            </div>
-            <div className={uploadCss.option}>
-              <Image
-                src={
-                  selectedOptions.includes(5)
-                    ? "/images/raincover_on.svg"
-                    : "/images/raincover_off.svg"
-                }
-                className={uploadCss.image}
-                alt={"레인커버"}
-                width={50}
-                height={50}
-              />
-              <p>레인커버</p>
-            </div>
-            <div className={uploadCss.option}>
-              <Image
-                src={
-                  selectedOptions.includes(6)
-                    ? "/images/windcover_on.svg"
-                    : "/images/windcover_off.svg"
-                }
-                className={uploadCss.image}
-                alt={"방풍커버"}
-                width={50}
-                height={50}
-              />
-              <p>방풍커버</p>
-            </div>
+            {selectedOptions.includes(1) && (
+              <div className={uploadCss.option}>
+                <Image
+                  src="/images/cupholder_on.svg"
+                  className={uploadCss.image}
+                  alt={"컵홀더"}
+                  width={50}
+                  height={50}
+                />
+                <p>컵홀더</p>
+              </div>
+            )}
+
+            {selectedOptions.includes(2) && (
+              <div className={uploadCss.option}>
+                <Image
+                  src="/images/bassinet_on.svg"
+                  className={uploadCss.image}
+                  alt="베시넷"
+                  width={50}
+                  height={50}
+                />
+                <p>베시넷</p>
+              </div>
+            )}
+            {selectedOptions.includes(3) && (
+              <div className={uploadCss.option}>
+                <Image
+                  src="/images/footmuff_on.svg"
+                  className={uploadCss.image}
+                  alt="풋머프"
+                  width={50}
+                  height={50}
+                />
+                <p>풋머프</p>
+              </div>
+            )}
+
+            {selectedOptions.includes(4) && (
+              <div className={uploadCss.option}>
+                <Image
+                  src="/images/moskito_on.svg"
+                  className={uploadCss.image}
+                  alt="모기장"
+                  width={50}
+                  height={50}
+                />
+                <p>모기장</p>
+              </div>
+            )}
+
+            {selectedOptions.includes(5) && (
+              <div className={uploadCss.option}>
+                <Image
+                  src="/images/raincover_on.svg"
+                  className={uploadCss.image}
+                  alt="레인커버"
+                  width={50}
+                  height={50}
+                />
+                <p>레인커버</p>
+              </div>
+            )}
+
+            {selectedOptions.includes(6) && (
+              <div className={uploadCss.option}>
+                <Image
+                  src="/images/windcover_on.svg"
+                  className={uploadCss.image}
+                  alt="방풍커버"
+                  width={50}
+                  height={50}
+                />
+                <p>방풍커버</p>
+              </div>
+            )}
           </div>
         </div>
         <div className={styles.contents}>
