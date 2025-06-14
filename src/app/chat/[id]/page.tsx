@@ -5,15 +5,17 @@ import "@/styles/chat.css";
 import { useParams } from "next/navigation";
 import { Send } from "lucide-react";
 import apiClient from "@/utils/apiClient";
+import { useSearchParams } from "next/navigation";
 
 const socketUrl = process.env.NEXT_PUBLIC_SOCKET_API_URL;
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function Chat() {
-  const { id, productTitle } = useParams();
+  const searchParams = useSearchParams();
+  const productTitle = searchParams.get("productTitle"); // 디코딩된 문자열
+  const { id } = useParams();
   const roomId = id;
-  const title = productTitle;
 
   const socketRef = useRef(null);
   const messageContainerRef = useRef(null);
@@ -121,7 +123,7 @@ export default function Chat() {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <h1>채팅방: {title}</h1>
+        <h1>{productTitle}</h1>
       </div>
 
       <div className="message-container" ref={messageContainerRef}>

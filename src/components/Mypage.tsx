@@ -120,7 +120,7 @@ export const Mypage = (): ReactElement => {
                 height={30}
                 className={styles.item_img}
               />
-              <span>판매내역(Coming soon)</span>
+              <span>판매내역</span>
               <Image
                 src="../images/arrow_right.png"
                 alt="right_arrow"
@@ -176,7 +176,7 @@ export const Mypage = (): ReactElement => {
               handleNavigation("https://band.us/band/97192384");
             }}
           >
-            <Image
+            {/* <Image
               src="../images/naverband.png"
               alt="네이버밴드"
               width={24}
@@ -184,11 +184,13 @@ export const Mypage = (): ReactElement => {
               className={styles.community_img}
             />
             <span>중모차</span>
+                   */}
           </button>
+
           <button
             className={styles.listItem}
             onClick={() => {
-              handleNavigation("https://open.kakao.com/o/sBPnvn2g");
+              handleNavigation("https://open.kakao.com/o/gERvvn2g");
             }}
           >
             <Image

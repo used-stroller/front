@@ -55,6 +55,13 @@ export default function Modify({
   }
 
   useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [text]);
+
+  useEffect(() => {
     const fetchProductData = async (): Promise<void> => {
       try {
         const response = await apiClient.get<ProductResponse>(
@@ -112,11 +119,6 @@ export default function Modify({
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
-    // 입력 내용에 맞게 텍스트 박스의 높이 조절
-    if (textareaRef.current != null) {
-      textareaRef.current.style.height = "auto"; // 높이 초기화
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 내용에 맞춰 높이 조정
-    }
   };
 
   const submit = (): void => {

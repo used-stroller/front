@@ -62,8 +62,8 @@ export default function SourceImage({
     case "JUNGMOCHA":
       return (
         <Image
-          src="./images/jungmocha_icon.png"
-          alt="naver_shopping_logo"
+          src="/images/jungmocha_icon.png"
+          alt="jungmocha_logo"
           className={styles.sourceImg}
           width={25}
           height={25}

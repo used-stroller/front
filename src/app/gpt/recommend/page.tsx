@@ -428,7 +428,7 @@ export default function RecommendPage(): JSX.Element {
             disabled={loading}
             className={styles.buttonPrimary}
           >
-            {loading ? "추천 중..." : "AI 추천 다시 받기"}
+            {loading ? "AI가 머리를 싸매고 고민 중..." : "AI 추천 다시 받기"}
           </button>
 
           {/* 결과가 있고 로딩 중이 아닐 때만 '매물 보러가기' 버튼 표시 */}
