@@ -38,6 +38,7 @@ export const PERIOD_LIST: Value[] = [
 
 export const SOURCE_TYPE_LIST: StringValue[] = [
   { key: "ALL", value: "ALL" },
+  { key: "중모차", value: "JUNGMOCHA" },
   { key: "당근", value: "CARROT" },
   { key: "번개장터", value: "BUNJANG" },
   { key: "세컨웨어", value: "SECOND" },
