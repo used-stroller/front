@@ -79,6 +79,7 @@ interface Model {
   name: string;
   brand: string;
   price: string;
+  newPrice: string;
 }
 
 interface Sort {
