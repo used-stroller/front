@@ -10,6 +10,17 @@ export default function FCMNotificationPrompt(): ReactElement {
   const [hasRequested, setHasRequested] = useState(false);
 
   useEffect(() => {
+    // ✅ 서비스워커 등록
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/firebase-messaging-sw.js")
+        .then((reg) => {
+          console.log("✅ SW 등록 성공", reg);
+        })
+        .catch((err) => {
+          console.error("❌ SW 등록 실패", err);
+        });
+    }
     // 3초 뒤 안내창 노출
     const timer = setTimeout(() => {
       if (Notification.permission === "default") {
@@ -73,7 +84,7 @@ export default function FCMNotificationPrompt(): ReactElement {
 // 스타일 간단 예시
 const promptStyle: CSSProperties = {
   position: "fixed",
-  bottom: "20px",
+  bottom: "100px",
   right: "20px",
   padding: "16px",
   backgroundColor: "#fff",

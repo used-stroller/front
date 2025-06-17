@@ -1,6 +1,11 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import {
+  getMessaging,
+  getToken,
+  type Messaging,
+  onMessage,
+} from "firebase/messaging";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -18,6 +23,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+// messaging은 null로 기본값 설정
+let messaging: Messaging | null = null;
+
+if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+  messaging = getMessaging(app);
+}
 
 export { messaging, getToken, onMessage };
