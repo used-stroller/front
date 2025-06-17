@@ -10,6 +10,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import KakaoInitializer from "@/components/KakaoInitializer";
 import ConditionalBottomNav from "@/components/ConditionalBottomNav";
+import FCMNotificationPrompt from "@/components/FcmPrompt";
 
 export const metadata: Metadata = {
   verification: {
@@ -60,6 +61,7 @@ export default async function RootLayout({
           <GoogleAnalytics gaId={gaId} />
           <FilterProvider>
             <div className="main">
+              <FCMNotificationPrompt />
               <KakaoInitializer />
               {children}
               <ConditionalBottomNav />
