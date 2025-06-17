@@ -120,11 +120,6 @@ interface ResultType {
   structure: StructureType;
 }
 
-interface DefaultRegionType {
-  fixedAddress: string;
-  detailAddress: string;
-}
-
 interface MyUserType {
   email?: string;
   password?: string;

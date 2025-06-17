@@ -9,10 +9,9 @@ import React, {
   useState,
 } from "react";
 import Product from "@/components/Product";
-import { getLocation, getProductList } from "@/utils/productUtils";
+import { getProductList } from "@/utils/productUtils";
 import { useFilter } from "@/context/FilterContext";
-import { type Content, type DefaultRegionType } from "@/types";
-import useGeolocation from "@/hooks/useGeolocation";
+import { type Content } from "@/types";
 
 const InfinityScroll = ({
   setResultCount,
@@ -23,33 +22,11 @@ const InfinityScroll = ({
   const [products, setProducts] = useState<Content[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const elementRef = useRef<HTMLDivElement | null>(null);
-  const { location, loading } = useGeolocation();
-  const [defaultRegion, setDefaultRegion] = useState<DefaultRegionType>({
-    fixedAddress: "",
-    detailAddress: "",
-  });
-  const [locationFetched, setLocationFetched] = useState(false);
-
-  useEffect(() => {
-    const fetchLocations = async (): Promise<void> => {
-      if (location?.longitude != null && location?.latitude != null) {
-        const locations = await getLocation(
-          location.longitude,
-          location.latitude,
-        );
-        setDefaultRegion(locations);
-        setLocationFetched(true);
-      } else {
-        setLocationFetched(false);
-      }
-    };
-    void fetchLocations();
-  }, [location]);
 
   const fetchMoreItems = useCallback((): void => {
     // if (isMobile() && !locationFetched) return;
 
-    getProductList(filter, defaultRegion)
+    getProductList(filter)
       .then((response) => {
         setResultCount(response.totalElements);
         if (response.content.length === 0) {
@@ -67,7 +44,7 @@ const InfinityScroll = ({
       .catch((error) => {
         console.error("error: ", error);
       });
-  }, [filter, locationFetched, defaultRegion]);
+  }, [filter]);
 
   // callback 함수 정의
   const onIntersection = useCallback(
@@ -120,7 +97,7 @@ const InfinityScroll = ({
       {products?.map((product, index) => (
         <Product content={product} key={index} />
       ))}
-      {(hasMore || loading) && (
+      {hasMore && (
         <div ref={elementRef} style={{ textAlign: "center" }}>
           <img
             src="./images/loading.svg"
