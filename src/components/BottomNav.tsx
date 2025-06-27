@@ -7,7 +7,7 @@ import { HiHome } from "react-icons/hi";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { IoMdAddCircle } from "react-icons/io";
 import { getCookie } from "@/utils/cookie";
-import { FaRegUser } from "react-icons/fa";
+import { FaBabyCarriage, FaRegUser } from "react-icons/fa";
 
 const navItems = [
   { href: "/", label: "홈", icon: <HiHome size={24} /> },
@@ -15,6 +15,12 @@ const navItems = [
     href: "/upload-product", // 무조건 여기에 이동할 경로 명시
     label: "상품등록",
     icon: <IoMdAddCircle size={26} />,
+    protected: true, // JWT 검증 필요
+  },
+  {
+    href: "/rent/list",
+    label: "유모차 대여",
+    icon: <FaBabyCarriage size={24} />,
     protected: true, // JWT 검증 필요
   },
   {
