@@ -1,0 +1,118 @@
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.tabButton {
+  border: none;
+  background-color: #fff;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tabButton:hover {
+  background-color: #fceaea;
+}
+
+.active {
+  background-color: #ffe5e5;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: sans-serif;
+  background-color: white;
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 12px;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  border: none;
+  background-color: #fff;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tabs .active {
+  background-color: #ffe5e5;
+  font-weight: bold;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  gap: 16px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.image {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+}
+
+.info {
+  flex: 1;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.button {
+  background-color: #444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.buttonDisabled {
+  background-color: #eee;
+  color: #999;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
