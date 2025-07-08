@@ -5,14 +5,6 @@
   font-family: sans-serif;
 }
 
-.imageWrapper {
-  position: relative;
-  width: 100%;
-  padding-top: 100%; /* 1:1 비율 */
-  overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 16px;
-}
 
 .mainImage {
   position: absolute;
@@ -35,8 +27,9 @@
 }
 
 .productTitle {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 500;
+  color:#2C3340;
   margin-bottom: 6px;
 }
 
@@ -50,6 +43,7 @@
 .price {
   font-size: 20px;
   font-weight: bold;
+  color: #FF91B0;
   margin-bottom: 8px;
 }
 
@@ -57,10 +51,11 @@
   display: inline-block;
   background-color: #e6f0ff;
   color: #3366cc;
-  font-size: 12px;
+  font-size: 13px;
   padding: 4px 10px;
   border-radius: 20px;
   margin-bottom: 24px;
+  margin-right: 7px;
 }
 
 .bottomBar {
@@ -97,4 +92,8 @@
 .dark {
   background-color: #000;
   color: #fff;
+}
+
+.description_image_container {
+  margin-top: 100px;
 }

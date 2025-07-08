@@ -1,113 +1,86 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 import styles from "@/styles/rental.module.css";
+import { RentalData } from "@/types";
+import apiClient from "@/utils/apiClient";
 
-const allStrollers = [
-  {
-    id: 1,
-    brand: '부가부 폭스3',
-    name: '부가부 폭스3',
-    color: '미스트화이트',
-    condition: '상',
-    price: 250000,
-    status: 'available',
-    image: '/images/stroller1.png',
-  },
-  {
-    id: 2,
-    brand: '부가부 폭스3',
-    name: '부가부 폭스3',
-    color: '블랙',
-    condition: '중',
-    price: 240000,
-    status: 'soldout',
-    image: '/images/stroller2.png',
-  },
-  {
-    id: 3,
-    brand: '부가부 폭스3',
-    name: '부가부 폭스3',
-    color: null,
-    condition: '중',
-    price: 240000,
-    status: 'soldout',
-    image: '/images/stroller3.png',
-  },
-  {
-    id: 4,
-    brand: '스토케 엑스',
-    name: '스토케 엑스',
-    color: '라이트그레이',
-    condition: '상',
-    price: 270000,
-    status: 'available',
-    image: '/images/stroller4.png',
-  },
-  {
-    id: 5,
-    brand: '싸이벡스 프리암',
-    name: '싸이벡스 프리암',
-    color: '로즈골드',
-    condition: '중',
-    price: 260000,
-    status: 'available',
-    image: '/images/stroller5.png',
-  },
+const tabs = [
+  { label: "디럭스", type: "DELUXE" },
+  { label: "절충형", type: "CONVERTIBLE" },
+  { label: "휴대형", type: "HANDY" },
 ];
 
-const tabs = ['스토케 엑스', '부가부 폭스3', '싸이벡스 프리암'];
-
 export default function RentalPage() {
-  const [selectedTab, setSelectedTab] = useState('부가부 폭스3');
+  const [rentalData, setRentalData] = useState<RentalData[]>([]);
+  const [selectedTab, setSelectedTab] = useState("DELUXE");
 
-  const filteredStrollers = allStrollers.filter(
-    (item) => item.brand === selectedTab
+  const filteredStrollers = rentalData.filter(
+    (item) => item.strollerType === selectedTab,
   );
+
+  const moveToDetail = (id: number): void => {
+    window.location.href = "/rental/" + id;
+  };
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const { data } = await apiClient.get("/api/rental/list");
+        console.log("data", data.data.contents);
+        setRentalData(data.data.contents);
+      } catch (error) {
+        console.error("⚠️ 메시지 불러오기 실패:", error);
+      }
+    };
+
+    void fetchData();
+  }, []);
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>디럭스 유모차 대여</h1>
-      <p className={styles.subtitle}>DELUXE STROLLER RENTAL</p>
+      <h1 className={styles.title}>프리미엄 유모차 대여</h1>
+      <p className={styles.subtitle}>PREMIUM STROLLER RENTAL</p>
 
       <div className={styles.tabs}>
         {tabs.map((tab) => (
           <button
-            key={tab}
+            key={tab.type}
             className={`${styles.tabButton} ${
-              tab === selectedTab ? styles.active : ''
+              tab.type === selectedTab ? styles.active : ""
             }`}
-            onClick={() => setSelectedTab(tab)}
+            onClick={() => setSelectedTab(tab.type)}
           >
-            {tab}
+            {tab.label}
           </button>
         ))}
       </div>
 
       <div className={styles.cardList}>
         {filteredStrollers.map((stroller) => (
-          <div key={stroller.id} className={styles.card}>
+          <div key={stroller.id} className={styles.card}  onClick={() => moveToDetail(stroller.id)}>
             <img
-              src={stroller.image}
-              alt={stroller.name}
+              src={stroller.src}
+              alt={stroller.productName}
               className={styles.image}
             />
             <div className={styles.info}>
-              <p className={styles.name}>{stroller.name}</p>
+              <p className={styles.name}>{stroller.productName}</p>
               {stroller.color && <p>색상: {stroller.color}</p>}
-              <p>상태: {stroller.condition}</p>
+              <p>상태: {stroller.grade}</p>
               <p className={styles.price}>
-                {stroller.price.toLocaleString()}원
+                {stroller.rentalPrice.toLocaleString()}원
               </p>
               <button
                 className={
-                  stroller.status === 'available'
+                  stroller.rentable === true
                     ? styles.button
                     : styles.buttonDisabled
                 }
-                disabled={stroller.status !== 'available'}
+                onClick={() => moveToDetail(stroller.id)} // ✅ 클릭될 때만 실행됨}
+                disabled={stroller.rentable !== true}
               >
-                {stroller.status === 'available' ? '대여 가능' : 'SOLD OUT'}
+                {stroller.rentable === true ? "대여 가능" : "대여중"}
               </button>
             </div>
           </div>

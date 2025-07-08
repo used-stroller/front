@@ -156,6 +156,31 @@ interface imageObj {
   orderSeq: number;
 }
 
+interface RentalData {
+  id: number;
+  code: string;
+  productName: string;
+  grade: string;
+  src: string;
+  color: string;
+  rentalPrice: number;
+  isRentable: boolean;
+  productionDate: string;
+  description: string;
+  descriptionImage: string;
+  rentalImages: RentalImage[];
+  strollerType: string;
+  weight: number;
+  size: string;
+}
+
+interface RentalImage {
+  id: number;
+  src: string;
+  rentalId: number;
+  orderSeq: number;
+}
+
 export type {
   UserResponse,
   MyUserType,
@@ -183,4 +208,6 @@ export type {
   image,
   imageObj,
   userData,
+  RentalData,
+  RentalImage,
 };

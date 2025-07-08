@@ -21,7 +21,7 @@ const navItems = [
     href: "/rental/list",
     label: "유모차 대여",
     icon: <FaBabyCarriage size={24} />,
-    protected: true, // JWT 검증 필요
+    protected: false, // JWT 검증 필요
   },
   {
     href: "/chat/list",
