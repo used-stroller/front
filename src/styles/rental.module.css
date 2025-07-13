@@ -71,21 +71,24 @@
 }
 
 .card {
-  display: flex;
-  gap: 16px;
   border: 1px solid #ccc;
   padding: 12px;
   border-radius: 8px;
 }
 
 .image {
-  width: 100px;
+  width: 150px;
   height: auto;
   object-fit: contain;
 }
 
 .info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex: 1;
+  font-size: 15px;
+  height: 200px; /* 이미지와 같은 높이로 고정 */
 }
 
 .name {
@@ -107,12 +110,27 @@
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
+  align-self: center; /* 수평 중앙 정렬 */
+  margin-top: auto; /* 가능한 아래로 밀기 */
+  width: 100%;
 }
 
 .buttonDisabled {
+  width: 100%;
   background-color: #eee;
   color: #999;
   border: none;
   padding: 6px 12px;
   border-radius: 6px;
+  align-self: center; /* 수평 중앙 정렬 */
+  margin-top: auto; /* 가능한 아래로 밀기 */
+}
+
+.product_detail_info {
+  display: flex;
+  gap: 15px;
+}
+
+.rental_period {
+  font-size: 10px;
 }

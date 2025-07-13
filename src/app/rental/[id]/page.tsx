@@ -3,10 +3,11 @@
 import ImageSlider from "@/components/ImageSlider";
 import KakaoFloatingButton from "@/components/KakaoFloatingButton";
 import styles from "@/styles/rentalDetail.module.css";
-import { RentalData } from '@/types';
+import { RentalData } from "@/types";
 import apiClient from "@/utils/apiClient";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FaBabyCarriage } from "react-icons/fa";
 
 export default function RentalDetailPage() {
   const params = useParams();
@@ -44,24 +45,30 @@ export default function RentalDetailPage() {
       </div>
 
       {/* 상품정보 */}
-      <h1 className={styles.productTitle}>
-        {rentalData?.productName}
-      </h1>
-      <div className={styles.price}>{rentalData?.rentalPrice.toLocaleString()}원</div>
-      <div >
+      <h1 className={styles.productTitle}>{rentalData?.productName}</h1>
+      <div className={styles.price}>
+        <span>{rentalData?.rentalPrice.toLocaleString()}원</span>
+        <span className={styles.amount_month}>
+          (
+          {rentalData
+            ? Math.round(rentalData.rentalPrice / 3).toLocaleString()
+            : "-"}
+          원/월)
+        </span>
+      </div>
+      <div>
         <span className={styles.badge}>{rentalData?.color}</span>
         <span className={styles.badge}>{rentalData?.grade}</span>
         <span className={styles.badge}>무게{rentalData?.weight}kg</span>
-        <span className={styles.badge}>{rentalData?.size}cm</span>                      
+        <span className={styles.badge}>{rentalData?.size}cm</span>
       </div>
       <div>
-          {rentalData?.description.split("\n").map((line, idx) => (
-            <span key={idx}>
-              {line}
-              <br />
-            </span>
-          ))}
-
+        {rentalData?.description.split("\n").map((line, idx) => (
+          <span key={idx}>
+            {line}
+            <br />
+          </span>
+        ))}
       </div>
 
       {/* 하단 버튼 */}
@@ -73,7 +80,24 @@ export default function RentalDetailPage() {
         </div>
       </div> */}
       <div className={styles.description_image_container}>
-        <img className="description_image" src="https://jungmocha.co.kr/image/rental/test1.jpg"/>
+        <img className="description_image" src="/images/product_detail.jpg" />
+        <img className="description_image" src="/images/wheel.gif" />
+      </div>
+
+      <div className={styles.wrapper}>
+        <div className={styles.titleRow}>
+          <FaBabyCarriage className={styles.icon} />
+          <span className={styles.title}>제품 상세 사진(실제)</span>
+        </div>
+        <hr className={styles.underline} />
+      </div>
+
+      <div>
+        {rentalData?.rentalImages?.map((img, index) => (
+          <div key={index} className={styles.detail_images}>
+            <img src={process.env.NEXT_PUBLIC_BASE_URL + img.src} />
+          </div>
+        ))}
       </div>
       <KakaoFloatingButton></KakaoFloatingButton>
     </div>

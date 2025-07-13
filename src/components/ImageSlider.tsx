@@ -1,40 +1,56 @@
 "use client";
 
 import React from "react";
-import Slider, { type Settings } from "react-slick"; // react-slick의 Settings 타입 가져오기
+import Slider, { type Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 interface ImageSliderProps {
-  images: string[]; // 이미지 경로 배열
-  settings?: Settings; // react-slick 설정 옵션
+  images: string[];
+  settings?: Settings;
 }
 
 const ImageSlider: React.FC<ImageSliderProps> = ({ images, settings }) => {
   const defaultSettings: Settings = {
-    dots: true, // 하단 점 표시
-    infinite: true, // 무한 반복
-    speed: 500, // 슬라이드 전환 속도
-    slidesToShow: 1, // 한 번에 보여줄 슬라이드 개수
-    slidesToScroll: 1, // 한 번에 넘길 슬라이드 개수
-    adaptiveHeight: false, // 슬라이드 높이를 자동 조정
-    ...settings, // 전달된 설정으로 기본 설정 덮어쓰기
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    adaptiveHeight: false,
+    ...settings,
   };
 
   return (
     <div style={{ width: "100%", margin: "0 auto", paddingBottom: "30px" }}>
       <Slider {...defaultSettings}>
         {images.map((src, index) => (
-          <div key={index}>
-            <img
-              src={process.env.NEXT_PUBLIC_BASE_URL + src}
-              alt={`Slide ${index + 1}`}
+          <div
+            key={index}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <div
               style={{
                 width: "100%",
-                height: "auto",
+                height: "400px",
+                backgroundColor: "#fff",
+                display: "flex",
+                alignItems: "center", // 세로 가운데 정렬
+                justifyContent: "center", // 가로 가운데 정렬
                 borderRadius: "10px",
+                overflow: "hidden",
               }}
-            />
+            >
+              <img
+                src={process.env.NEXT_PUBLIC_BASE_URL + src}
+                alt={`Slide ${index + 1}`}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  objectFit: "contain", // 비율 유지하며 잘리지 않게
+                }}
+              />
+            </div>
           </div>
         ))}
       </Slider>

@@ -58,30 +58,49 @@ export default function RentalPage() {
 
       <div className={styles.cardList}>
         {filteredStrollers.map((stroller) => (
-          <div key={stroller.id} className={styles.card}  onClick={() => moveToDetail(stroller.id)}>
-            <img
-              src={stroller.src}
-              alt={stroller.productName}
-              className={styles.image}
-            />
-            <div className={styles.info}>
-              <p className={styles.name}>{stroller.productName}</p>
-              {stroller.color && <p>색상: {stroller.color}</p>}
-              <p>상태: {stroller.grade}</p>
-              <p className={styles.price}>
-                {stroller.rentalPrice.toLocaleString()}원
-              </p>
-              <button
-                className={
-                  stroller.rentable === true
-                    ? styles.button
-                    : styles.buttonDisabled
-                }
-                onClick={() => moveToDetail(stroller.id)} // ✅ 클릭될 때만 실행됨}
-                disabled={stroller.rentable !== true}
-              >
-                {stroller.rentable === true ? "대여 가능" : "대여중"}
-              </button>
+          <div
+            key={stroller.id}
+            className={styles.card}
+            onClick={() => moveToDetail(stroller.id)}
+          >
+            <p className={styles.name}>{stroller.productName}</p>
+            <div className={styles.product_detail_info}>
+              <img
+                src={process.env.NEXT_PUBLIC_BASE_URL + stroller.src}
+                alt={stroller.productName}
+                className={styles.image}
+              />
+              <div className={styles.info}>
+                {stroller.color && <p>색상: {stroller.color}</p>}
+                <p>상태: {stroller.grade}</p>
+                <p className={styles.price}>
+                  {stroller.rentalPrice.toLocaleString()}원
+                </p>
+
+                <button
+                  className={
+                    stroller.rentable === true
+                      ? styles.button
+                      : styles.buttonDisabled
+                  }
+                  onClick={() => moveToDetail(stroller.id)} // ✅ 클릭될 때만 실행됨}
+                  disabled={stroller.rentable !== true}
+                >
+                  {stroller.rentable === true ? "대여 가능" : "대여중"}
+                </button>
+                <div>
+                  {stroller.rentable === false ? (
+                    <>
+                      <span className={styles.rental_period}>
+                        {stroller.rentalStart}~
+                      </span>
+                      <span className={styles.rental_period}>
+                        {stroller.rentalEnd}
+                      </span>
+                    </>
+                  ) : null}
+                </div>
+              </div>
             </div>
           </div>
         ))}

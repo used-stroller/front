@@ -5,7 +5,6 @@
   font-family: sans-serif;
 }
 
-
 .mainImage {
   position: absolute;
   top: 0;
@@ -29,7 +28,7 @@
 .productTitle {
   font-size: 20px;
   font-weight: 500;
-  color:#2C3340;
+  color: #2c3340;
   margin-bottom: 6px;
 }
 
@@ -43,7 +42,7 @@
 .price {
   font-size: 20px;
   font-weight: bold;
-  color: #FF91B0;
+  color: #ff91b0;
   margin-bottom: 8px;
 }
 
@@ -96,4 +95,44 @@
 
 .description_image_container {
   margin-top: 100px;
+}
+
+.wrapper {
+  text-align: center;
+  margin: 40px 0 20px 0;
+}
+
+.titleRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222;
+}
+
+.underline {
+  border: none;
+  border-top: 1px solid #333;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.detail_images {
+  margin-bottom: 10px;
+}
+
+.amount_month {
+  font-size: 20px;
 }
