@@ -3,14 +3,14 @@
 import ImageSlider from "@/components/ImageSlider";
 import KakaoFloatingButton from "@/components/KakaoFloatingButton";
 import styles from "@/styles/rentalDetail.module.css";
-import { RentalData } from "@/types";
+import { type RentalData } from "@/types";
 import apiClient from "@/utils/apiClient";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { type ReactElement, useEffect, useState } from "react";
 import { FaBabyCarriage } from "react-icons/fa";
 
-export default function RentalDetailPage() {
-  const params = useParams();
+export default function RentalDetailPage(): ReactElement {
+  const params = useParams<{ id: string }>();
   const id = params.id; // string
 
   const sliderSettings = {
@@ -24,6 +24,7 @@ export default function RentalDetailPage() {
       try {
         const { data } = await apiClient.get("/api/rental/get/" + id);
         console.log("data", data);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setRentalData(data.data);
       } catch (error) {
         console.error("⚠️ 메시지 불러오기 실패:", error);

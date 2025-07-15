@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 "use client";
 
-import { useEffect, useState } from "react";
+import { type ReactElement, useEffect, useState } from "react";
 import styles from "@/styles/rental.module.css";
-import { RentalData } from "@/types";
+import { type RentalData } from "@/types";
 import apiClient from "@/utils/apiClient";
 
 const tabs = [
@@ -11,7 +12,13 @@ const tabs = [
   { label: "휴대형", type: "HANDY" },
 ];
 
-export default function RentalPage() {
+interface RentalListResponse {
+  data: {
+    contents: RentalData[];
+  };
+}
+
+export default function RentalPage(): ReactElement {
   const [rentalData, setRentalData] = useState<RentalData[]>([]);
   const [selectedTab, setSelectedTab] = useState("DELUXE");
 
@@ -26,7 +33,8 @@ export default function RentalPage() {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const { data } = await apiClient.get("/api/rental/list");
+        const { data } =
+          await apiClient.get<RentalListResponse>("/api/rental/list");
         console.log("data", data.data.contents);
         setRentalData(data.data.contents);
       } catch (error) {
@@ -49,7 +57,9 @@ export default function RentalPage() {
             className={`${styles.tabButton} ${
               tab.type === selectedTab ? styles.active : ""
             }`}
-            onClick={() => setSelectedTab(tab.type)}
+            onClick={() => {
+              setSelectedTab(tab.type);
+            }}
           >
             {tab.label}
           </button>
@@ -58,10 +68,13 @@ export default function RentalPage() {
 
       <div className={styles.cardList}>
         {filteredStrollers.map((stroller) => (
+          // eslint-disable-next-line jsx-a11y/click-events-have-key-events
           <div
             key={stroller.id}
             className={styles.card}
-            onClick={() => moveToDetail(stroller.id)}
+            onClick={() => {
+              moveToDetail(stroller.id);
+            }}
           >
             <p className={styles.name}>{stroller.productName}</p>
             <div className={styles.product_detail_info}>
@@ -79,17 +92,17 @@ export default function RentalPage() {
 
                 <button
                   className={
-                    stroller.rentable === true
-                      ? styles.button
-                      : styles.buttonDisabled
+                    stroller.rentable ? styles.button : styles.buttonDisabled
                   }
-                  onClick={() => moveToDetail(stroller.id)} // ✅ 클릭될 때만 실행됨}
-                  disabled={stroller.rentable !== true}
+                  onClick={() => {
+                    moveToDetail(stroller.id);
+                  }} // ✅ 클릭될 때만 실행됨}
+                  disabled={!stroller.rentable}
                 >
-                  {stroller.rentable === true ? "대여 가능" : "대여중"}
+                  {stroller.rentable ? "대여 가능" : "대여중"}
                 </button>
                 <div>
-                  {stroller.rentable === false ? (
+                  {!stroller.rentable ? (
                     <>
                       <span className={styles.rental_period}>
                         {stroller.rentalStart}~

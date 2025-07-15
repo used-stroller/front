@@ -164,7 +164,7 @@ interface RentalData {
   src: string;
   color: string;
   rentalPrice: number;
-  isRentable: boolean;
+  rentable: boolean;
   productionDate: string;
   description: string;
   descriptionImage: string;
@@ -172,6 +172,8 @@ interface RentalData {
   strollerType: string;
   weight: number;
   size: string;
+  rentalStart?: string;
+  rentalEnd?: string;
 }
 
 interface RentalImage {
