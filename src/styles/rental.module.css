@@ -131,6 +131,10 @@
   gap: 15px;
 }
 
+.product_detail_info > img {
+    border-radius: 5px;
+}
+
 .rental_period {
   font-size: 10px;
 }
