@@ -104,11 +104,11 @@ export default function RentalPage(): ReactElement {
                 <div>
                   {!stroller.rentable ? (
                     <>
-                      <span className={styles.rental_period}>
+                      {/* <span className={styles.rental_period}>
                         {stroller.rentalStart}~
-                      </span>
+                      </span> */}
                       <span className={styles.rental_period}>
-                        {stroller.rentalEnd}
+                        ~{stroller.rentalEnd} 까지
                       </span>
                     </>
                   ) : null}
