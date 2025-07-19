@@ -34,6 +34,10 @@ export default function RentalDetailPage(): ReactElement {
     void fetchData();
   }, []);
 
+  const moveTo = (title: string): void => {
+    window.location.href = "/rental/apply?title="+title;
+  };
+
   return (
     <div className={styles.rentalContainer}>
       {/* 이미지 박스 */}
@@ -71,6 +75,13 @@ export default function RentalDetailPage(): ReactElement {
           </span>
         ))}
       </div>
+      <div className={styles.rental_inquiry_div}>
+        <button className={styles.rental_inquiry_button}
+         onClick={() => {
+                    moveTo(rentalData?.productName);
+                  }} // ✅ 클릭될 때만 실행됨}
+        >렌탈 "문의만"하기</button>
+      </div>
 
       {/* 하단 버튼 */}
       {/* <div className={styles.bottomBar}>
@@ -84,7 +95,6 @@ export default function RentalDetailPage(): ReactElement {
         <img className="description_image" src="/images/product_detail.jpg" />
         <img className="description_image" src="/images/wheel.gif" />
       </div>
-
       <div className={styles.wrapper}>
         <div className={styles.titleRow}>
           <FaBabyCarriage className={styles.icon} />

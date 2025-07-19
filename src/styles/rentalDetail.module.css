@@ -138,3 +138,19 @@
   color:#3F51B5;
   margin-left:5px;
 }
+
+.rental_inquiry_button {
+  background-color: #F28C8C;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.rental_inquiry_div {
+  text-align: center;
+}
