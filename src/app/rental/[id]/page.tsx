@@ -34,8 +34,8 @@ export default function RentalDetailPage(): ReactElement {
     void fetchData();
   }, []);
 
-  const moveTo = (title: string): void => {
-    window.location.href = "/rental/apply?title="+title;
+  const moveTo = (id: string): void => {
+    window.location.href = "/rental/apply?id=" + id;
   };
 
   return (
@@ -78,7 +78,7 @@ export default function RentalDetailPage(): ReactElement {
       <div className={styles.rental_inquiry_div}>
         <button className={styles.rental_inquiry_button}
          onClick={() => {
-                    moveTo(rentalData?.productName);
+                    moveTo(id);
                   }} // ✅ 클릭될 때만 실행됨}
         >렌탈 "문의만"하기</button>
       </div>

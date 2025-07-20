@@ -86,7 +86,7 @@
   width: 100%;
   padding: 14px;
   font-size: 16px;
-  background-color: #F8B6B6;
+  background-color: #F28C8C;
   color: white;
   border: none;
   border-radius: 8px;
@@ -96,5 +96,5 @@
 }
 
 .submitButton:hover {
-  background-color: #E59A9A;
+    background-color: #F8B6B6;
 }
