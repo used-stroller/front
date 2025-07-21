@@ -79,8 +79,12 @@ export default function RentalPage(): ReactElement {
             <p className={styles.name}>{stroller.productName}</p>
             <div className={styles.product_detail_info}>
               <img
-                src={process.env.NEXT_PUBLIC_BASE_URL + stroller.src}
-                alt={stroller.productName}
+                src={
+                  stroller.src
+                    ? process.env.NEXT_PUBLIC_BASE_URL + stroller.src
+                    : "/images/preparing.png"
+                }
+                alt={stroller.productName ?? "상품 준비중"}
                 className={styles.image}
               />
               <div className={styles.info}>

@@ -43,7 +43,13 @@ export default function RentalDetailPage(): ReactElement {
       {/* 이미지 박스 */}
       <div className={styles.imageWrapper}>
         <ImageSlider
-          images={rentalData?.rentalImages.map((img) => img.src) || []}
+          images={
+            rentalData?.rentalImages?.some((img) => img.src)
+              ? rentalData.rentalImages.map(
+                  (img) => process.env.NEXT_PUBLIC_BASE_URL + img.src,
+                )
+              : ["/images/preparing.png"]
+          }
           settings={sliderSettings}
         />
         {/* <div className={styles.imageCount}>1 / 12</div> */}
