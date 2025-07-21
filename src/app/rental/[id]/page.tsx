@@ -21,6 +21,7 @@ export default function RentalDetailPage(): ReactElement {
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
+      if (rentalData !== null) return;
       try {
         const { data } = await apiClient.get("/api/rental/get/" + id);
         console.log("data", data);
@@ -34,12 +35,16 @@ export default function RentalDetailPage(): ReactElement {
     void fetchData();
   }, []);
 
+  const moveTo = (id: string): void => {
+    window.location.href = "/rental/apply?id=" + id;
+  };
+
   return (
     <div className={styles.rentalContainer}>
       {/* 이미지 박스 */}
       <div className={styles.imageWrapper}>
         <ImageSlider
-          images={rentalData?.rentalImages.map((img) => img.src) || []}
+          images={rentalData?.rentalImages?.map((img) => img.src) || []}
           settings={sliderSettings}
         />
         {/* <div className={styles.imageCount}>1 / 12</div> */}
@@ -71,6 +76,13 @@ export default function RentalDetailPage(): ReactElement {
           </span>
         ))}
       </div>
+      <div className={styles.rental_inquiry_div}>
+        <button className={styles.rental_inquiry_button}
+         onClick={() => {
+                    moveTo(id);
+                  }} // ✅ 클릭될 때만 실행됨}
+        >렌탈 "문의만"하기</button>
+      </div>
 
       {/* 하단 버튼 */}
       {/* <div className={styles.bottomBar}>
@@ -84,7 +96,6 @@ export default function RentalDetailPage(): ReactElement {
         <img className="description_image" src="/images/product_detail.jpg" />
         <img className="description_image" src="/images/wheel.gif" />
       </div>
-
       <div className={styles.wrapper}>
         <div className={styles.titleRow}>
           <FaBabyCarriage className={styles.icon} />
