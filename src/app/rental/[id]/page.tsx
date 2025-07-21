@@ -21,6 +21,7 @@ export default function RentalDetailPage(): ReactElement {
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
+      if (rentalData !== null) return;
       try {
         const { data } = await apiClient.get("/api/rental/get/" + id);
         console.log("data", data);
@@ -43,13 +44,7 @@ export default function RentalDetailPage(): ReactElement {
       {/* 이미지 박스 */}
       <div className={styles.imageWrapper}>
         <ImageSlider
-          images={
-            rentalData?.rentalImages?.some((img) => img.src)
-              ? rentalData.rentalImages.map(
-                  (img) => process.env.NEXT_PUBLIC_BASE_URL + img.src,
-                )
-              : ["/images/preparing.png"]
-          }
+          images={rentalData?.rentalImages?.map((img) => img.src) || []}
           settings={sliderSettings}
         />
         {/* <div className={styles.imageCount}>1 / 12</div> */}
