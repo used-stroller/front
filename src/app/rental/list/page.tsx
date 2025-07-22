@@ -104,10 +104,10 @@ export default function RentalPage(): ReactElement {
                   disabled={!stroller.rentable}
                 >
                   {stroller.rentable
-                    ? "대여 가능"
-                    : stroller.src
-                      ? "대여중"
-                      : "예약가능"}
+                    ? stroller.src
+                      ? "대여가능"
+                      : "예약가능"
+                    : "대여중"}
                 </button>
                 <div>
                   {!stroller.rentable ? (
