@@ -81,7 +81,7 @@ export default function RentalPage(): ReactElement {
               <img
                 src={
                   stroller.src
-                    ? process.env.NEXT_PUBLIC_BASE_URL + stroller.src
+                    ? stroller.src
                     : "/images/preparing.png"
                 }
                 alt={stroller.productName ?? "상품 준비중"}

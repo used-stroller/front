@@ -107,7 +107,7 @@ export default function RentalDetailPage(): ReactElement {
       <div>
         {rentalData?.rentalImages?.map((img, index) => (
           <div key={index} className={styles.detail_images}>
-            <img src={process.env.NEXT_PUBLIC_BASE_URL + img.src} />
+            <img src={img.src} />
           </div>
         ))}
       </div>
