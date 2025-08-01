@@ -100,10 +100,14 @@ export default function RentalPage(): ReactElement {
                   }
                   onClick={() => {
                     moveToDetail(stroller.id);
-                  }} // ✅ 클릭될 때만 실행됨}
+                  }}
                   disabled={!stroller.rentable}
                 >
-                  {stroller.rentable ? "대여 가능" : "대여중"}
+                  {stroller.rentable
+                    ? stroller.src
+                      ? "대여가능"
+                      : "예약가능"
+                    : "대여중"}
                 </button>
                 <div>
                   {!stroller.rentable ? (

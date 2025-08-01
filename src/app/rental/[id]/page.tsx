@@ -77,11 +77,14 @@ export default function RentalDetailPage(): ReactElement {
         ))}
       </div>
       <div className={styles.rental_inquiry_div}>
-        <button className={styles.rental_inquiry_button}
-         onClick={() => {
-                    moveTo(id);
-                  }} // ✅ 클릭될 때만 실행됨}
-        >렌탈 "문의만"하기</button>
+        <button
+          className={styles.rental_inquiry_button}
+          onClick={() => {
+            moveTo(id);
+          }} // ✅ 클릭될 때만 실행됨}
+        >
+          렌탈상담
+        </button>
       </div>
 
       {/* 하단 버튼 */}
