@@ -79,11 +79,7 @@ export default function RentalPage(): ReactElement {
             <p className={styles.name}>{stroller.productName}</p>
             <div className={styles.product_detail_info}>
               <img
-                src={
-                  stroller.src
-                    ? stroller.src
-                    : "/images/preparing.png"
-                }
+                src={stroller.src ? stroller.src : "/images/preparing.png"}
                 alt={stroller.productName ?? "상품 준비중"}
                 className={styles.image}
               />
@@ -100,14 +96,10 @@ export default function RentalPage(): ReactElement {
                   }
                   onClick={() => {
                     moveToDetail(stroller.id);
-                  }}
+                  }} // ✅ 클릭될 때만 실행됨}
                   disabled={!stroller.rentable}
                 >
-                  {stroller.rentable
-                    ? stroller.src
-                      ? "대여가능"
-                      : "예약가능"
-                    : "대여중"}
+                  {stroller.rentable ? "대여 가능" : "대여중"}
                 </button>
                 <div>
                   {!stroller.rentable ? (
