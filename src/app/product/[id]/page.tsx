@@ -1,7 +1,6 @@
 "use client";
 
 import styles from "@/styles/productDetail.module.css";
-import ImageSlider from "@/components/ImageSlider";
 import { use, useEffect, useState } from "react";
 import apiClient from "@/utils/apiClient";
 import Image from "next/image";
@@ -10,6 +9,7 @@ import { useRouter } from "next/navigation";
 import MoreModal from "@/components/MoreModal";
 import uploadCss from "@/styles/upload.module.css";
 import { type userData } from "@/types";
+import ImageSliderProduct from '@/components/ImageSliderProduct';
 
 // params의 타입을 정의
 interface Params {
@@ -223,7 +223,7 @@ export default function ProductDetail({ params }: { params: Promise<Params> }) {
         ) : null}
         <MoreModal isOpen={isModalOpen} onClose={handleCloseModal} id={id} />
       </div>
-      <ImageSlider images={productImages} settings={sliderSettings} />
+      <ImageSliderProduct images={productImages} settings={sliderSettings} />
       <div className={styles.profile_nick_div}>
         <div>
           {sellerData?.image ? (
