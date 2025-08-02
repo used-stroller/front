@@ -42,7 +42,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, settings }) => {
               }}
             >
               <img
-                src={process.env.NEXT_PUBLIC_BASE_URL + src}
+                src={src}
                 alt={`Slide ${index + 1}`}
                 style={{
                   maxWidth: "100%",
