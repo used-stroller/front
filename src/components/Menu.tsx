@@ -34,6 +34,9 @@ export default function Menu(): ReactElement {
       <Link href={"policy/privacy"}>
         <h3>개인정보 처리방침</h3>
       </Link>
+      <Link href={"policy/company"}>
+        <h3>사업자 정보</h3>
+      </Link>
       {/* {isSession ? (
         <>
           <Link href="/mypage">마이페이지</Link>
