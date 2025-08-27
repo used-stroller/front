@@ -135,12 +135,12 @@
 
 .amount_month {
   font-size: 15px;
-  color:#3F51B5;
-  margin-left:5px;
+  color: #3f51b5;
+  margin-left: 5px;
 }
 
 .rental_inquiry_button {
-  background-color: #F28C8C;
+  background-color: #f28c8c;
   color: white;
   font-weight: bold;
   font-size: 16px;
@@ -152,6 +152,6 @@
 }
 
 .rental_inquiry_div {
-  margin-top:25px;
+  margin-top: 25px;
   text-align: center;
 }

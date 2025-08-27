@@ -1,0 +1,38 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.table th {
+  background: #f7f7f7;
+  font-weight: bold;
+}
+
+.table td {
+  font-size: 0.95rem;
+}
+
+.name {
+  font-weight: 500;
+}
+
+.available {
+  color: #2ecc71;
+  font-weight: bold;
+}
+.reserved {
+  color: #f39c12;
+  font-weight: bold;
+}
+.out {
+  color: #e74c3c;
+  font-weight: bold;
+}

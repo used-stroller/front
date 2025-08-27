@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import MoreModal from "@/components/MoreModal";
 import uploadCss from "@/styles/upload.module.css";
 import { type userData } from "@/types";
-import ImageSliderProduct from '@/components/ImageSliderProduct';
+import ImageSliderProduct from "@/components/ImageSliderProduct";
 
 // params의 타입을 정의
 interface Params {

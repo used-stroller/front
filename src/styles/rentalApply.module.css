@@ -5,7 +5,7 @@
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 .title {
@@ -31,7 +31,7 @@
 
 .input:focus {
   outline: none;
-  border-color: #F19D9D;
+  border-color: #f19d9d;
   box-shadow: 0 0 0 2px rgba(241, 157, 157, 0.3);
 }
 
@@ -59,9 +59,9 @@
 }
 
 .button.active {
-  border-color: #F19D9D;
-  background-color: #FDECEC;
-  color: #D94F4F;
+  border-color: #f19d9d;
+  background-color: #fdecec;
+  color: #d94f4f;
   font-weight: bold;
 }
 
@@ -86,7 +86,7 @@
   width: 100%;
   padding: 14px;
   font-size: 16px;
-  background-color: #F28C8C;
+  background-color: #f28c8c;
   color: white;
   border: none;
   border-radius: 8px;
@@ -96,5 +96,5 @@
 }
 
 .submitButton:hover {
-    background-color: #F8B6B6;
+  background-color: #f8b6b6;
 }
